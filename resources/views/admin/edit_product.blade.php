@@ -39,8 +39,11 @@
                                 </div>
                                 <div class="form-group">
                                     <label for="exampleInputPassword1">Nội dung sản phẩm</label>
-                                    <textarea rows=9 style="resize: none " class="form-control" name= 'product_content' id="exampleInputPassword1" >{{$pro->product_content}}  </textarea>
+                                    <textarea rows=9 style="resize: none " class="form-control" name= 'product_content' id="ckeditor3" >{{$pro->product_content}}  </textarea>
                                 </div>
+                                <script>
+                                    CKEDITOR.replace('ckeditor3');
+                                </script>
                                 <div class="form-group">
                                 <label for="exampleInputPassword1">Danh mục sản phẩm</label>
                             <select name="product_cate" class="form-control input-sm m-bot15">
