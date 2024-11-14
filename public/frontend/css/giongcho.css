@@ -1,0 +1,253 @@
+@import "style.css";
+
+/* Dành cho điện thoại */
+@media all and (max-width: 480px) {
+    .main {
+        width: 95%;
+        padding: 5px;
+    }
+
+    .headline {
+        border-bottom: 1px solid #ffa500;
+    }
+
+    .main h1 {
+        width: 100%;
+        font-size: 20px;
+        border-radius: 0;
+        padding: 10px;
+    }
+
+    .content {
+        flex-direction: column;
+    }
+
+    .info {
+        width: 100%;
+        margin-bottom: 10px;
+        padding: 5px;
+        border-radius: 10px;
+        border: 3px solid #f2f2f2;
+    }
+
+    .text {
+        width: 100%;
+    }
+
+    .image {
+        width: 100%;
+        margin-bottom: 10px;
+    }
+
+    .chon {
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .muacun,
+    .chitiet {
+        width: 90%;
+        margin: 5px 0;
+    }
+}
+
+/* Dành cho máy tính bảng chiều dọc */
+@media all and (min-width: 600px) and (max-width: 768px) {
+    .main {
+        width: 90%;
+        padding: 10px;
+    }
+
+    .main h1 {
+        width: 50%;
+        font-size: 24px;
+    }
+
+    .info {
+        width: 45%;
+        margin-bottom: 10px;
+    }
+
+    .text {
+        width: 70%;
+    }
+
+    .image {
+        width: 30%;
+    }
+
+    .muacun,
+    .chitiet {
+        width: 45%;
+        margin: 5px;
+    }
+}
+
+/* Dành cho máy tính bảng chiều ngang */
+@media all and (min-width: 768px) and (max-width: 1024px) {
+    .main {
+        width: 85%;
+        padding: 15px;
+    }
+
+    .main h1 {
+        width: 40%;
+        font-size: 28px;
+    }
+
+    .info {
+        width: 48%;
+        margin-bottom: 15px;
+    }
+
+    .text {
+        width: 70%;
+    }
+
+    .image {
+        width: 30%;
+    }
+
+    .muacun,
+    .chitiet {
+        width: 40%;
+        margin: 5px;
+    }
+}
+
+/* Dành cho màn hình desktop */
+@media all and (min-width: 1280px) {
+    .main {
+        width: 80%;
+        padding: 20px;
+    }
+
+    .main h1 {
+        width: 25%;
+        font-size: 32px;
+    }
+
+    .info {
+        width: 33.3333%;
+        margin-bottom: 20px;
+    }
+
+    .text {
+        width: 80%;
+    }
+
+    .image {
+        width: 20%;
+    }
+
+    .muacun,
+    .chitiet {
+        width: 30%;
+        margin: 5px;
+    }
+}
+
+/* SECTION */
+.main {
+    width: 80%;
+    margin: 10px auto;
+    padding: 10px;
+    background-color: #f2f2f2;
+}
+
+.headline {
+    border-bottom: 2px solid #ffa500;
+}
+
+.main h1 {
+    background-color: #ff0000;
+    color: #ffffff;
+    width: 25%;
+    border-radius: 0 20px 0 0;
+    margin-bottom: 0;
+    padding: 5px;
+    border-bottom: 2px solid #ffa500;
+}
+
+.text > ul {
+    list-style-type: none;
+}
+
+.content {
+    display: flex;
+    flex-wrap: wrap;
+    box-sizing: border-box;
+}
+
+.info {
+    width: 33.333%;
+    display: flex;
+    padding: 10px;
+    border-radius: 15px;
+    border: 5px solid #f2f2f2;
+    background-color: #ffffff;
+    box-sizing: border-box;
+    transition-duration: 0.5s;
+}
+
+.info h4 {
+    padding: 10px;
+}
+
+.info:hover {
+    background-color: rgba(255, 165, 0, 0.5);
+}
+
+.text {
+    width: 80%;
+}
+
+.image {
+    width: 20%;
+}
+
+.image img {
+    width: 100%;
+    transition: transform 1s;
+}
+
+.image img:hover {
+    transform: rotate(10deg);
+}
+
+.chon {
+    display: flex;
+}
+
+.muacun,
+.chitiet {
+    display: block;
+    margin: 5px;
+    padding: 5px;
+    text-align: center;
+    background-color: #ffffff;
+    text-decoration: none;
+    border-radius: 3px;
+}
+
+.muacun {
+    color: #ff0000;
+    border: 1px solid #ff0000;
+    width: 35%;
+}
+
+.muacun:hover {
+    color: #ffffff;
+    background-color: #ff0000;
+}
+
+.chitiet {
+    color: #007bff;
+    border: 1px solid #007bff;
+    width: 30%;
+}
+
+.chitiet:hover {
+    color: #ffffff;
+    background-color: #007bff;
+}

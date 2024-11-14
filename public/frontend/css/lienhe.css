@@ -1,0 +1,201 @@
+@import "style.css";
+
+/* Dành cho điện thoại */
+@media all and (max-width: 480px) {
+    .main {
+        width: 95%;
+        padding: 5px;
+        margin: 5px auto;
+    }
+
+    h1 {
+        font-size: 1.5em;
+        padding: 5px;
+    }
+
+    .main h4 {
+        font-size: 1.2em;
+        padding: 8px;
+    }
+
+    .main ul li,
+    .main ul li div {
+        padding: 5px;
+    }
+}
+
+/* Dành cho máy tính bảng chiều dọc */
+@media all and (min-width: 600px) and (max-width: 768px) {
+    .main {
+        width: 90%;
+        padding: 10px;
+        margin: 10px auto;
+    }
+
+    h1 {
+        font-size: 1.75em;
+        padding: 10px;
+    }
+
+    .main h4 {
+        font-size: 1.4em;
+        padding: 10px;
+    }
+
+    .main ul li,
+    .main ul li div {
+        padding: 10px;
+    }
+}
+
+/* Dành cho máy tính bảng chiều ngang */
+@media all and (min-width: 768px) and (max-width: 1024px) {
+    .main {
+        width: 85%;
+        padding: 15px;
+        margin: 15px auto;
+    }
+
+    h1 {
+        font-size: 2em;
+        padding: 15px;
+    }
+
+    .main h4 {
+        font-size: 1.6em;
+        padding: 15px;
+    }
+
+    .main ul li,
+    .main ul li div {
+        padding: 15px;
+    }
+}
+
+/* Dành cho màn hình desktop */
+@media all and (min-width: 1280px) {
+    .main {
+        width: 80%;
+        padding: 20px;
+        margin: 20px auto;
+    }
+
+    h1 {
+        font-size: 2.25em;
+        padding: 20px;
+    }
+
+    .main h4 {
+        font-size: 1.8em;
+        padding: 20px;
+    }
+
+    .main ul li,
+    .main ul li div {
+        padding: 20px;
+    }
+}
+
+/* SECTION */
+.main {
+    width: 80%;
+    margin: 10px auto;
+    background-color: #f2f2f2;
+    padding: 10px;
+}
+
+h1 {
+    border-bottom: 2px solid #ffa500;
+}
+
+.main h4 {
+    text-transform: uppercase;
+    padding: 10px;
+}
+
+.main ul {
+    list-style-type: none;
+}
+
+.main ul li,
+.main ul li div {
+    padding: 10px;
+}
+
+.indam {
+    font-weight: bold;
+}
+
+.main a {
+    text-decoration: none;
+    color: #ffa500;
+}
+/* tieu de  */
+.tieude {
+    width: 80%;
+    margin: 0 auto;
+    display: flex;
+}
+
+.col30 img {
+    width: 100%;
+}
+
+.tieude>.col40 {
+    padding-top: 3%;
+}
+
+.tieude>.col10 {
+    padding-top: 2%;
+}
+
+.tieude>.col40>.search {
+    height: 100%;
+    width: 100%;
+    display: flex;
+}
+
+.search input {
+    height: 60%;
+    display: block;
+    padding: 10px;
+    border: 2px solid #ffa500;
+}
+
+input[type="search"] {
+    width: 90%;
+    border-radius: 5px 0 0 5px;
+}
+
+input[type="image"] {
+    background-color: #ffa500;
+    border-radius: 0 5px 5px 0;
+}
+
+.header-icon {
+    text-align: center;
+}
+
+.header-icon a {
+    color: #ffa500;
+}
+
+.col10>a:hover {
+    color: #000000;
+    text-decoration: none;
+}
+.tieude .search #anh{
+    width: 43px;
+    height: 44px;
+}
+a{
+    text-decoration: none;
+}
+.info_product h6{
+    font-weight: bold;
+    font-family: Georgia, 'Times New Roman', Times, serif;
+}
+.tieude a{
+    text-decoration: none;
+}
+

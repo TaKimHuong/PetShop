@@ -1,0 +1,234 @@
+@import "style.css";
+
+/* Dành cho điện thoại */
+@media all and (max-width: 480px) {
+    .main {
+        width: 95%;
+        padding: 5px;
+    }
+
+    .main a {
+        font-size: 14px;
+    }
+
+    .main p {
+        padding: 5px;
+        font-size: 14px;
+    }
+
+    .list h3 {
+        padding-left: 5px;
+        font-size: 18px;
+    }
+
+    ul.list-child,
+    ol.list-child {
+        padding-left: 20px;
+    }
+
+    h3.thank {
+        font-size: 18px;
+    }
+}
+
+/* Dành cho máy tính bảng chiều dọc */
+@media all and (min-width: 600px) and (max-width: 768px) {
+    .main {
+        width: 90%;
+        padding: 10px;
+    }
+
+    .main a {
+        font-size: 16px;
+    }
+
+    .main p {
+        padding: 10px;
+        font-size: 16px;
+    }
+
+    .list h3 {
+        padding-left: 10px;
+        font-size: 20px;
+    }
+
+    ul.list-child,
+    ol.list-child {
+        padding-left: 30px;
+    }
+
+    h3.thank {
+        font-size: 20px;
+    }
+}
+
+/* Dành cho máy tính bảng chiều ngang */
+@media all and (min-width: 768px) and (max-width: 1024px) {
+    .main {
+        width: 85%;
+        padding: 15px;
+    }
+
+    .main a {
+        font-size: 18px;
+    }
+
+    .main p {
+        padding: 15px;
+        font-size: 18px;
+    }
+
+    .list h3 {
+        padding-left: 15px;
+        font-size: 22px;
+    }
+
+    ul.list-child,
+    ol.list-child {
+        padding-left: 40px;
+    }
+
+    h3.thank {
+        font-size: 22px;
+    }
+}
+
+/* Dành cho màn hình desktop */
+@media all and (min-width: 1280px) {
+    .main {
+        width: 80%;
+        padding: 20px;
+    }
+
+    .main a {
+        font-size: 20px;
+    }
+
+    .main p {
+        padding: 20px;
+        font-size: 20px;
+    }
+
+    .list h3 {
+        padding-left: 20px;
+        font-size: 24px;
+    }
+
+    ul.list-child,
+    ol.list-child {
+        padding-left: 50px;
+    }
+
+    h3.thank {
+        font-size: 24px;
+    }
+}
+
+/* SECTION */
+.main {
+    width: 80%;
+    margin: 10px auto;
+    background-color: #f2f2f2;
+    padding: 10px;
+}
+
+.main a {
+    color: #1a75ff;
+    text-decoration: none;
+}
+
+.main p {
+    padding: 10px;
+    text-align: justify;
+}
+
+.list {
+    list-style-type: none;
+}
+
+.list h3 {
+    padding-left: 10px;
+    color: #ffa500;
+}
+
+ul.list-child {
+    list-style-type: disc;
+}
+
+ul.list-child,
+ol.list-child {
+    padding-left: 50px;
+}
+
+h3.thank {
+    text-align: center;
+    font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+}
+/* tieu de  */
+.tieude {
+    width: 80%;
+    margin: 0 auto;
+    display: flex;
+}
+
+.col30 img {
+    width: 100%;
+}
+
+.tieude>.col40 {
+    padding-top: 3%;
+}
+
+.tieude>.col10 {
+    padding-top: 2%;
+}
+
+.tieude>.col40>.search {
+    height: 100%;
+    width: 100%;
+    display: flex;
+}
+
+.search input {
+    height: 60%;
+    display: block;
+    padding: 10px;
+    border: 2px solid #ffa500;
+}
+
+input[type="search"] {
+    width: 90%;
+    border-radius: 5px 0 0 5px;
+}
+
+input[type="image"] {
+    background-color: #ffa500;
+    border-radius: 0 5px 5px 0;
+}
+
+.header-icon {
+    text-align: center;
+}
+
+.header-icon a {
+    color: #ffa500;
+}
+
+.col10>a:hover {
+    color: #000000;
+    text-decoration: none;
+}
+.tieude .search #anh{
+    width: 43px;
+    height: 44px;
+}
+a{
+    text-decoration: none;
+}
+.info_product h6{
+    font-weight: bold;
+    font-family: Georgia, 'Times New Roman', Times, serif;
+}
+.tieude a{
+    text-decoration: none;
+}

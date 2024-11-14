@@ -1,0 +1,188 @@
+@import "style.css";
+
+/* Default styles */
+* {
+    padding: 0;
+    margin: 0;
+    font-size: 1.2vw;
+}
+
+body {
+    font-family: Arial, Helvetica, sans-serif;
+}
+
+.header {
+    background-color: #009FCB;
+}
+
+h1 {
+    width: 80%;
+    margin: 0 auto;
+    font-size: 3vw;
+    color: #ffffff;
+    background-color: #009FCB;
+    border-bottom: none;
+}
+
+.in-content {
+    width: 40%;
+    margin: 0 auto;
+    text-align: center;
+}
+
+.col50 {
+    width: 50%;
+    margin: 20px;
+}
+
+.col50 img {
+    width: 100%;
+}
+
+.background {
+    background-color: #f2f2f2;
+}
+
+.guide {
+    display: flex;
+    width: 50%;
+    margin: 0 auto;
+}
+
+.cach {
+    text-align: center;
+    padding: 10px;
+}
+
+.click>a {
+    width: 50%;
+    margin: 0 auto;
+    display: block;
+    padding: 10px;
+    border-radius: 50px;
+    background-color: #ffffff;
+    margin-bottom: 10px;
+    text-align: center;
+    text-decoration: none;
+    border: 1px solid #009FCB;
+    color: #009FCB;
+}
+
+.click>a:hover {
+    background-color: #009FCB;
+    color: #ffffff;
+}
+
+/* Dành cho điện thoại */
+@media all and (max-width: 480px) {
+    * {
+        font-size: 3vw;
+    }
+
+    h1 {
+        width: 90%;
+        font-size: 6vw;
+    }
+
+    .in-content {
+        width: 90%;
+    }
+
+    .col50 {
+        width: 100%;
+        margin: 10px 0;
+    }
+
+    .guide {
+        width: 90%;
+        flex-direction: column;
+    }
+
+    .click>a {
+        width: 90%;
+    }
+}
+
+/* Dành cho máy tính bảng chiều dọc */
+@media all and (min-width: 600px) and (max-width: 768px) {
+    * {
+        font-size: 2.5vw;
+    }
+
+    h1 {
+        width: 85%;
+        font-size: 5vw;
+    }
+
+    .in-content {
+        width: 85%;
+    }
+
+    .col50 {
+        width: 45%;
+    }
+
+    .guide {
+        width: 80%;
+    }
+
+    .click>a {
+        width: 70%;
+    }
+}
+
+/* Dành cho máy tính bảng chiều ngang */
+@media all and (min-width: 768px) and (max-width: 1024px) {
+    * {
+        font-size: 2vw;
+    }
+
+    h1 {
+        width: 80%;
+        font-size: 4vw;
+    }
+
+    .in-content {
+        width: 75%;
+    }
+
+    .col50 {
+        width: 40%;
+    }
+
+    .guide {
+        width: 70%;
+    }
+
+    .click>a {
+        width: 60%;
+    }
+}
+
+/* Dành cho màn hình desktop */
+@media all and (min-width: 1280px) {
+    * {
+        font-size: 1.2vw;
+    }
+
+    h1 {
+        width: 80%;
+        font-size: 3vw;
+    }
+
+    .in-content {
+        width: 40%;
+    }
+
+    .col50 {
+        width: 50%;
+    }
+
+    .guide {
+        width: 50%;
+    }
+
+    .click>a {
+        width: 50%;
+    }
+}
