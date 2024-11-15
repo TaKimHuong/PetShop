@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Gloudemans\Shoppingcart\Facades\Cart;
+use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\Redirect;
@@ -93,12 +94,12 @@ class ThanhToanController extends Controller
     // chèn vào dathang
 
     $data_order  = array();
-     
     $data_order['customer_id'] = Session::get('customer_id');
     $data_order['hoadon_id'] = Session::get('hoadon_id');
     $data_order['payment_id'] =  $payment_id;
     $data_order['tong_tien'] =  Cart::total(0,',','.');
     $data_order['dathang_status'] = 'Đang chờ xử lý';
+    $data_order['ngay_dat'] = Carbon::now();
     $dathang_id = DB::table('tbl_dathang')->insertGetId($data_order);
 
     // chèn vào chi tiết đặt hàng
@@ -109,8 +110,6 @@ class ThanhToanController extends Controller
         $data_order_detail['product_name'] =  $v_sanpham->name;
         $data_order_detail['product_price'] =  $v_sanpham->price;
         $data_order_detail['so_luong_san_pham'] = $v_sanpham->qty;
-      
-        
        DB::table('tbl_chitietdathang')->insert($data_order_detail);
      }
 
@@ -231,5 +230,32 @@ class ThanhToanController extends Controller
     return view('admin.xemdonhang')->with('order_info', $order_info)->with('order_details', $order_details);
 }
 
+
+// viet ham xoa dom hang trong phan admin 
+
+    public function deleteOrder($dathang_id)
+    {
+        // Kiểm tra xem đơn hàng có tồn tại không
+        $order = DB::table('tbl_dathang')->where('dathang_id', $dathang_id)->first();
+
+        if ($order) {
+            // Xóa thông tin chi tiết đặt hàng
+            DB::table('tbl_chitietdathang')->where('dathang_id', $dathang_id)->delete();
+
+            // Xóa thông tin thanh toán nếu cần
+            if (!empty($order->payment_id)) {
+                DB::table('tbl_tratien')->where('payment_id', $order->payment_id)->delete();
+            }
+
+            // Xóa thông tin đặt hàng
+            DB::table('tbl_dathang')->where('dathang_id', $dathang_id)->delete();
+
+            // Hiển thị thông báo thành công
+            return redirect()->back()->with('message', 'Xóa đơn hàng thành công.');
+        } else {
+            // Hiển thị thông báo lỗi nếu đơn hàng không tồn tại
+            return redirect()->back()->with('error', 'Đơn hàng không tồn tại.');
+        }
+    }
     
 }

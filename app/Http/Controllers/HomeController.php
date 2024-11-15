@@ -10,6 +10,8 @@ session_start();
 class HomeController extends Controller
 {
     public function index() {
+
+       
         $cate_product = DB::table('tbl_category_product')
         ->where('category_status', '0')
         ->orderBy('category_id', 'desc')
@@ -25,7 +27,7 @@ class HomeController extends Controller
         ->with('all_product', $all_product);
       
     }
-    public function CunCon() {
+    public function CunCon(Request $request) {
         // $cate_product = DB::table('tbl_category_product')->where('category_status', '0')->orderBy('category_id', 'desc')->get();
         // $brand_product = DB::table('tbl_brand')->where('brand_status', '0')->orderBy('brand_id', 'desc')->get();
         // $all_brand_product = DB::table('tbl_product')
@@ -34,6 +36,11 @@ class HomeController extends Controller
         // ->orderBy('tbl_product.product_id', 'desc')->get();
         // $all_product = DB::table('tbl_product')->where('product_status', '0')->orderBy('product_id', 'desc')->get();
         // return view('pages.CunCon')->with('category', $cate_product)->with('all_product', $all_product);
+
+        // $meta_desc = "Chuyên bán thú cưng và các phụ kiện liên quan";
+        // $meta_keywords = "thuc pham chúc nang, thuc pham chuc nang, phu kien thu cung";
+        // $meta_title = "phu kien cho nhung chu thu cung dang yeu cua chung ta";
+        // $url_canonical = $request->url();
 
             $cate_product = DB::table('tbl_category_product')
                 ->where('category_status', '0')
@@ -48,6 +55,7 @@ class HomeController extends Controller
             return view('pages.DanhMuc')
                 ->with('category', $cate_product)
                 ->with('all_product', $all_product);
+            //    ->with('meta_desc',$meta_desc )->with('meta_keywords',$meta_keywords)->with('meta_title',$meta_title)->with('url_canonical',$url_canonical);
         }
 
         public function CachNuoi() {

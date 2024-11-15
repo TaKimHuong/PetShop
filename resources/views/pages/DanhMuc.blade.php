@@ -1,6 +1,7 @@
 @extends('CunCon')
 @section('content')
 <div class="info_main">
+    
             <h4>___________________________SẢN PHẨM ĐANG BÁN______________________</h4>
             <div class="info">
                 @foreach($all_product as $key=> $product)

@@ -120,3 +120,6 @@ Route::post('/noi-dat-hang', [ThanhToanController::class, 'noi_dat_hang']);
 Route::get('/quan-ly-don-hang', [ThanhToanController::class, 'quan_ly_don_hang']);
 // xem don hang cua khach han 
 Route::get('/edit-order/{dathang_id}', [ThanhToanController::class, 'edit_order']);
+
+// viet ham xoa don hang trong phan quan ly don hang tai admin 
+Route::get('/delete-order/{dathang_id}', [ThanhToanController::class, 'deleteOrder']);

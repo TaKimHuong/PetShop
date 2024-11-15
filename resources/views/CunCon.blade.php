@@ -7,6 +7,7 @@
     <meta name="description" content="Mua bán chó cảnh">
     <meta http-equiv="refresh" content="3600">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
     <link href="{{asset('public/frontend/css/phukien.css')}}" rel="stylesheet" />
  
     <link rel="stylesheet" href="https://pro.fontawesome.com/releases/v5.10.0/css/all.css" integrity="sha384-AYmEC3Yw5cVb3ZcuHtOA93w35dYTsvhLPVnYs9eStHfGJvOvKxVfELGroGkvsg+p" crossorigin="anonymous" />
@@ -80,7 +81,6 @@ use Symfony\Component\HttpFoundation\Session\Session as SessionSession;
                     <span>Thanh toán</span>
                 </a>
              <?php
-
             }elseif($customer_id!=NULL && $hoadon_id!=NULL){
 
              ?>
@@ -90,7 +90,7 @@ use Symfony\Component\HttpFoundation\Session\Session as SessionSession;
                 </a>
 
                 <?php
-
+ 
             }else {
                 ?>
          <a id="hotro" href="{{URL::to('/dang-nhap-thanh-toan')}}">

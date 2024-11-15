@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\Models\Category;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\Redirect;
@@ -23,17 +24,27 @@ class CatagoryProduct extends Controller
     }
     public function all_category_product() {
         $this->AuthLogin();
-       $all_category_product= DB::table('tbl_category_product')->get();
+    //    $all_category_product= DB::table('tbl_category_product')->get();
+    // static trong mô hình hướng đối tượng ::
+        // $all_category_product = Category::all();
+        $all_category_product = Category::orderBy('category_id','DESC')->get();
+
        $manager_category_product = view('admin.all_category_product')->with('all_category_product', $all_category_product);
         return view('admin_layout')->with('admin.all_category_product', $manager_category_product);
     }
     public function save_category_product(Request $request) {
         $this->AuthLogin();
-        $data = array();
-        $data['category_name'] = $request->category_product_name;
-        $data['category_desc'] = $request->category_product_desc;
-        $data['category_status'] = $request->category_product_status;
-        DB::table('tbl_category_product')->insert($data);
+        $data = $request->all();
+        $category = new Category();
+        $category->category_name = $data['category_product_name'];
+        $category->category_desc = $data['category_product_desc'];
+        $category->category_status = $data['category_product_status'];
+        $category->save();
+        // $data = array();
+        // $data['category_name'] = $request->category_product_name;
+        // $data['category_desc'] = $request->category_product_desc;
+        // $data['category_status'] = $request->category_product_status;
+        // DB::table('tbl_category_product')->insert($data);
         Session::put('message','Thêm danh mục sản phẩm thành công');
         return Redirect::to('add-category-product');
         
@@ -52,11 +63,21 @@ class CatagoryProduct extends Controller
     }
     public function edit_category_product($category_product_id) {
         $this->AuthLogin();
-        $edit_category_product= DB::table('tbl_category_product')->where('category_id',$category_product_id)->get();
-        $manager_category_product = view('admin.edit_category_product')->with('edit_category_product', $edit_category_product);
-         return view('admin_layout')->with('admin.edit_category_product', $manager_category_product);
-
+    
+        // Lấy bản ghi duy nhất từ bảng `tbl_category_product`
+        $edit_category_product = DB::table('tbl_category_product')->where('category_id', $category_product_id)->first();
+        // Hoặc nếu bạn dùng Eloquent, bạn có thể thay thế với:
+        // $edit_category_product = Category::where('category_id', $category_product_id)->first();
+    
+        // Kiểm tra nếu không có bản ghi
+        if (!$edit_category_product) {
+            return redirect()->back()->with('error', 'Danh mục không tồn tại.');
+        }
+    
+        // Truyền dữ liệu vào view
+        return view('admin.edit_category_product')->with('edit_category_product', $edit_category_product);
     }
+    
     public function update_category_product(Request $request, $category_product_id) {
         $this->AuthLogin();
         $data = array();

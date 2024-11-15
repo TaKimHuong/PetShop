@@ -95,9 +95,8 @@
           
         </tbody>
       </table>
-      <div class="pagination">
-                    {{ $all_product->links() }}
-                </div>
+       <!-- Hiển thị phân trang -->
+       
     </div>
     <footer class="panel-footer">
       <div class="row">

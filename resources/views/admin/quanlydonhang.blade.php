@@ -6,7 +6,7 @@
       LIỆT KÊ ĐƠN HÀNG
     </div>
     <div class="row w3-res-tb">
-      <div class="col-sm-5 m-b-xs">
+      <!-- <div class="col-sm-5 m-b-xs">
         <select class="input-sm form-control w-sm inline v-middle">
           <option value="0">Bulk action</option>
           <option value="1">Delete selected</option>
@@ -24,7 +24,7 @@
             <button class="btn btn-sm btn-default" type="button">Go!</button>
           </span>
         </div>
-      </div>
+      </div> -->
     </div>
     <div class="table-responsive">
     <?php
@@ -39,14 +39,16 @@
       <table class="table table-striped b-t b-light">
         <thead>
           <tr>
-            <th style="width:20px;">
+            <!-- <th style="width:20px;">
               <label class="i-checks m-b-none">
                 <input type="checkbox"><i></i>
               </label>
-            </th>
+            </th> -->
+            <th>STT</th>
             <th>Tên khách hàng</th>
             <th>Tổng tiền</th>
             <th>Tình trạng</th>
+            <th>Ngày đặt hàng</th>
             <th>Hiển thị</th>
             <th style="width:30px;"></th>
           </tr>
@@ -58,10 +60,12 @@
            
            
           <tr>
-            <td><label class="i-checks m-b-none"><input type="checkbox" name="post[]"><i></i></label></td>
+            <!-- <td><label class="i-checks m-b-none"><input type="checkbox" name="post[]"><i></i></label></td> -->
+             <td>{{$loop->iteration}}</td>
             <td>{{$order->customer_name}}</td>
             <td>{{$order->tong_tien}}</td>
             <td>{{$order->dathang_status}}</td>
+            <td>{{$order->ngay_dat}}</td>
          
            
             <td>
