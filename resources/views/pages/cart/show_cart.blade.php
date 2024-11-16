@@ -2,6 +2,16 @@
 @section('content')
 
 <section id="cart_items" style="width: 60%;">
+
+@if(session('message'))
+    <div style="font-weight: bold; width: 100%; margin-bottom: 50px; margin-top: 20px;">
+        {{ session('message') }}
+    </div>
+@endif 
+<div style="font-weight: bold; width: 100%; margin-bottom: 50px; margin-top: 20px;">
+        {{ session('error') }}
+    </div>
+
 <meta name="csrf-token" content="{{ csrf_token() }}">
 	
 		<div>
@@ -85,6 +95,24 @@ use Gloudemans\Shoppingcart\Facades\Cart;
 					<div class="total_area">
 						<ul>
 							<li>Tổng tiền:  <span id="subtotal">{{ Cart::priceTotal(0,',','.') }} đ</span></li>
+							<li>Mã giảm:  <span>
+
+								@if (Session::get('coupon'))
+									@foreach(Session::get('coupon') as $key=> $cou)
+										@if ($cou['coupon_condition' == 1]) 
+											Mã giảm : {{$cou['coupon_number']}} %
+
+											<p>
+												@php
+
+												$total_coupon = ($total* $cou['coupon_number'])/100;
+												echo '<p> Tổng giảm:'. number_format($total_coupon).'đ</p>';
+												@endphp
+											</p>
+									@endforeach
+								@endif
+
+							</span></li>
 							<li>Tiền thuế:  <span id="tax">{{Cart::tax(0,',','.')}} đ</span></li>
 							<li>Tiền ship: <span id="shipping">Free</span></li>
 							<li>Tổng tiền: <span id="tong_gia"> {{ Cart::total(0,',','.') }} đ </span></li>
@@ -117,20 +145,23 @@ use Gloudemans\Shoppingcart\Facades\Cart;
 				<!-- <p>Hình thức thanh toán</p> -->
 			</div>
 					<div class="chose_area">
+						<form action="{{URL::to('/check-coupon')}}" method="POST">
+							@csrf
 						<ul class="user_option">
-							<li>
+							<!-- <li>
 								<input type="checkbox">
 								<label>Sử dụng mã giảm giá</label>
-							</li>
+							</li> -->
 							<li>
 								<input type="checkbox">
 								<label>Sử dụng Voucher</label>
-								<input type="text" placeholder="Chọn mã giảm giá">
+								<input type="text" placeholder="Chọn mã giảm giá" name="coupon">
 							</li>
 							<li>
-								<input type="submit" value="Xác nhận" class="btn btn-primary">
+								<input type="submit" name="check_coupon" value="Xác nhận" class="btn btn-primary">
 							</li>
 						</ul>
+						</form>
 						
 						
 						<!-- <a class="btn btn-default update" href="">Get Quotes</a>

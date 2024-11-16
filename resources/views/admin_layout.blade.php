@@ -195,17 +195,18 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
                     </a>
                     <ul class="sub">
                         <li><a href="{{URL::to('/quan-ly-don-hang')}}">Quản lý đơn hàng</a></li>
-                        <li><a href="mail_compose.html">Compose Mail</a></li>
+                     
                     </ul>
                 </li>
                 <li class="sub-menu">
                     <a href="javascript:;">
                         <i class=" fa fa-bar-chart-o"></i>
-                        <span>Charts</span>
+                        <span>Mã giảm giá</span>
                     </a>
                     <ul class="sub">
-                        <li><a href="chartjs.html">Chart js</a></li>
-                        <li><a href="flot_chart.html">Flot Charts</a></li>
+                        <li><a href="{{URL::to('/ma-giam-gia')}}">Quản lý mã giảm giá</a></li>
+                        <li><a href="{{URL::to('/danh-sach-ma-giam-gia')}}">Danh sách mã giảm giá</a></li>
+                      
                     </ul>
                 </li>
                 <li class="sub-menu">

@@ -8,6 +8,7 @@ use App\Http\Controllers\BrandProduct;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\CartController;
 use App\Http\Controllers\ThanhToanController;
+use App\Http\Controllers\MaGiamGiaController;
 use Gloudemans\Shoppingcart\Facades\Cart;
 Route::get('/', [HomeController::class, 'index']);
 Route::get('/trang-chu', [HomeController::class, 'index']);
@@ -123,3 +124,10 @@ Route::get('/edit-order/{dathang_id}', [ThanhToanController::class, 'edit_order'
 
 // viet ham xoa don hang trong phan quan ly don hang tai admin 
 Route::get('/delete-order/{dathang_id}', [ThanhToanController::class, 'deleteOrder']);
+
+// ap dung ma giam gia vao
+Route::post('/check-coupon', [CartController::class, 'check_coupon']);
+Route::get('/ma-giam-gia', [MaGiamGiaController::class, 'ma_giam_gia']);
+Route::post('/insert-ma-giam-gia', [MaGiamGiaController::class, 'insert_ma_giam_gia']);
+Route::get('/danh-sach-ma-giam-gia', [MaGiamGiaController::class, 'danh_sach_ma_giam_gia']);
+Route::get('/xoa-ma-giam-gia/{coupon_id}', [MaGiamGiaController::class, 'xoa_ma_giam_gia']);
