@@ -27,7 +27,9 @@ class CatagoryProduct extends Controller
     //    $all_category_product= DB::table('tbl_category_product')->get();
     // static trong mô hình hướng đối tượng ::
         // $all_category_product = Category::all();
-        $all_category_product = Category::orderBy('category_id','DESC')->get();
+        // $all_category_product = Category::orderBy('category_id','DESC')
+        // ->get();
+        $all_category_product = Category::orderBy('category_id', 'DESC')->paginate(5);
 
        $manager_category_product = view('admin.all_category_product')->with('all_category_product', $all_category_product);
         return view('admin_layout')->with('admin.all_category_product', $manager_category_product);
