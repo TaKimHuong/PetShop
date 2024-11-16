@@ -23,6 +23,7 @@ class MaGiamGiaController extends Controller
         $magiamgia->coupon_number = $data['coupon_number'];
         $magiamgia->coupon_code = $data['coupon_code'];
         $magiamgia->save();
+        Session::put('coupon', [$magiamgia]); // Lưu mã giảm giá
         Session::put('message','Thêm mã giảm giá thành công');
             return Redirect::to('ma-giam-gia');
      

@@ -155,43 +155,39 @@ class CartController extends Controller
     // }
 
     public function check_coupon(Request $request) {
-        $data = $request->all();
+        $couponCode = $request->input('coupon'); // Lấy mã giảm giá từ request
     
-        // Tìm mã giảm giá trong cơ sở dữ liệu
-        $coupon = MaGiamGia::where('coupon_code', $data['coupon'])->first();
+        if ($couponCode) {
+            $coupon = MaGiamGia::where('coupon_code', $couponCode)->first(); // Kiểm tra mã giảm giá trong cơ sở dữ liệu
     
-        if ($coupon) {
-            // Lấy danh sách mã giảm giá hiện tại từ session
-            $coupon_session = Session::get('coupon', []);
+            if ($coupon) {
+                // Xóa mã giảm giá cũ (nếu có)
+                Session::forget('coupon');
     
-            // Kiểm tra xem mã giảm giá đã tồn tại trong session chưa
-            $it_available = false;
-            foreach ($coupon_session as $session_coupon) {
-                if ($session_coupon['coupon_code'] === $coupon->coupon_code) {
-                    $it_available = true;
-                    break;
-                }
-            }
-    
-            // Nếu mã giảm giá chưa tồn tại, thêm vào session
-            if (!$it_available) {
-                $coupon_session[] = [
-                    'coupon_code' => $coupon->coupon_code,
-                    'coupon_condition' => $coupon->coupon_condition,
-                    'coupon_number' => $coupon->coupon_number,
+                // Lưu mã giảm giá mới vào session
+                $couponData = [
+                    'coupon_condition' => $coupon->coupon_condition, // Loại mã giảm giá (1: %, 0: số tiền cố định)
+                    'coupon_number' => $coupon->coupon_number,      // Giá trị giảm
+                    'coupon_code' => $coupon->coupon_code           // Mã giảm giá
                 ];
     
-                Session::put('coupon', $coupon_session);
-            }
+                Session::put('coupon', [$couponData]); // Lưu mã giảm giá mới vào session
     
-            return redirect()->back()->with('message', "Thêm mã giảm giá thành công");
-           
+                return redirect()->back()->with('success', 'Áp dụng mã giảm giá thành công!');
+            } else {
+                // Nếu mã giảm giá không hợp lệ
+                return redirect()->back()->with('error', 'Mã giảm giá không hợp lệ!');
+            }
         } else {
-            // Mã giảm giá không tồn tại
-          
-            return redirect()->back()->with('error', "Mã giảm giá không tồn tại hoặc không hợp lệ");
+            // Nếu không chọn mã giảm giá, xóa mã giảm giá trong session và quay về mặc định
+            Session::forget('coupon');
+    
+            return redirect()->back()->with('info', 'Không có mã giảm giá nào được áp dụng.');
         }
     }
+    
+    
+    
     
     
 }

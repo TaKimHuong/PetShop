@@ -83,6 +83,26 @@ class ThanhToanController extends Controller
 
     public function noi_dat_hang(Request $request) {
 
+
+
+        // vd 
+        $total = str_replace(',', '', Cart::subtotal()); // Lấy tổng tiền giỏ hàng
+        $total_coupon = 0; // Khởi tạo tổng giảm giá
+    
+        // Kiểm tra nếu có mã giảm giá
+        if (Session::get('coupon')) {
+            foreach (Session::get('coupon') as $cou) {
+                if ($cou['coupon_condition'] == 1) { // Nếu giảm theo phần trăm
+                    $total_coupon = ($total * $cou['coupon_number']) / 100;
+                } else { // Giảm theo số tiền cố định
+                    $total_coupon = $cou['coupon_number'];
+                }
+            }
+        }
+    
+        // Tính toán tổng thanh toán sau giảm giá
+        $total_after_discount = $total - $total_coupon;
+        // vd
         // lay hinh thuc thanh toan don hang
         $data  = array();
      
@@ -97,7 +117,9 @@ class ThanhToanController extends Controller
     $data_order['customer_id'] = Session::get('customer_id');
     $data_order['hoadon_id'] = Session::get('hoadon_id');
     $data_order['payment_id'] =  $payment_id;
-    $data_order['tong_tien'] =  Cart::total(0,',','.');
+    // $data_order['tong_tien'] =  Cart::total(0,',','.');
+    $data_order['tong_tien'] =  $total_after_discount;
+    
     $data_order['dathang_status'] = 'Đang chờ xử lý';
     $data_order['ngay_dat'] = Carbon::now();
     $dathang_id = DB::table('tbl_dathang')->insertGetId($data_order);

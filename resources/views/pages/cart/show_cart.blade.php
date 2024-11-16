@@ -90,56 +90,7 @@ use Gloudemans\Shoppingcart\Facades\Cart;
 		<div>
 			
 			<div class="row">
-			
-				<div class="col-sm-7">
-					<div class="total_area">
-						<ul>
-							<li>Tổng tiền:  <span id="subtotal">{{ Cart::priceTotal(0,',','.') }} đ</span></li>
-							<li>Mã giảm:  <span>
-
-								@if (Session::get('coupon'))
-									@foreach(Session::get('coupon') as $key=> $cou)
-										@if ($cou['coupon_condition' == 1]) 
-											Mã giảm : {{$cou['coupon_number']}} %
-
-											<p>
-												@php
-
-												$total_coupon = ($total* $cou['coupon_number'])/100;
-												echo '<p> Tổng giảm:'. number_format($total_coupon).'đ</p>';
-												@endphp
-											</p>
-									@endforeach
-								@endif
-
-							</span></li>
-							<li>Tiền thuế:  <span id="tax">{{Cart::tax(0,',','.')}} đ</span></li>
-							<li>Tiền ship: <span id="shipping">Free</span></li>
-							<li>Tổng tiền: <span id="tong_gia"> {{ Cart::total(0,',','.') }} đ </span></li>
-						</ul>
-							<!-- <a class="btn btn-default update" href="">Update</a> -->
-
-							<?php
-            use Illuminate\Support\Facades\Session;
-
-            $customer_id = Session::get('customer_id');
-            if ($customer_id != NULL) {
-                // Nếu có `customer_id` trong Session, thì có thể hiển thị nội dung cho trường hợp đã đăng nhập
-                ?>
-               	<a class="btn btn-default check_out" href="{{URL::to('/checkout')}}">Thanh toán</a>
-                <?php
-            } else {
-                // Nếu không có `customer_id` trong Session
-                ?>
-                	<a class="btn btn-default check_out" href="{{URL::to('/dang-nhap-thanh-toan')}}">Thanh toán</a>
-                <?php
-            }
-            ?>
-							<!-- <a class="btn btn-default check_out" href="{{URL::to('/dang-nhap-thanh-toan')}}">Thanh toán</a> -->
-					</div>
-				</div>
-
-				<div class="col-sm-5">
+			<div class="col-sm-5">
 				<div class="heading">
 				<h3>Chọn hình thức thanh toán</h3>
 				<!-- <p>Hình thức thanh toán</p> -->
@@ -168,6 +119,92 @@ use Gloudemans\Shoppingcart\Facades\Cart;
 						<a class="btn btn-default check_out" href="">Continue</a> -->
 					</div>
 				</div>
+				<div class="col-sm-7">
+					<div class="total_area">
+						<ul>
+							<li>Tổng tiền:  <span id="subtotal">{{ Cart::priceTotal(0,',','.') }} đ</span></li>
+						
+							<!-- <li>Mã giảm:  <span>
+									@php
+										$total = str_replace(',', '', Cart::subtotal()); // Chuyển subtotal thành số thực
+										$total_coupon = 0; // Khởi tạo tổng tiền giảm giá
+									@endphp
+
+									@if (Session::get('coupon'))
+										@foreach(Session::get('coupon') as $key => $cou)
+											@if ($cou['coupon_condition'] == 1)
+												{{$cou['coupon_number']}} %
+												@php
+													$total_coupon = ($total * $cou['coupon_number']) / 100;
+												@endphp
+
+												<li>Tổng giảm: <span>{{number_format($total_coupon)}} đ</span></li>
+									
+												 <li>Tổng thanh toán: <span>{{number_format($total - $total_coupon)}} đ</span></li>
+												
+											@else
+												{{$cou['coupon_number']}} k
+												@php
+													$total_coupon = $cou['coupon_number'];
+												@endphp
+												<li>Tổng giảm: <span>{{number_format($total_coupon)}} đ</span></li>
+												<li>Tổng thanh toán: <span>{{number_format($total - $total_coupon)}} đ</span></li>
+											
+											@endif
+										@endforeach
+									@else
+										<p>Không có mã giảm giá.</p>
+									@endif
+								</span></li> -->
+
+								@if (Session::has('coupon'))
+								@php
+									$coupon = Session::get('coupon')[0];
+									$total_coupon = $coupon['coupon_condition'] == 1
+										? ($total * $coupon['coupon_number']) / 100
+										: $coupon['coupon_number'];
+								@endphp
+								<li>Mã giảm: <span>{{ $coupon['coupon_condition'] == 1 ? $coupon['coupon_number'] . ' %' : number_format($coupon['coupon_number']) . ' đ' }}</span></li>
+								<li>Tổng giảm: <span>{{ number_format($total_coupon) }} đ</span></li>
+								<li>Tổng thanh toán: <span>{{ number_format($total - $total_coupon) }} đ</span></li>
+							@else
+								<li>Không có mã giảm giá nào.</li>
+								<li>Tổng thanh toán: <span>{{ number_format($total) }} đ</span></li>
+							@endif
+
+							</span></li>
+							<!-- <li>Tiền thuế:  <span id="tax">{{Cart::tax(0,',','.')}} đ</span></li>
+							<li>Tiền ship: <span id="shipping">Free</span></li>
+							<li>Tổng tiền: <span id="tong_gia"> {{ Cart::total(0,',','.') }} đ </span></li> -->
+						</ul>
+							<!-- <a class="btn btn-default update" href="">Update</a> -->
+
+							<?php
+            use Illuminate\Support\Facades\Session;
+
+            $customer_id = Session::get('customer_id');
+			$hoadon_id = Session::get('hoadon_id');
+            if ($customer_id != NULL && $hoadon_id==NULL) {
+                // Nếu có `customer_id` trong Session, thì có thể hiển thị nội dung cho trường hợp đã đăng nhập
+                ?>
+               	<a class="btn btn-default check_out" href="{{URL::to('/checkout')}}">Thanh toán</a>
+                <?php
+            } elseif($customer_id != NULL && $hoadon_id!=NULL) {
+				?>
+				<a class="btn btn-default check_out" href="{{URL::to('/payment')}}">Thanh toán</a>
+			<?php
+			}else {
+                // Nếu không có `customer_id` trong Session
+                ?>
+                	<a class="btn btn-default check_out" href="{{URL::to('/dang-nhap-thanh-toan')}}">Thanh toán</a>
+                <?php
+            }
+            ?>
+							<!-- <a class="btn btn-default check_out" href="{{URL::to('/dang-nhap-thanh-toan')}}">Thanh toán</a> -->
+					</div>
+				</div>
+
+			
 			</div>
 		</div>
 	</section><!--/#do_action-->

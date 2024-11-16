@@ -39,7 +39,7 @@
                             <select name="coupon_condition" class="form-control input-sm m-bot15">
                                 <option value="0">---Chọn---</option>
                                 <option value="1">Giảm theo phần trăm</option>
-                                <option value="1">Giảm theo số tiền</option>
+                                <option value="2">Giảm theo số tiền</option>
                             </select>
                                 </div>
                                 <div class="form-group">
