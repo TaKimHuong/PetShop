@@ -131,3 +131,8 @@ Route::get('/ma-giam-gia', [MaGiamGiaController::class, 'ma_giam_gia']);
 Route::post('/insert-ma-giam-gia', [MaGiamGiaController::class, 'insert_ma_giam_gia']);
 Route::get('/danh-sach-ma-giam-gia', [MaGiamGiaController::class, 'danh_sach_ma_giam_gia']);
 Route::get('/xoa-ma-giam-gia/{coupon_id}', [MaGiamGiaController::class, 'xoa_ma_giam_gia']);
+// xét duyệt hóa đơn đặt hàng 
+Route::post('/duyet-hoa-don/{dathang_id}', [ThanhToanController::class, 'duyetHoaDon']);
+// nút chưa duyệt và nút duyệt đơn hàng
+Route::get('/chua-duyet', [ThanhToanController::class, 'chua_duyet']);
+Route::get('/da-duyet', [ThanhToanController::class, 'da_duyet']);

@@ -279,5 +279,44 @@ class ThanhToanController extends Controller
             return redirect()->back()->with('error', 'Đơn hàng không tồn tại.');
         }
     }
+
+
+    // duyệt hóa đơn đặt hang 
+
+    public function duyetHoaDon($dathang_id) {
+        DB::table('tbl_dathang')
+        ->where('dathang_id', $dathang_id)
+        ->update(['dathang_status' => 'Đã duyệt đơn hàng']);
+    return redirect()->back()->with('success', 'Đã duyệt hóa đơn thành công!');
+    }
+    
+
+    public function chua_duyet() {
+
+        $all_order = DB::table('tbl_dathang')
+        ->join('tbl_customers', 'tbl_dathang.customer_id', '=', 'tbl_customers.customer_id')
+        ->select('tbl_dathang.*', 'tbl_customers.customer_name')
+        ->where('dathang_status', 'Đang chờ xử lý')
+        ->orderBy('tbl_dathang.dathang_id', 'desc')->get();
+        // $all_order = DB::table('tbl_dathang')
+        //             ->where('dathang_status', 'Đang chờ xử lý')
+        //             ->orderBy('ngay_dat', 'desc')
+        //             ->get();
+        return view('admin.quanlydonhang', compact('all_order'))->with('title', 'Đơn hàng chưa duyệt');
+    }
+    
+    // Lọc đơn hàng đã duyệt
+    public function da_duyet() {
+        $all_order = DB::table('tbl_dathang')
+        ->join('tbl_customers', 'tbl_dathang.customer_id', '=', 'tbl_customers.customer_id')
+        ->select('tbl_dathang.*', 'tbl_customers.customer_name')
+        ->where('dathang_status', 'Đã duyệt đơn hàng')
+        ->orderBy('tbl_dathang.dathang_id', 'desc')->get();
+        // $all_order = DB::table('tbl_dathang')
+        //             ->where('dathang_status', 'Đã duyệt đơn hàng')
+        //             ->orderBy('ngay_dat', 'desc')
+        //             ->get();
+        return view('admin.quanlydonhang', compact('all_order'))->with('title', 'Đơn hàng đã duyệt');
+    }
     
 }

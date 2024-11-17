@@ -38,6 +38,34 @@
             ?>
       <table class="table table-striped b-t b-light">
         <thead>
+
+        <tr>
+              <div style="display: flex; gap: 15px; margin-bottom: 20px;">
+          <a href="{{ URL::to('/chua-duyet') }}" 
+              style="
+                  padding: 10px 20px; 
+                  font-size: 16px; 
+                  background-color: #f44336; 
+                  color: white; 
+                  text-decoration: none; 
+                  border-radius: 5px; 
+                  transition: all 0.3s ease;">
+              Đơn hàng chưa duyệt
+          </a>
+          <a href="{{ URL::to('/da-duyet') }}" 
+              style="
+                  padding: 10px 20px; 
+                  font-size: 16px; 
+                  background-color: #4CAF50; 
+                  color: white; 
+                  text-decoration: none; 
+                  border-radius: 5px; 
+                  transition: all 0.3s ease;">
+              Đơn hàng đã duyệt
+          </a>
+      </div>
+
+        </tr>
           <tr>
             <!-- <th style="width:20px;">
               <label class="i-checks m-b-none">
@@ -48,6 +76,7 @@
             <th>Tên khách hàng</th>
             <th>Tổng tiền</th>
             <th>Tình trạng</th>
+            <th>Duyệt đơn hàng</th>
             <th>Ngày đặt hàng</th>
             <th>Hiển thị</th>
             <th style="width:30px;"></th>
@@ -65,6 +94,60 @@
             <td>{{$order->customer_name}}</td>
             <td>{{$order->tong_tien}}</td>
             <td>{{$order->dathang_status}}</td>
+            <td>
+            <!-- @if ($order->dathang_status === 'Đang chờ xử lý')
+                <form action="{{URL::to('/duyet-hoa-don/'.$order->dathang_id)}}" method="POST">
+                    @csrf
+                    <button type="submit">Duyệt đơn hàng</button>
+                </form>
+                <form action="{{URL::to('/huy-hoa-don/'.$order->dathang_id)}}" method="POST" style="margin-top: 5px;">
+                    @csrf
+                    @method('DELETE')
+                    <button type="submit" style="color: red;">Hủy</button>
+                </form>
+                @else
+                <span>Không thể thao tác</span>
+                @endif -->
+                @if ($order->dathang_status === 'Đang chờ xử lý')
+    <div style="display: flex; gap: 10px; align-items: center;">
+        <form action="{{URL::to('/duyet-hoa-don/'.$order->dathang_id)}}" method="POST">
+            @csrf
+            <button type="submit" 
+                style="
+                    padding: 10px 15px; 
+                    font-size: 14px; 
+                    background-color: #4CAF50; 
+                    color: white; 
+                    border: none; 
+                    border-radius: 5px; 
+                    cursor: pointer; 
+                    transition: all 0.3s ease;">
+                Duyệt
+            </button>
+        </form>
+        <form action="{{URL::to('/huy-hoa-don/'.$order->dathang_id)}}" method="POST">
+            @csrf
+            @method('DELETE')
+            <button type="submit" 
+                style="
+                    padding: 10px 15px; 
+                    font-size: 14px; 
+                    background-color: #f44336; 
+                    color: white; 
+                    border: none; 
+                    border-radius: 5px; 
+                    cursor: pointer; 
+                    transition: all 0.3s ease;">
+                Hủy
+            </button>
+        </form>
+    </div>
+@else
+    <span>Đã duyệt đơn hàng</span>
+@endif
+
+
+            </td>
             <td>{{$order->ngay_dat}}</td>
          
            
