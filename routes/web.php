@@ -71,7 +71,8 @@ Route::get('/cun-con', [HomeController::class, 'CunCon']);
 Route::get('/danh-muc-san-pham/{category_id}', [CatagoryProduct::class, 'show_category_home']);
 
 //chi tiet trong moi san pham
-Route::get('/chi-tiet-san-pham/{product_id}', [ProductController::class, 'details_product']);
+// Route::get('/chi-tiet-san-pham/{product_id}', [ProductController::class, 'details_product']);
+Route::get('/chi-tiet-san-pham/{product_id}', [ProductController::class, 'details_product'])->name('product_details');
 
 
 // them vao gio hang

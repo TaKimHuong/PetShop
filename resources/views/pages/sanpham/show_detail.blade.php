@@ -122,7 +122,8 @@
 									<div id="fb-root"></div> 
 									
 
-									 <div class="fb-comments" data-href="{{ url()->current() }}" data-width="100%" data-numposts="50"></div> 
+									 <div class="fb-comments" data-href="{{ route('product_details', ['product_id' => $value->product_id]) }}"
+									 data-width="100%" data-numposts="50"></div> 
 
 								</div>
 							</div>
