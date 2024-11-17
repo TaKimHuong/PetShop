@@ -17,8 +17,6 @@
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <script src="{{asset('public/frontend/javascript/style_javascript.js')}}"></script>
     <!-- <link href="{{asset('public/frontend/css/index-style.css')}}" rel="stylesheet" /> -->
-
-
     <!-- trang detail  -->
 
     <link href="{{asset('public/frontend/css/bootstrap.min.css')}}" rel="stylesheet">
@@ -37,6 +35,21 @@
     <script src="{{asset('public/frontend/js/jquery.prettyPhoto.js')}}"></script>
     <script src="{{asset('public/frontend/js/main.js')}}"></script>
     <!-- /trang detail -->
+
+
+    <!-- comment facebook  -->
+    <div id="fb-root"></div>
+    <script async defer crossorigin="anonymous" src="https://connect.facebook.net/vi_VN/sdk.js#xfbml=1&version=v21.0&appId=1082303003572806"></script>
+    <!-- <script async defer crossorigin="anonymous" 
+            src="https://connect.facebook.net/en_US/sdk.js#xfbml=1&version=v16.0&appId=1082303003572806&autoLogAppEvents=1">
+    </script> -->
+    <!-- Open Graph Meta Tags -->
+    <meta property="og:url" content="https://www.example.com/current-page" />
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="Your Page Title" />
+    <meta property="og:description" content="Description of your page" />
+    <meta property="og:image" content="https://www.example.com/image.jpg" />
+       <!-- comment facebook  -->
     <meta name="csrf-token" content="{{ csrf_token() }}">
 </head>
 

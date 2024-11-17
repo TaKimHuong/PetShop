@@ -187,6 +187,20 @@ class CartController extends Controller
     }
     
     
+
+    public function getCurrentUrl(Request $request)
+{
+    // Lấy URL cơ bản
+    $url = url()->current();
+    
+    // Lấy URL đầy đủ (bao gồm query string nếu có)
+    // $fullUrl = url()->full();
+
+    return response()->json([
+        'url' => $url
+        // 'full_url' => $fullUrl
+    ]);
+}
     
     
     

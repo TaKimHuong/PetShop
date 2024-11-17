@@ -110,6 +110,20 @@
 											Submit
 										</button>
 									</form>
+
+
+    
+									<!-- Facebook Comments Plugin -->
+									 <div class="fb-comments" 
+										data-href="https://www.example.com/current-page" 
+										data-width="100%" 
+										data-numposts="5">
+									</div>
+									<div id="fb-root"></div> 
+									
+
+									 <div class="fb-comments" data-href="{{ url()->current() }}" data-width="100%" data-numposts="50"></div> 
+
 								</div>
 							</div>
 							
