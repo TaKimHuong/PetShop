@@ -43,9 +43,9 @@
               STT
             </th>
             <th>Tên danh mục</th>
-            <th>Hiển thị</th>
+            <th >Hiển thị</th>
           
-            <th style="width:30px;"></th>
+            <th style="width: 20%;">Sửa/Xóa</th>
           </tr>
         </thead>
         <tbody>
@@ -72,12 +72,28 @@
                
             </span></td>
            
-            <td>
+            <!-- <td>
               <a href="{{URL::to('/edit-category-product/'.$cate_pro->category_id)}}" class="active styling-edit" ui-toggle-class="">
                 <i class="fa fa-pencil-square-o text-success text-active"></i></a>
                 <a onclick="return confirm('Bạn có chắc là muốn xóa danh mục này không?')" href="{{URL::to('/delete-category-product/'.$cate_pro->category_id)}}" class="active styling-edit" ui-toggle-class="">
                 <i class="fa fa-times text-danger text"></i> </a>
-            </td>
+            </td> -->
+
+            <td>
+    <div class="d-flex align-items-center">
+        <!-- Nút sửa -->
+        <a href="{{URL::to('/edit-category-product/'.$cate_pro->category_id)}}" 
+           class="btn btn-success btn-sm me-2">
+            Sửa
+        </a>
+        <!-- Nút xóa -->
+        <a onclick="return confirm('Bạn có chắc là muốn xóa danh mục này không?')" 
+           href="{{URL::to('/delete-category-product/'.$cate_pro->category_id)}}" 
+           class="btn btn-danger btn-sm">
+            Xóa
+        </a>
+    </div>
+</td>
           </tr>
           
        @endforeach

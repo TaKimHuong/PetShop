@@ -80,12 +80,24 @@
                
             </span></td>
            
-            <td>
+            <!-- <td>
               <a href="{{URL::to('/edit-product/'.$pro->product_id)}}" class="active styling-edit" ui-toggle-class="">
                 <i class="fa fa-pencil-square-o text-success text-active"></i></a>
                 <a onclick="return confirm('Bạn có chắc là muốn xóa sản phẩm này không?')" href="{{URL::to('/delete-product/'.$pro->product_id)}}" class="active styling-edit" ui-toggle-class="">
                 <i class="fa fa-times text-danger text"></i> </a>
-            </td>
+            </td> -->
+            <td>
+    <!-- Nút sửa -->
+    <a href="{{URL::to('/edit-product/'.$pro->product_id)}}" class="btn btn-success btn-sm" style="margin-right: 5px;">
+        Sửa
+    </a>
+    <!-- Nút xóa -->
+    <a onclick="return confirm('Bạn có chắc là muốn xóa sản phẩm này không?')" 
+       href="{{URL::to('/delete-product/'.$pro->product_id)}}" 
+       class="btn btn-danger btn-sm">
+        Xóa
+    </a>
+</td>
           </tr>
           
        @endforeach

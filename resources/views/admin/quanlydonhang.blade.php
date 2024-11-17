@@ -50,7 +50,7 @@
                   text-decoration: none; 
                   border-radius: 5px; 
                   transition: all 0.3s ease;">
-              Đơn hàng chưa duyệt
+             Chưa duyệt
           </a>
           <a href="{{ URL::to('/da-duyet') }}" 
               style="
@@ -61,7 +61,7 @@
                   text-decoration: none; 
                   border-radius: 5px; 
                   transition: all 0.3s ease;">
-              Đơn hàng đã duyệt
+              Đã duyệt
           </a>
       </div>
 
@@ -128,7 +128,7 @@
         <form action="{{URL::to('/huy-hoa-don/'.$order->dathang_id)}}" method="POST">
             @csrf
             @method('DELETE')
-            <button type="submit" 
+            <!-- <button type="submit" 
                 style="
                     padding: 10px 15px; 
                     font-size: 14px; 
@@ -139,7 +139,7 @@
                     cursor: pointer; 
                     transition: all 0.3s ease;">
                 Hủy
-            </button>
+            </button> -->
         </form>
     </div>
 @else
