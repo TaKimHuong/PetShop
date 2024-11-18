@@ -21,10 +21,34 @@ class HomeController extends Controller
         ->where('product_status', '0')
         ->orderBy('product_id', 'desc')
         ->get();
+   
+    $latest_products = DB::table('tbl_product')
+    ->join('tbl_category_product', 'tbl_category_product.category_id', '=', 'tbl_product.category_id')
+    ->where('tbl_product.category_id', 6) // Lọc sản phẩm có category_id = 6
+    ->orderBy('tbl_product.product_id', 'desc') // Sắp xếp giảm dần theo product_id
+    ->limit(6) // Giới hạn 6 sản phẩm
+    ->get(); // Lấy dữ liệu
+
+    $feature_product = DB::table('tbl_product')
+    ->where('product_status', '0') // Điều kiện cho product_status
+    ->where('product_feature', 'x') // Điều kiện cho product_feature
+    ->orderBy('product_id', 'desc') // Sắp xếp theo product_id giảm dần
+    ->get(); // Lấy dữ liệu
+
+    $product_sales = DB::table('tbl_chitietdathang')
+    ->join('tbl_product', 'tbl_chitietdathang.product_id', '=', 'tbl_product.product_id')
+    ->select('tbl_product.product_name', 'tbl_product.product_id', 'tbl_product.product_image', DB::raw('SUM(tbl_chitietdathang.so_luong_san_pham) as total_sold'))
+    ->groupBy('tbl_chitietdathang.product_id', 'tbl_product.product_id', 'tbl_product.product_name', 'tbl_product.product_image')
+    ->orderByDesc(DB::raw('SUM(tbl_chitietdathang.so_luong_san_pham)')) // Sắp xếp theo tổng số lượng bán
+    ->limit(3) 
+    ->get();
 
     return view('pages.home')
         ->with('category', $cate_product)
-        ->with('all_product', $all_product);
+        ->with('all_product', $all_product)
+        ->with('latest_products', $latest_products)
+        ->with('feature_product', $feature_product)
+        ->with('product_sales', $product_sales);
       
     }
     public function CunCon(Request $request) {
@@ -51,7 +75,7 @@ class HomeController extends Controller
                 ->where('product_status', '0')
                 ->orderBy('product_id', 'desc')
                 ->get();
-        
+
             return view('pages.DanhMuc')
                 ->with('category', $cate_product)
                 ->with('all_product', $all_product);

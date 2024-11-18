@@ -163,6 +163,42 @@ class ProductController extends Controller
         foreach($details_product as $key => $value) {
             $category_id = $value->category_id;
         }
+            //         $details_product = DB::table('tbl_product')
+            //     ->join('tbl_category_product', 'tbl_category_product.category_id', '=', 'tbl_product.category_id')
+            //     ->leftJoin('tbl_chitietdathang', 'tbl_chitietdathang.product_id', '=', 'tbl_product.product_id')
+            //     ->select(
+            //         'tbl_product.product_name',
+            //         'tbl_product.product_price',
+            //         'tbl_product.product_image',
+            //         'tbl_product.product_content',
+            //         'tbl_product.product_desc',
+            //         'tbl_category_product.category_name',
+            //         'tbl_category_product.category_id',  // Lấy category_id
+            //         DB::raw('SUM(tbl_chitietdathang.so_luong_san_pham) as total_sold')  // Tổng số lượng sản phẩm bán được
+            //     )
+            //     ->where('tbl_product.product_id', $product_id)  // Lọc theo product_id
+            //     ->groupBy(
+            //         'tbl_product.product_name', 
+            //         'tbl_product.product_price', 
+            //         'tbl_product.product_image', 
+            //         'tbl_product.product_content',
+            //         'tbl_product.product_desc',
+            //         'tbl_category_product.category_name', 
+            //         'tbl_category_product.category_id'  // Nhóm theo các trường đã chọn
+            //     )
+            //     ->first();  // Dùng first() vì bạn chỉ lấy một sản phẩm duy nhất
+
+            // // Kiểm tra nếu $details_product không phải là null trước khi truy cập
+            // if ($details_product) {
+            //     $category_name = $details_product->category_name;  // Lấy tên danh mục
+            //     $category_id = $details_product->category_id;  // Lấy category_id
+            //     $total_sold = $details_product->total_sold;  // Tổng số lượng bán được
+            // } else {
+            //     // Nếu không có sản phẩm, gán giá trị mặc định
+            //     $category_id = null;
+            //     $total_sold = 0;
+            // }
+
     
         $related_product = DB::table('tbl_product')
             ->join('tbl_category_product', 'tbl_category_product.category_id', '=', 'tbl_product.category_id')
@@ -196,5 +232,5 @@ class ProductController extends Controller
         // ->with('brand_product', $brand_product);
          return view('nhanvien_layout')->with('nhanvien.staff_edit_product', $manager_product);
 
-    }
+    }    
 }

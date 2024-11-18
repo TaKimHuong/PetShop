@@ -156,3 +156,9 @@ Route::post('/staff-duyet-hoa-don/{dathang_id}', [ThanhToanController::class, 's
 Route::get('/staff-chua-duyet', [ThanhToanController::class, 'staff_chua_duyet']);
 Route::get('/staff-da-duyet', [ThanhToanController::class, 'staff_da_duyet']);
 Route::get('/staff-edit-order/{dathang_id}', [ThanhToanController::class, 'staff_edit_order']);
+
+
+// thanh tìm kiếm nâng cao
+// routes/web.php
+
+Route::get('/search-by-price', [ProductController::class, 'searchByPrice'])->name('search_by_price');
