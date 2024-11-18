@@ -44,12 +44,8 @@
             src="https://connect.facebook.net/en_US/sdk.js#xfbml=1&version=v16.0&appId=1082303003572806&autoLogAppEvents=1">
     </script> -->
     <!-- Open Graph Meta Tags -->
-    <meta property="og:url" content="https://www.example.com/current-page" />
-    <meta property="og:type" content="website" />
-    <meta property="og:title" content="Your Page Title" />
-    <meta property="og:description" content="Description of your page" />
-    <meta property="og:image" content="https://www.example.com/image.jpg" />
-       <!-- comment facebook  -->
+
+
     <meta name="csrf-token" content="{{ csrf_token() }}">
 </head>
 

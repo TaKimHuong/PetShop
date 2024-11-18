@@ -113,21 +113,20 @@
 
 
     
-									<!-- Facebook Comments Plugin -->
-									 <div class="fb-comments" 
-										data-href="https://www.example.com/current-page" 
-										data-width="100%" 
-										data-numposts="5">
-									</div>
+									
 									<div id="fb-root"></div> 
 									
 
-									 <div class="fb-comments" data-href="{{ route('product_details', ['product_id' => $value->product_id]) }}"
-									 data-width="100%" data-numposts="50"></div> 
+								 <!-- <div class="fb-comments" data-href="https://65b3-2001-ee0-4b52-7950-2762-fc92-42a-9bd4.ngrok-free.app/unitopppp/training/hoclaravel/chi-tiet-san-pham/1" data-width="100%" data-numposts="5"></div> -->
+
+								
+								 <div class="fb-comments"  data-href="https://65b3-2001-ee0-4b52-7950-2762-fc92-42a-9bd4.ngrok-free.app/{{ route('product_details', ['product_id' => $value->product_id]) }}"  data-width="100%" data-numposts="5"></div>
+
+									
 
 								</div>
 							</div>
-							
+						
 						</div>
 					</div><!--/category-tab-->
 					@endforeach
@@ -171,4 +170,9 @@
 					</div><!--/recommended_items-->
 					
 				</div>
+				
+
+
+
+
 @endsection
