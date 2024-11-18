@@ -40,4 +40,9 @@ class MaGiamGiaController extends Controller
         Session::put('message','Xóa mã giảm giá thành công');
         return Redirect::to('danh-sach-ma-giam-gia');
     }
+// NHÂN VIÊN
+    public function staff_danh_sach_ma_giam_gia() {
+        $danhsach = MaGiamGia::orderBy('coupon_id','DESC')->paginate(5); ;
+        return view('nhanvien.staff_danh_sach_ma_giam_gia')->with(compact('danhsach'));
+    }
 }

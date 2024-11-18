@@ -175,5 +175,26 @@ class ProductController extends Controller
             ->with('product_details', $details_product)
             ->with('relate', $related_product);
     }
-    
+
+    //NHÂN VIÊN
+    public function staff_all_product() {
+       // $this->AuthLogin();
+        $all_product = DB::table('tbl_product')
+            ->join('tbl_category_product', 'tbl_category_product.category_id', '=', 'tbl_product.category_id')
+            ->orderBy('tbl_product.product_id', 'desc')
+            ->paginate(5); // Phân trang, mỗi trang có 10 sản phẩm
+        
+        $manager_product = view('nhanvien.staff_all_product')->with('all_product', $all_product);
+        return view('nhanvien_layout')->with('nhanvien.staff_all_product', $manager_product);
+    }
+    public function staff_edit_product($product_id) {
+      //  $this->AuthLogin();
+        $cate_product = DB::table('tbl_category_product')->orderBy('category_id', 'desc')->get();
+        // $brand_product = DB::table('tbl_brand')->orderBy('brand_id', 'desc')->get();
+        $edit_product= DB::table('tbl_product')->where('product_id',$product_id)->get();
+        $manager_product = view('nhanvien.staff_edit_product')->with('edit_product', $edit_product)->with('cate_product', $cate_product);
+        // ->with('brand_product', $brand_product);
+         return view('nhanvien_layout')->with('nhanvien.staff_edit_product', $manager_product);
+
+    }
 }

@@ -111,4 +111,40 @@ class CatagoryProduct extends Controller
         $category_name = DB::table('tbl_category_product')->where('tbl_category_product.category_id', $category_id)->limit(1)->get();
         return view('pages.category.show_category_home')->with('category', $cate_product)->with('category_by_id', $category_by_id)->with('category_name', $category_name);
     }
+
+
+
+    // NHÂN VIÊN QUẢN LÝ
+
+    public function staff_all_category_product() {
+       // $this->AuthLogin();
+    //    $all_category_product= DB::table('tbl_category_product')->get();
+    // static trong mô hình hướng đối tượng ::
+        // $all_category_product = Category::all();
+        // $all_category_product = Category::orderBy('category_id','DESC')
+        // ->get();
+        $all_category_product = Category::orderBy('category_id', 'DESC')->paginate(5);
+
+       $manager_category_product = view('nhanvien.staff_all_category_product')->with('all_category_product', $all_category_product);
+        return view('nhanvien_layout')->with('nhanvien.staff_all_category_product', $manager_category_product);
+    }
+
+    public function staff_edit_category_product($category_product_id) {
+      //  $this->AuthLogin();
+    
+        // Lấy bản ghi duy nhất từ bảng `tbl_category_product`
+        $edit_category_product = DB::table('tbl_category_product')->where('category_id', $category_product_id)->first();
+        // Hoặc nếu bạn dùng Eloquent, bạn có thể thay thế với:
+        // $edit_category_product = Category::where('category_id', $category_product_id)->first();
+    
+        // Kiểm tra nếu không có bản ghi
+        if (!$edit_category_product) {
+            return redirect()->back()->with('error', 'Danh mục không tồn tại.');
+        }
+    
+        // Truyền dữ liệu vào view
+        return view('nhanvien.staff_edit_category_product')->with('edit_category_product', $edit_category_product);
+    }
+
+
 }

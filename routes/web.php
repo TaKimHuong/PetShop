@@ -9,6 +9,7 @@ use App\Http\Controllers\ProductController;
 use App\Http\Controllers\CartController;
 use App\Http\Controllers\ThanhToanController;
 use App\Http\Controllers\MaGiamGiaController;
+use App\Http\Controllers\StaffController;
 use Gloudemans\Shoppingcart\Facades\Cart;
 Route::get('/', [HomeController::class, 'index']);
 Route::get('/trang-chu', [HomeController::class, 'index']);
@@ -137,3 +138,21 @@ Route::post('/duyet-hoa-don/{dathang_id}', [ThanhToanController::class, 'duyetHo
 // nút chưa duyệt và nút duyệt đơn hàng
 Route::get('/chua-duyet', [ThanhToanController::class, 'chua_duyet']);
 Route::get('/da-duyet', [ThanhToanController::class, 'da_duyet']);
+// nhân viên
+Route::get('/staff-dashboard', [StaffController::class, 'staff_show_dashboard']);
+
+Route::get('/staff-all-category-product', [CatagoryProduct::class, 'staff_all_category_product']);
+
+Route::get('/staff-edit-category-product/{category_product_id}', [CatagoryProduct::class, 'staff_edit_category_product']);
+
+
+Route::get('/staff-all-product', [ProductController::class, 'staff_all_product']);
+Route::get('/staff-edit-product/{product_id}', [ProductController::class, 'staff_edit_product']);
+
+Route::get('/staff-danh-sach-ma-giam-gia', [MaGiamGiaController::class, 'staff_danh_sach_ma_giam_gia']);
+Route::get('/staff-quan-ly-don-hang', [ThanhToanController::class, 'staff_quan_ly_don_hang']);
+
+Route::post('/staff-duyet-hoa-don/{dathang_id}', [ThanhToanController::class, 'staff_duyetHoaDon']);
+Route::get('/staff-chua-duyet', [ThanhToanController::class, 'staff_chua_duyet']);
+Route::get('/staff-da-duyet', [ThanhToanController::class, 'staff_da_duyet']);
+Route::get('/staff-edit-order/{dathang_id}', [ThanhToanController::class, 'staff_edit_order']);

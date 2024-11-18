@@ -246,6 +246,8 @@ class ThanhToanController extends Controller
                 }
     
                 return Redirect::to('/checkout');
+            } elseif($result->ma_quyen == 3) {
+                return Redirect::to('/staff-dashboard');
             } else {
                 // Trường hợp khác nếu cần xử lý
                 return Redirect::to('/dang-nhap-thanh-toan')->with('error', 'Quyền không hợp lệ!');
@@ -366,5 +368,73 @@ class ThanhToanController extends Controller
         //             ->get();
         return view('admin.quanlydonhang', compact('all_order'))->with('title', 'Đơn hàng đã duyệt');
     }
+
+
+
+    //NHÂN VIÊN
+    public function staff_quan_ly_don_hang() {
+
+     //   $this->AuthLogin();
+        $all_order = DB::table('tbl_dathang')
+        ->join('tbl_customers', 'tbl_dathang.customer_id', '=', 'tbl_customers.customer_id')
+        ->select('tbl_dathang.*', 'tbl_customers.customer_name')
+        ->orderBy('tbl_dathang.dathang_id', 'desc')->get();
+       $manager_order = view('nhanvien.staff_quanlydonhang')->with('all_order', $all_order);
+        return view('nhanvien_layout')->with('nhanvien.staff_quanlydonhang', $manager_order);
+      
+    }
+    public function staff_duyetHoaDon($dathang_id) {
+        DB::table('tbl_dathang')
+        ->where('dathang_id', $dathang_id)
+        ->update(['dathang_status' => 'Đã duyệt đơn hàng']);
+    return redirect()->back()->with('success', 'Đã duyệt hóa đơn thành công!');
+    }
+    public function staff_chua_duyet() {
+
+        $all_order = DB::table('tbl_dathang')
+        ->join('tbl_customers', 'tbl_dathang.customer_id', '=', 'tbl_customers.customer_id')
+        ->select('tbl_dathang.*', 'tbl_customers.customer_name')
+        ->where('dathang_status', 'Đang chờ xử lý')
+        ->orderBy('tbl_dathang.dathang_id', 'desc')->get();
+        // $all_order = DB::table('tbl_dathang')
+        //             ->where('dathang_status', 'Đang chờ xử lý')
+        //             ->orderBy('ngay_dat', 'desc')
+        //             ->get();
+        return view('nhanvien.staff_quanlydonhang', compact('all_order'))->with('title', 'Đơn hàng chưa duyệt');
+    }
     
+    // Lọc đơn hàng đã duyệt
+    public function staff_da_duyet() {
+        $all_order = DB::table('tbl_dathang')
+        ->join('tbl_customers', 'tbl_dathang.customer_id', '=', 'tbl_customers.customer_id')
+        ->select('tbl_dathang.*', 'tbl_customers.customer_name')
+        ->where('dathang_status', 'Đã duyệt đơn hàng')
+        ->orderBy('tbl_dathang.dathang_id', 'desc')->get();
+        // $all_order = DB::table('tbl_dathang')
+        //             ->where('dathang_status', 'Đã duyệt đơn hàng')
+        //             ->orderBy('ngay_dat', 'desc')
+        //             ->get();
+        return view('nhanvien.staff_quanlydonhang', compact('all_order'))->with('title', 'Đơn hàng đã duyệt');
+    }
+    public function staff_edit_order($dathang_id) {
+     //   $this->AuthLogin();
+    
+        // Truy vấn để lấy thông tin khách hàng và đơn hàng
+        $order_info = DB::table('tbl_dathang')
+            ->join('tbl_customers', 'tbl_dathang.customer_id', '=', 'tbl_customers.customer_id')
+            ->join('tbl_hoandon', 'tbl_dathang.hoadon_id', '=', 'tbl_hoandon.hoadon_id')
+            ->select('tbl_dathang.*', 'tbl_customers.*', 'tbl_hoandon.*')
+            ->where('tbl_dathang.dathang_id', $dathang_id)
+            ->first(); // Chỉ lấy một bản ghi duy nhất cho khách hàng và đơn hàng
+    
+        // Truy vấn để lấy danh sách sản phẩm trong chi tiết đơn hàng
+        $order_details = DB::table('tbl_chitietdathang')
+            ->join('tbl_product', 'tbl_chitietdathang.product_id', '=', 'tbl_product.product_id')
+            ->select('tbl_chitietdathang.*', 'tbl_product.product_name', 'tbl_product.product_price')
+            ->where('tbl_chitietdathang.dathang_id', $dathang_id)
+            ->get(); // Lấy nhiều bản ghi cho các sản phẩm
+    
+        // Truyền dữ liệu sang view
+        return view('nhanvien.staff_xemdonhang')->with('order_info', $order_info)->with('order_details', $order_details);
+    }
 }
