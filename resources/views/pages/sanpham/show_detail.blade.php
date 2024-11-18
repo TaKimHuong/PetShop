@@ -120,7 +120,7 @@
 								 <!-- <div class="fb-comments" data-href="https://65b3-2001-ee0-4b52-7950-2762-fc92-42a-9bd4.ngrok-free.app/unitopppp/training/hoclaravel/chi-tiet-san-pham/1" data-width="100%" data-numposts="5"></div> -->
 
 								
-								 <div class="fb-comments"  data-href="https://65b3-2001-ee0-4b52-7950-2762-fc92-42a-9bd4.ngrok-free.app/{{ route('product_details', ['product_id' => $value->product_id]) }}"  data-width="100%" data-numposts="5"></div>
+								 <div class="fb-comments"  data-href="https://65b3-2001-ee0-4b52-7950-2762-fc92-42a-9bd4.ngrok-free.app/{{ route('product_details', ['product_id' => $value->product_id]) }}"  data-width="100%" data-numposts="50"></div>
 
 									
 
