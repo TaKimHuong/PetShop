@@ -8,7 +8,8 @@ use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\Redirect;
-
+use PHPMailer\PHPMailer\PHPMailer;
+use PHPMailer\PHPMailer\Exception;
 session_start();
 class ThanhToanController extends Controller
 {
@@ -138,6 +139,74 @@ class ThanhToanController extends Controller
 
         // Xóa sản phẩm khỏi giỏ hàng sau khi thanh toán thành công
     $customer_id = Session::get('customer_id');
+
+
+    Session::put('dathang_id', $dathang_id);
+
+
+    //vd
+    $order_info = DB::table('tbl_dathang')
+    ->join('tbl_customers', 'tbl_dathang.customer_id', '=', 'tbl_customers.customer_id')
+    ->join('tbl_hoandon', 'tbl_dathang.hoadon_id', '=', 'tbl_hoandon.hoadon_id')
+    ->select('tbl_dathang.*', 'tbl_customers.*', 'tbl_hoandon.*')
+    ->where('tbl_dathang.dathang_id', $dathang_id)
+    ->first(); // Chỉ lấy một bản ghi duy nhất cho khách hàng và đơn hàng
+
+// Truy vấn để lấy danh sách sản phẩm trong chi tiết đơn hàng
+        $order_details = DB::table('tbl_chitietdathang')
+            ->join('tbl_product', 'tbl_chitietdathang.product_id', '=', 'tbl_product.product_id')
+            ->select('tbl_chitietdathang.*', 'tbl_product.product_name', 'tbl_product.product_price')
+            ->where('tbl_chitietdathang.dathang_id', $dathang_id)
+            ->get(); // Lấy nhiều bản ghi cho các sản phẩm
+
+            $mail = new PHPMailer(true);
+    
+            try {
+                // Cấu hình máy chủ email (SMTP)
+                $mail->isSMTP();
+                $mail->Host = 'smtp.gmail.com';  // SMTP server của Gmail
+                $mail->SMTPAuth = true;
+                $mail->Username = 'nguoiyeutung2707@gmail.com'; // Địa chỉ email của bạn
+                $mail->Password = 'qwir jsej htge ubkv'; // Mật khẩu của email
+                $mail->SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS;
+                $mail->Port = 587;
+        
+                // Người gửi và người nhận
+                $mail->setFrom('nguoiyeutung2707@gmail.com', 'PETSHOP');
+                $mail->addAddress($order_info->hoadon_email, $order_info->hoadon_name); // Email người nhận
+        
+                // Nội dung email
+                $mail->isHTML(true); // Đặt định dạng HTML cho email
+                $mail->Subject = 'Hello from the PETSHOP!';
+        
+                // Tạo nội dung email
+                $email_content = "<h1>Thông tin Đơn hàng</h1>";
+                $email_content .= "<p><strong>Họ tên:</strong> {$order_info->hoadon_name}</p>";
+                $email_content .= "<p><strong>Địa chỉ:</strong> {$order_info->hoadon_address}</p>";
+                $email_content .= "<p><strong>Số điện thoại:</strong> {$order_info->hoadon_phone}</p>";
+                $email_content .= "<h3>Danh sách Sản phẩm:</h3><ul>";
+                
+                // Hiển thị chi tiết các sản phẩm
+                foreach ($order_details as $product) {
+                    $email_content .= "<li>{$product->product_name} - {$product->so_luong_san_pham} x {$product->product_price} VND</li>";
+                }
+                
+                $email_content .= "</ul>";
+                $email_content .= "<p><strong>Tổng tiền:</strong> {$order_info->tong_tien} VND</p>";
+                $email_content .= "<p><strong>Ngày đặt:</strong> {$order_info->ngay_dat} VND</p>";
+
+                
+                $mail->Body = $email_content;
+        
+                // Gửi email
+                $mail->send();
+                echo 'Email đã được gửi thành công';
+            } catch (Exception $e) {
+                echo "Có lỗi xảy ra khi gửi email: {$mail->ErrorInfo}";
+            }
+
+        
+    // vd 
     DB::table('tbl_cart_temp')->where('customer_id', $customer_id)->delete();
 
      if($data['payment_method']==1) {
@@ -150,10 +219,13 @@ class ThanhToanController extends Controller
         ->get();
         // echo 'Tien mat';
         Cart::destroy();
-        return view('pages.thanhtoan.tienmat')->with('category', $cate_product);
+        return view('pages.thanhtoan.tienmat')->with('category', $cate_product)
+        ->with('order_info', $order_info)
+        ->with('order_details', $order_details);
+        
      }
    
-
+ 
 
         // return Redirect('/payment');
 
