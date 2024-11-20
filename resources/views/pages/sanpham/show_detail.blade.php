@@ -1,6 +1,38 @@
 
 @extends('CunCon')
 @section('content')
+
+
+<style>
+	#star-rating {
+    font-size: 30px;
+    color: #ccc; /* Màu của sao không chọn */
+}
+
+#star-rating .star:hover,
+#star-rating .star.selected {
+    color: gold; /* Màu của sao khi hover hoặc khi đã chọn */
+}
+
+#star-rating {
+    display: flex; /* Sử dụng flexbox để hiển thị các sao theo hàng ngang */
+    justify-content: flex-start; /* Đảm bảo các sao căn lề trái */
+    gap: 5px; /* Khoảng cách giữa các sao */
+}
+
+#star-rating .star {
+    font-size: 30px; /* Kích thước sao */
+    cursor: pointer; /* Hiển thị con trỏ chuột khi hover */
+    color: #ccc; /* Màu sao chưa chọn */
+}
+
+#star-rating .star:hover,
+#star-rating .star.selected {
+    color: gold; /* Màu vàng cho sao được hover hoặc đã chọn */
+}
+
+
+</style>
     <div class="padding-right" > 
 	@foreach($product_details as $key => $value)
     <div class="product-details" >
@@ -112,6 +144,31 @@
 										</button>
 									</form>
 
+																					<!-- vd -->
+								<form id="review-form" action="submit_review.php" method="POST">
+								<input type="hidden" name="product_id" >
+								<div>
+									<label for="rating">Đánh giá:</label>
+									<div id="star-rating">
+										<!-- 5 stars -->
+										<span class="star" data-value="1">&#9733;</span>
+										<span class="star" data-value="2">&#9733;</span>
+										<span class="star" data-value="3">&#9733;</span>
+										<span class="star" data-value="4">&#9733;</span>
+										<span class="star" data-value="5">&#9733;</span>
+									</div>
+									<input type="hidden" name="rating" id="rating" required>
+								</div>
+								<div>
+									<label for="comment">Bình luận:</label>
+									<textarea name="comment" id="comment" rows="4" required></textarea>
+								</div>
+								<button type="submit">Gửi</button>
+							</form>
+
+									
+									<!-- vd -->
+
 
     
 									
@@ -123,14 +180,27 @@
 								
 								 <div class="fb-comments"  data-href="https://65b3-2001-ee0-4b52-7950-2762-fc92-42a-9bd4.ngrok-free.app/{{ route('product_details', ['product_id' => $value->product_id]) }}"  data-width="100%" data-numposts="50"></div>
 
-									
-
+								
 								</div>
+
+
+
+
 							</div>
 						
 						</div>
 					</div><!--/category-tab-->
 					@endforeach
+
+
+
+
+
+
+								
+
+
+
 					<div class="recommended_items" style="padding-right: 50px;"><!--recommended_items-->
 						<h2 class="title text-center">Sản phẩm liên quan</h2>
 						
@@ -174,6 +244,45 @@
 				
 
 
-				
+	
+
+				<script>
+					document.querySelectorAll('.star').forEach(star => {
+    star.addEventListener('mouseover', function() {
+        const ratingValue = this.getAttribute('data-value');
+        document.querySelectorAll('.star').forEach(star => {
+            if (star.getAttribute('data-value') <= ratingValue) {
+                star.style.color = 'gold'; // Màu vàng cho các sao trước sao được hover
+            } else {
+                star.style.color = '#ccc'; // Màu xám cho các sao sau sao được hover
+            }
+        });
+    });
+
+    star.addEventListener('mouseout', function() {
+        document.querySelectorAll('.star').forEach(star => {
+            if (!star.classList.contains('selected')) {
+                star.style.color = '#ccc'; // Reset lại màu các sao chưa được chọn
+            }
+        });
+    });
+
+    star.addEventListener('click', function() {
+        const ratingValue = this.getAttribute('data-value');
+        document.getElementById('rating').value = ratingValue; // Lưu giá trị sao vào input hidden
+
+        document.querySelectorAll('.star').forEach(star => {
+            if (star.getAttribute('data-value') <= ratingValue) {
+                star.classList.add('selected'); // Đánh dấu sao đã chọn
+                star.style.color = 'gold'; // Màu vàng cho sao đã chọn
+            } else {
+                star.classList.remove('selected'); // Loại bỏ dấu sao đã chọn
+                star.style.color = '#ccc'; // Màu xám cho các sao chưa chọn
+            }
+        });
+    });
+});
+
+				</script>
 
 @endsection
