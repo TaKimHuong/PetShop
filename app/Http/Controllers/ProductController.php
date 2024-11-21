@@ -214,7 +214,10 @@ class ProductController extends Controller
             $formattedRating = number_format($averageRating, 1); // Định dạng 1 chữ số thập phân
                // Kiểm tra nếu không có đánh giá
         $formattedRating = $totalReviews > 0 ? number_format($averageRating, 1) : 'Chưa có đánh giá';
-        $comments = Rating::where('product_id', $product_id)->get(['rating_comment', 'customer_id', 'created_at']);
+        // $comments = Rating::where('product_id', $product_id)->get(['rating_comment', 'customer_id', 'created_at']);
+        $comments = Rating::where('product_id', $product_id)
+    ->join('tbl_customers', 'tbl_rating.customer_id', '=', 'tbl_customers.customer_id')  // Thực hiện join với bảng customers
+    ->get(['rating_comment', 'tbl_customers.customer_name', 'tbl_rating.created_at','tbl_rating.rating']);  // Lấy tên người dùng và các thông tin khác
     
         return view('pages.sanpham.show_detail')
             ->with('category', $cate_product)
@@ -251,4 +254,15 @@ class ProductController extends Controller
          return view('nhanvien_layout')->with('nhanvien.staff_edit_product', $manager_product);
 
     }    
+
+    public function quan_ly_tai_khoan() {
+        $all_account = DB::table('tbl_customers')
+            ->join('tbl_phanquyen', 'tbl_phanquyen.ma_quyen', '=', 'tbl_customers.ma_quyen')
+            ->select('tbl_customers.*', 'tbl_phanquyen.*') // Lấy tất cả các cột từ cả hai bảng
+            ->orderBy('tbl_customers.customer_id', 'desc')
+            ->paginate(5); // Phân trang, mỗi trang có 5 dòng
+        
+        $manager_product = view('admin.all_account')->with('all_account', $all_account);
+        return view('admin_layout')->with('admin.all_account', $manager_product);
+    }
 }

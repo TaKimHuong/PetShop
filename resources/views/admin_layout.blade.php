@@ -209,15 +209,11 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
                       
                     </ul>
                 </li>
-                <li class="sub-menu">
-                    <a href="javascript:;">
-                        <i class=" fa fa-bar-chart-o"></i>
-                        <span>Maps</span>
+                <li>
+                    <a class="active" href=" {{URL::to('/quan-ly-tai-khoan')}}">
+                        <i class="fa fa-book"></i>
+                        <span>Quản lý tài khoản</span>
                     </a>
-                    <ul class="sub">
-                        <li><a href="google_map.html">Google Map</a></li>
-                        <li><a href="vector_map.html">Vector Map</a></li>
-                    </ul>
                 </li>
                 <li class="sub-menu">
                     <a href="javascript:;">

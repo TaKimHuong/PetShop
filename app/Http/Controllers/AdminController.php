@@ -47,4 +47,7 @@ class AdminController extends Controller
         Session::put('id', null);
         return Redirect::to('/admin');
     }
+
+
+    
 }

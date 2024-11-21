@@ -39,7 +39,7 @@
 
 }
 
-.danhgia .star.filled {
+.danhgia .starr.filled {
     color: #ffcc00; /* Màu vàng cho sao đã được đánh giá */
 }
 
@@ -48,6 +48,49 @@
     margin: 10px 0;
     color: #333;
 }
+/* Tổng thể comment */
+.comment {
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    padding: 15px;
+    margin-bottom: 15px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    background-color: #f9f9f9;
+}
+
+/* Tiêu đề người dùng */
+.comment p {
+    margin: 5px 0;
+    font-family: Arial, sans-serif;
+}
+
+/* Hiển thị ngày */
+.comment .comment-date {
+    font-size: 0.9em;
+    color: #666;
+    margin-top: 10px;
+}
+
+/* Phần rating */
+.rating-stars {
+    display: flex;
+    align-items: center;
+    margin: 10px 0;
+}
+
+/* Ngôi sao */
+.starr {
+    font-size: 20px;
+    color: #ddd; /* Màu sao rỗng */
+    margin-right: 5px;
+    pointer-events: none; /* Không cho hover hoặc click */
+}
+
+/* Sao được đánh giá */
+.starr.filled {
+    color: #ffcc00; /* Màu sao đã được đánh giá */
+}
+
 
 
 </style>
@@ -165,15 +208,17 @@
 											<textarea name="comment" id="comment" rows="4"></textarea>
 										</div>
 
-										<button type="submit">Gửi đánh giá</button>
+										<button type="submit" class="btn btn-sm btn-primary">Gửi đánh giá</button>
 									</form>
 
+									<br>
 
-									<p class="danhgia">Đánh giá trung bình: 
+
+									<p class="danhgia" style="font-weight: bold;">Rating: 
 								<span class="stars">
 								<span class="stars" style="	pointer-events: none; ">
 							@for ($i = 1; $i <= 5; $i++)
-								<span class="star {{ ($formattedRating >= $i || ($formattedRating >= 2.5 && $i <= 3)) ? 'filled' : '' }}">&#9733;</span>
+							<span class="starr {{ ($formattedRating >= $i || ($formattedRating >= 2.5 && $i <= 3)) ? 'filled' : '' }}" onmouseover="return false;">&#9733;</span>
 							@endfor
 						</span>
 						({{ $formattedRating }} / 5)
@@ -192,11 +237,18 @@
 							@endif
 
 							@foreach($comments as $comment)
-								<div class="comment">
-									<p><strong>Người dùng: </strong> {{ $comment->customer_id }}</p>
-									<p>{{ $comment->rating_comment }}</p>
+							<div class="comment">
+								<p style="font-weight: bold;"><img style="width: 40px; height: 40px;  border-radius: 50%;" src="{{asset('public/frontend/image/icon/avata-cat.jpg')}}" alt="">   {{ $comment->customer_name }}</p>
+								<p>{{ $comment->rating_comment }}</p>
+								<div class="rating-stars">
+									@for ($i = 1; $i <= 5; $i++)
+										<span class="starr {{ $i <= $comment->rating ? 'filled' : '' }}">&#9733;</span>
+									@endfor
 								</div>
+								<p class="comment-date">{{ \Carbon\Carbon::parse($comment->created_at)->format('d/m/Y') }}</p>
+							</div>
 							@endforeach
+
 																<!-- vd -->
 
 

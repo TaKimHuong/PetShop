@@ -167,3 +167,6 @@ Route::get('/search-by-price', [ProductController::class, 'searchByPrice'])->nam
 // đánh giá sách 
 
 Route::post('/ratings', [RatingController::class, 'rating']);
+
+// quản lý tài khoản
+Route::get('/quan-ly-tai-khoan', [ProductController::class, 'quan_ly_tai_khoan']);

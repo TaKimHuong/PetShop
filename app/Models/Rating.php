@@ -11,7 +11,7 @@ class Rating extends Model
     public $timestamps = false;
     protected $fillable = [
 
-        'customer_id' , 'product_id' , 'rating', 'rating_comment'
+        'customer_id' , 'product_id' , 'rating', 'rating_comment', 'created_at'
     ];
     protected $primaryKey = 'rating_id';
     protected $table = 'tbl_rating';
