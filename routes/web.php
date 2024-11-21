@@ -9,6 +9,7 @@ use App\Http\Controllers\ProductController;
 use App\Http\Controllers\CartController;
 use App\Http\Controllers\ThanhToanController;
 use App\Http\Controllers\MaGiamGiaController;
+use App\Http\Controllers\RatingController;
 use App\Http\Controllers\StaffController;
 use Gloudemans\Shoppingcart\Facades\Cart;
 Route::get('/', [HomeController::class, 'index']);
@@ -162,3 +163,7 @@ Route::get('/staff-edit-order/{dathang_id}', [ThanhToanController::class, 'staff
 // routes/web.php
 
 Route::get('/search-by-price', [ProductController::class, 'searchByPrice'])->name('search_by_price');
+
+// đánh giá sách 
+
+Route::post('/ratings', [RatingController::class, 'rating']);

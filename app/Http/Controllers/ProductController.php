@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\Redirect;
+use App\Models\Rating;
 session_start();
 class ProductController extends Controller
 {
@@ -205,11 +206,28 @@ class ProductController extends Controller
             ->where('tbl_category_product.category_id', $category_id)
             ->where('tbl_product.product_id', '!=', $product_id) // Lọc sản phẩm liên quan, trừ chính sản phẩm hiện tại
             ->get();
+
+           
+
+            $averageRating = Rating::where('product_id', $product_id)->avg('rating');
+            $totalReviews = Rating::where('product_id', $product_id)->count();
+            $formattedRating = number_format($averageRating, 1); // Định dạng 1 chữ số thập phân
+               // Kiểm tra nếu không có đánh giá
+        $formattedRating = $totalReviews > 0 ? number_format($averageRating, 1) : 'Chưa có đánh giá';
+        $comments = Rating::where('product_id', $product_id)->get(['rating_comment', 'customer_id', 'created_at']);
     
         return view('pages.sanpham.show_detail')
             ->with('category', $cate_product)
             ->with('product_details', $details_product)
-            ->with('relate', $related_product);
+            ->with('relate', $related_product)
+            ->with('averageRating', $averageRating)
+            ->with('totalReviews', $totalReviews)
+            ->with('formattedRating', $formattedRating)
+            ->with('comments', $comments)
+            
+       
+            ;
+
     }
 
     //NHÂN VIÊN

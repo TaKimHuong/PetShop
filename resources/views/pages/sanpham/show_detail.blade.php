@@ -31,6 +31,24 @@
     color: gold; /* Màu vàng cho sao được hover hoặc đã chọn */
 }
 
+/* danh gia sao  */
+.danhgia .stars {
+    font-size: 20px;
+    color: #ddd; /* Màu cho các sao chưa đầy */
+	cursor: default; 
+
+}
+
+.danhgia .star.filled {
+    color: #ffcc00; /* Màu vàng cho sao đã được đánh giá */
+}
+
+.danhgia p {
+    font-size: 18px;
+    margin: 10px 0;
+    color: #333;
+}
+
 
 </style>
     <div class="padding-right" > 
@@ -124,50 +142,62 @@
 							</div>
 							<div class="tab-pane fade" id="reviews" >
 								<div class="col-sm-12">
-									<ul>
-										<li><a href=""><i class="fa fa-user"></i>EUGEN</a></li>
-										<li><a href=""><i class="fa fa-clock-o"></i>12:41 PM</a></li>
-										<li><a href=""><i class="fa fa-calendar-o"></i>31 DEC 2014</a></li>
-									</ul>
-									<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.</p>
-									<p><b>Write Your Review</b></p>
 									
-									<form action="#">
-										<span>
-											<input style="width: 300px;" type="text" placeholder="Your Name"/>
-											<input type="email" placeholder="Email Address"/>
-										</span>
-										<textarea name="" ></textarea>
-										<b>Rating: </b> <img src="images/product-details/rating.png" alt="" />
-										<button type="button" class="btn btn-default pull-right">
-											Submit
-										</button>
+																		<!-- vd -->
+										<form action="{{URL::to('/ratings')}}" method="POST">
+										@csrf
+										<input type="hidden" name="product_id" value="{{$value->product_id}}">
+
+										<div>
+											<label for="rating">Đánh giá:</label>
+											<div id="star-rating">
+												<span class="star" data-value="1">&#9733;</span>
+												<span class="star" data-value="2">&#9733;</span>
+												<span class="star" data-value="3">&#9733;</span>
+												<span class="star" data-value="4">&#9733;</span>
+												<span class="star" data-value="5">&#9733;</span>
+											</div>
+											<input type="hidden" name="rating" id="rating" required>
+										</div>
+
+										<div>
+											<label for="comment">Bình luận:</label>
+											<textarea name="comment" id="comment" rows="4"></textarea>
+										</div>
+
+										<button type="submit">Gửi đánh giá</button>
 									</form>
 
-																					<!-- vd -->
-								<form id="review-form" action="submit_review.php" method="POST">
-								<input type="hidden" name="product_id" >
-								<div>
-									<label for="rating">Đánh giá:</label>
-									<div id="star-rating">
-										<!-- 5 stars -->
-										<span class="star" data-value="1">&#9733;</span>
-										<span class="star" data-value="2">&#9733;</span>
-										<span class="star" data-value="3">&#9733;</span>
-										<span class="star" data-value="4">&#9733;</span>
-										<span class="star" data-value="5">&#9733;</span>
-									</div>
-									<input type="hidden" name="rating" id="rating" required>
-								</div>
-								<div>
-									<label for="comment">Bình luận:</label>
-									<textarea name="comment" id="comment" rows="4" required></textarea>
-								</div>
-								<button type="submit">Gửi</button>
-							</form>
 
-									
-									<!-- vd -->
+									<p class="danhgia">Đánh giá trung bình: 
+								<span class="stars">
+								<span class="stars" style="	pointer-events: none; ">
+							@for ($i = 1; $i <= 5; $i++)
+								<span class="star {{ ($formattedRating >= $i || ($formattedRating >= 2.5 && $i <= 3)) ? 'filled' : '' }}">&#9733;</span>
+							@endfor
+						</span>
+						({{ $formattedRating }} / 5)
+								</span>
+								
+							</p>
+
+							<!-- Hiển thị số lượng đánh giá -->
+							<p>{{ $totalReviews }} đánh giá</p>
+
+							<!-- Hiển thị thông báo thành công -->
+							@if(session('success'))
+								<div class="alert alert-success">
+									{{ session('success') }}
+								</div>
+							@endif
+
+							@foreach($comments as $comment)
+								<div class="comment">
+									<p><strong>Người dùng: </strong> {{ $comment->customer_id }}</p>
+									<p>{{ $comment->rating_comment }}</p>
+								</div>
+							@endforeach
+																<!-- vd -->
 
 
     
