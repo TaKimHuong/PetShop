@@ -265,4 +265,32 @@ class ProductController extends Controller
         $manager_product = view('admin.all_account')->with('all_account', $all_account);
         return view('admin_layout')->with('admin.all_account', $manager_product);
     }
+
+    public function view_account($customer_id) {
+        $view_account = DB::table('tbl_customers')
+        ->join('tbl_phanquyen', 'tbl_phanquyen.ma_quyen', '=', 'tbl_customers.ma_quyen')
+        ->where('customer_id', $customer_id)->first();
+        return view('admin.view_account', compact('view_account'));
+    }
+
+    public function delete_account($customer_id) {
+        $all_account = DB::table('tbl_customers')
+        ->join('tbl_phanquyen', 'tbl_phanquyen.ma_quyen', '=', 'tbl_customers.ma_quyen')
+        ->where('customer_id', $customer_id)->first();
+
+        if (!$all_account) {
+            return redirect()->back()->with('error', 'Tài khoản không tồn tại.');
+        }
+    
+        // Kiểm tra nếu tài khoản có ma_quyen = 1
+        if ($all_account->ma_quyen == 1) {
+            Session::put('message', 'Không thể xóa tài khoản quản trị viên.');
+            return redirect()->back()->with('error', 'Không thể xóa tài khoản quản trị viên.');
+           
+        }
+        DB::table('tbl_customers')->where('customer_id', $customer_id)->delete();
+        Session::put('message', 'Xóa tài khoản thành công!');
+
+        return redirect()->back()->with('success', 'Xóa tài khoản thành công!');
+    }
 }

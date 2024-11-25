@@ -408,7 +408,7 @@ class ThanhToanController extends Controller
     public function duyetHoaDon($dathang_id) {
         DB::table('tbl_dathang')
         ->where('dathang_id', $dathang_id)
-        ->update(['dathang_status' => 'Đã duyệt đơn hàng']);
+        ->update(['dathang_status' => 'Đã duyệt đơn hàng', 'ngay_duyet' => now()]);
     return redirect()->back()->with('success', 'Đã duyệt hóa đơn thành công!');
     }
     
@@ -458,7 +458,7 @@ class ThanhToanController extends Controller
     public function staff_duyetHoaDon($dathang_id) {
         DB::table('tbl_dathang')
         ->where('dathang_id', $dathang_id)
-        ->update(['dathang_status' => 'Đã duyệt đơn hàng']);
+        ->update(['dathang_status' => 'Đã duyệt đơn hàng', 'ngay_duyet' => now()]);
     return redirect()->back()->with('success', 'Đã duyệt hóa đơn thành công!');
     }
     public function staff_chua_duyet() {

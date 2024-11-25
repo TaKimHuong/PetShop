@@ -30,7 +30,7 @@
             <th>Tên đăng nhập</th>
             <th>Quyền hạn</th>
           
-            <th>Xem/Xóa</th>
+            <th>Xem/Sửa/Xóa</th>
           
             <th style="width:30px;"></th>
           </tr>
@@ -47,12 +47,15 @@
                         <td>{{ $account->chi_tiet_ten_quyen }}</td>
                         <td>
                         <!-- Nút sửa -->
-                        <a href="{{URL::to('/edit-product/'.$account->customer_id)}}" class="btn btn-success btn-sm" style="margin-right: 5px;">
+                        <a href="{{URL::to('/view-account/'.$account->customer_id)}}" class="btn btn-success btn-sm" style="margin-right: 5px;">
                             Xem
                         </a>
+                        <a href="{{URL::to('/view-account/'.$account->customer_id)}}" class="btn btn-primary btn-sm" style="margin-right: 5px;">
+                            Sửa
+                        </a>
                         <!-- Nút xóa -->
-                        <a onclick="return confirm('Bạn có chắc là muốn xóa sản phẩm này không?')" 
-                        href="{{URL::to('/delete-product/'.$account->customer_id)}}" 
+                        <a onclick="return confirm('Bạn có chắc là muốn xóa Tài Khoản này không?')" 
+                        href="{{URL::to('/delete-account/'.$account->customer_id)}}" 
                         class="btn btn-danger btn-sm">
                             Xóa
                         </a>

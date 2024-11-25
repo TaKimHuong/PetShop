@@ -78,6 +78,7 @@
             <th>Tình trạng</th>
             <th>Duyệt đơn hàng</th>
             <th>Ngày đặt hàng</th>
+            <th>Ngày duyệt đơn</th>
             <th>Hiển thị</th>
             <th style="width:30px;"></th>
           </tr>
@@ -134,6 +135,7 @@
 
             </td>
             <td>{{$order->ngay_dat}}</td>
+            <td>{{$order->ngay_duyet}}</td>
          
            
             <td>

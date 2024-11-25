@@ -170,3 +170,6 @@ Route::post('/ratings', [RatingController::class, 'rating']);
 
 // quản lý tài khoản
 Route::get('/quan-ly-tai-khoan', [ProductController::class, 'quan_ly_tai_khoan']);
+
+Route::get('/view-account/{customer_id}', [ProductController::class, 'view_account']);
+Route::get('/delete-account/{customer_id}', [ProductController::class, 'delete_account']);

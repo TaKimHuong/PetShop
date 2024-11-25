@@ -78,6 +78,7 @@
             <th>Tình trạng</th>
             <th>Duyệt đơn hàng</th>
             <th>Ngày đặt hàng</th>
+            <th>Ngày duyệt đơn</th>
             <th>Hiển thị</th>
             <th style="width:30px;"></th>
           </tr>
@@ -143,12 +144,13 @@
         </form>
     </div>
 @else
-    <span>Đã duyệt đơn hàng</span>
+    <span>Đơn hàng sẽ được vận chuyển trong thời gian sớm nhất</span>
 @endif
 
 
             </td>
             <td>{{$order->ngay_dat}}</td>
+            <td>{{$order->ngay_duyet}}</td>
          
            
             <td>
