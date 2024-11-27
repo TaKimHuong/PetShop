@@ -155,10 +155,41 @@ class ProductController extends Controller
             ->orderBy('category_id', 'desc')
             ->get();
     
-        $details_product = DB::table('tbl_product')
+        // $details_product = DB::table('tbl_product')
+        //     ->join('tbl_category_product', 'tbl_category_product.category_id', '=', 'tbl_product.category_id')
+        //     ->where('tbl_product.product_id', $product_id)
+        //     ->get();
+
+                $details_product = DB::table('tbl_product')
             ->join('tbl_category_product', 'tbl_category_product.category_id', '=', 'tbl_product.category_id')
+            ->leftJoin('tbl_chitietdathang', 'tbl_chitietdathang.product_id', '=', 'tbl_product.product_id') // Sử dụng leftJoin để đảm bảo sản phẩm không có đơn hàng vẫn hiển thị
+            ->select(
+                'tbl_product.product_name',
+                'tbl_product.product_id',
+                'tbl_product.product_image',
+                'tbl_product.product_price',
+                'tbl_product.product_desc',
+                'tbl_product.product_content',
+                'tbl_category_product.category_name',
+                'tbl_category_product.category_id',
+                DB::raw('COALESCE(SUM(tbl_chitietdathang.so_luong_san_pham), 0) as total_sold') // Sử dụng COALESCE
+            )
             ->where('tbl_product.product_id', $product_id)
+            ->groupBy(
+                'tbl_chitietdathang.product_id',
+                'tbl_product.product_id',
+                'tbl_product.product_name',
+                'tbl_product.product_image',
+                'tbl_product.product_price',
+                'tbl_product.product_desc',
+                'tbl_product.product_content',
+                'tbl_category_product.category_name',
+                'tbl_category_product.category_id'
+            )
             ->get();
+
+
+            
     
         $category_id = null; // Đặt giá trị mặc định để tránh lỗi nếu $details_product rỗng
         foreach($details_product as $key => $value) {

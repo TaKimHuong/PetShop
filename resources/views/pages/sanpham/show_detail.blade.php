@@ -142,7 +142,7 @@
                 </span>
 				</form>
                 <p><b>Tình trạng:</b> Còn hàng</p>
-				<p><b>Đã bán:</b> Còn hàng</p>
+				<p><b>Đã bán:</b> {{$value->total_sold}}</p>
                 <!-- <p><b>Condition:</b> New</p> -->
                 <p><b>Danh mục:</b> {{$value->category_name}}</p>
                 <a href=""><img src="images/product-details/share.png" class="share img-responsive" alt="" /></a>

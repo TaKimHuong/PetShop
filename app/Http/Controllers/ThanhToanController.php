@@ -192,8 +192,11 @@ class ThanhToanController extends Controller
                 }
                 
                 $email_content .= "</ul>";
-                $email_content .= "<p><strong>Tổng tiền:</strong> {$order_info->tong_tien} VND</p>";
-                $email_content .= "<p><strong>Ngày đặt:</strong> {$order_info->ngay_dat} VND</p>";
+                $email_content .= "<p><strong>Tổng tiền:</strong> " . number_format($order_info->tong_tien, 0, ',', '.') . " VND</p>";
+
+                $email_content .= "<p><strong>Ngày đặt:</strong> {$order_info->ngay_dat}</p>";
+                $email_content .= "<p><strong>Tình trạng đơn hàng:</strong> {$order_info->dathang_status}</p>";
+
 
                 
                 $mail->Body = $email_content;

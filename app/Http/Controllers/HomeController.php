@@ -42,7 +42,7 @@ class HomeController extends Controller
     ->orderByDesc(DB::raw('SUM(tbl_chitietdathang.so_luong_san_pham)')) // Sắp xếp theo tổng số lượng bán
     ->limit(3) 
     ->get();
-
+ 
     return view('pages.home')
         ->with('category', $cate_product)
         ->with('all_product', $all_product)
