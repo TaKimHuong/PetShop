@@ -7,6 +7,7 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\Redirect;
 use App\Models\Rating;
+use App\Models\Product;
 session_start();
 class ProductController extends Controller
 {
@@ -324,4 +325,37 @@ class ProductController extends Controller
 
         return redirect()->back()->with('success', 'Xóa tài khoản thành công!');
     }
+
+    // tìm kiếm sản phẩm dựa trên giá tiền
+    public function search(Request $request)
+{
+    // Lấy giá trị min_price và max_price từ query string
+    $minPrice = $request->input('min_price', 0); // Mặc định là 1 triệu
+    $maxPrice = $request->input('max_price', 10000000); // Mặc định là 10 triệu
+
+    $category = DB::table('tbl_category_product')
+    ->where('category_status', '0')
+    ->orderBy('category_id', 'desc')
+    ->get();
+
+    if ($minPrice == 0 && $maxPrice == 10000000) {
+        $products = Product::all(); // Lấy toàn bộ sản phẩm
+        foreach ($products as $product) {
+            $product->average_rating = Rating::where('product_id', $product->product_id)->avg('rating');
+        } 
+    } else{
+        // Lọc sản phẩm trong khoảng giá
+        $products = Product::whereBetween('product_price', [$minPrice, $maxPrice])->get();
+        foreach ($products as $product) {
+            $product->average_rating = Rating::where('product_id', $product->product_id)->avg('rating');
+        }  
+    }
+
+    // Trả về view với danh sách sản phẩm
+    return view('pages.sanpham.search', compact('products', 'minPrice', 'maxPrice' ,'category'));
 }
+ 
+}
+
+
+
