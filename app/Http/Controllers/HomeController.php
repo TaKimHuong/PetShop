@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\Redirect;
+use App\Models\Rating;
 session_start();
 class HomeController extends Controller
 {
@@ -21,6 +22,11 @@ class HomeController extends Controller
         ->where('product_status', '0')
         ->orderBy('product_id', 'desc')
         ->get();
+
+        foreach ($all_product as $product) {
+            $product->average_rating = Rating::where('product_id', $product->product_id)->avg('rating');
+        }  
+    
    
     $latest_products = DB::table('tbl_product')
     ->join('tbl_category_product', 'tbl_category_product.category_id', '=', 'tbl_product.category_id')
@@ -29,11 +35,19 @@ class HomeController extends Controller
     ->limit(6) // Giới hạn 6 sản phẩm
     ->get(); // Lấy dữ liệu
 
+    foreach ($latest_products as $product) {
+        $product->average_rating = Rating::where('product_id', $product->product_id)->avg('rating');
+    }  
+
     $feature_product = DB::table('tbl_product')
     ->where('product_status', '0') // Điều kiện cho product_status
     ->where('product_feature', 'x') // Điều kiện cho product_feature
     ->orderBy('product_id', 'desc') // Sắp xếp theo product_id giảm dần
     ->get(); // Lấy dữ liệu
+
+    foreach ($feature_product as $product) {
+        $product->average_rating = Rating::where('product_id', $product->product_id)->avg('rating');
+    } 
 
     $product_sales = DB::table('tbl_chitietdathang')
     ->join('tbl_product', 'tbl_chitietdathang.product_id', '=', 'tbl_product.product_id')
@@ -42,6 +56,10 @@ class HomeController extends Controller
     ->orderByDesc(DB::raw('SUM(tbl_chitietdathang.so_luong_san_pham)')) // Sắp xếp theo tổng số lượng bán
     ->limit(3) 
     ->get();
+
+    foreach ($product_sales as $product) {
+        $product->average_rating = Rating::where('product_id', $product->product_id)->avg('rating');
+    }
  
     return view('pages.home')
         ->with('category', $cate_product)
@@ -75,6 +93,12 @@ class HomeController extends Controller
                 ->where('product_status', '0')
                 ->orderBy('product_id', 'desc')
                 ->get();
+
+             
+    // Lặp qua từng sản phẩm và tính điểm đánh giá trung bình
+            foreach ($all_product as $product) {
+                $product->average_rating = Rating::where('product_id', $product->product_id)->avg('rating');
+            }   
 
             return view('pages.DanhMuc')
                 ->with('category', $cate_product)

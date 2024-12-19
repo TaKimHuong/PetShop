@@ -72,7 +72,7 @@ use Symfony\Component\HttpFoundation\Session\Session as SessionSession;
                     <!-- <input style="width: 500px; border-radius: 5px;" type="search" name="tukhoa_tim_kiem" placeholder="Bạn tìm gì..." />
 
                      <input type="submit" name="search_items" class="btn btn- btn-sn" value="Tim kiếm"> -->
-                     <input style="width: 500px; border-radius: 5px;" type="search" id="search-input" name="tukhoa_tim_kiem" placeholder="Bạn tìm gì..." autocomplete="off"/>
+                     <input style="width: 400px; border-radius: 5px;" type="search" id="search-input" name="tukhoa_tim_kiem" placeholder="Bạn tìm gì..." autocomplete="off"/>
                     </form>
                 </div>
             </div>

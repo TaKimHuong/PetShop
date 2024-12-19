@@ -39,3 +39,4 @@ class RatingController extends Controller
 
     }
 }
+ 

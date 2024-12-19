@@ -48,27 +48,81 @@
             </div>
             <div class="col40">
                 <div class="search">
-                    <input type="search" placeholder="Bạn tìm gì..." />
-                    <input type="image" value="timkiem" id="anh" src="{{asset('public/frontend/image/icon/search-icon.png')}}" />
+                    <form action="{{URL::to('/tim-kiem')}}" method="POST">
+                        {{csrf_field()}}
+                    <!-- <input style="width: 500px; border-radius: 5px;" type="search" name="tukhoa_tim_kiem" placeholder="Bạn tìm gì..." />
+
+                     <input type="submit" name="search_items" class="btn btn- btn-sn" value="Tim kiếm"> -->
+                     <input style="width: 400px; border-radius: 5px;" type="search" id="search-input" name="tukhoa_tim_kiem" placeholder="Bạn tìm gì..." autocomplete="off"/>
+                    </form>
                 </div>
             </div>
             <div class="col10 header-icon">
-                <a id="hotro" href="#">
+
+            <?php
+            use Illuminate\Support\Facades\Session;
+            $customer_id = Session::get('customer_id');
+            $hoadon_id = Session::get('hoadon_id');
+
+            if($customer_id!=NULL && $hoadon_id==NULL)  {
+            ?>
+            <a id="hotro" href="{{URL::to('/checkout')}}">
                     <img src="{{asset('public/frontend/image/icon/hotro-icon.png')}}" alt="hỗ trợ">
-                    <span>Hỗ trợ</span>
+                    <span>Thanh toán</span>
                 </a>
+            <?php
+            }elseif($customer_id!=NULL && $hoadon_id!=NULL){
+
+            ?>
+            <a id="hotro" href="{{URL::to('/payment')}}">
+                    <img src="{{asset('public/frontend/image/icon/hotro-icon.png')}}" alt="hỗ trợ">
+                    <span>Thanh toán</span>
+                </a>
+
+                <?php
+
+            }else {
+                ?>
+            <a id="hotro" href="{{URL::to('/dang-nhap-thanh-toan')}}">
+                    <img src="{{asset('public/frontend/image/icon/hotro-icon.png')}}" alt="hỗ trợ">
+                    <span>Thanh toán</span>
+                </a>
+                <?php
+            }
+            ?>
+
+
             </div>
             <div class="col10 header-icon">
-                <a href="#">
+                <a href="{{URL::to('/Hien-thi-gio-hang')}}">
                     <img src="{{asset('public/frontend/image/icon/giohang-icon.png')}}" alt="Giỏ hàng">
                     <span>Giỏ hàng</span>
                 </a>
             </div>
             <div class="col10 header-icon">
-                <a id="dangnhap" href="{{URL::to('/admin')}}">
+
+                        <?php
+            // use Illuminate\Support\Facades\Session;
+
+            $customer_id = Session::get('customer_id');
+            if ($customer_id != NULL) {
+                // Nếu có `customer_id` trong Session, thì có thể hiển thị nội dung cho trường hợp đã đăng nhập
+                ?>
+                <a id="dangnhap" href="{{URL::to('/logout-checkout')}}">
+                    <img src="{{asset('public/frontend/image/icon/dangnhap-icon.png')}}" alt="đăng nhập">
+                    <span>Đăng xuất</span>
+                </a>
+                <?php
+            } else {
+                // Nếu không có `customer_id` trong Session
+                ?>
+                <a id="dangnhap" href="{{URL::to('/dang-nhap-thanh-toan')}}">
                     <img src="{{asset('public/frontend/image/icon/dangnhap-icon.png')}}" alt="đăng nhập">
                     <span>Đăng nhập</span>
                 </a>
+                <?php
+            }
+            ?>
             </div>
         </div>
     </header>
@@ -82,7 +136,7 @@
                 </a>
             </li>
             <li>
-                <a href="giongcho.html">
+                <a href="#">
                     <img src="{{asset('public/frontend/image/icon/giongcho-icon.png')}}" alt="giống chó">
                     <span>GIỐNG CHÓ</span>
 
@@ -90,14 +144,14 @@
              
             </li>
             <li>
-                <a href="cuncon.html">
+                <a href="{{URL::to('/cun-con')}}">
                     <img src="{{asset('public/frontend/image/icon/cuncon-icon.png')}}" alt="cún con">
                     <span>CÚN CON</span>
                 </a>
                
             </li>
             <li>
-                <a href="phukien.html">
+                <a href="#">
                     <img src="{{asset('public/frontend/image/icon/phukien-icon.png')}}" alt="phụ kiện">
                     <span>PHỤ KIỆN</span>
                 </a>
@@ -110,19 +164,19 @@
                 </a>
             </li>
             <li>
-                <a href="dichvu.html">
+                <a href="{{URL::to('/dich-vu')}}">
                     <img src="{{asset('public/frontend/image/icon/dichvu-icon.png')}}" alt="dịch vụ">
                     <span>DỊCH VỤ</span>
                 </a>
             </li>
             <li>
-                <a href="gioithieu.html">
+                <a href="{{URL::to('/gioi-thieu')}}">
                     <img src="{{asset('public/frontend/image/icon/gioithieu-icon.png')}}" alt="giới thiệu">
                     <span>GIỚI THIỆU</span>
                 </a>
             </li>
             <li>
-                <a href="lienhe.html">
+                <a href="{{URL::to('/lien-he')}}">
                     <img src="{{asset('public/frontend/image/icon/lienhe-icon.png')}}" alt="liên hệ">
                     <span>LIÊN HỆ</span>
                 </a>
