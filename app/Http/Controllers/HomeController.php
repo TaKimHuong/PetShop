@@ -7,6 +7,7 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\Redirect;
 use App\Models\Rating;
+use App\Models\Customer;
 session_start();
 class HomeController extends Controller
 {
@@ -150,4 +151,61 @@ class HomeController extends Controller
         
             return view('pages.sanpham.search')->with('category', $cate_product)->with('search_product', $search_product);
         }
+
+        public function thong_tin_tai_khoan($customer_id) {
+            $customer = Customer::where('customer_id', $customer_id)->first();
+
+            $all_order = DB::table('tbl_dathang')
+            ->join('tbl_customers', 'tbl_dathang.customer_id', '=', 'tbl_customers.customer_id')
+            ->where('tbl_dathang.customer_id', $customer_id)
+            ->select('tbl_dathang.*', 'tbl_customers.customer_name')
+            ->orderBy('tbl_dathang.dathang_id', 'desc')->get();
+            return view('pages.taikhoan.thongtintaikhoan')->with('customer' , $customer)->with('all_order' , $all_order);
+        }
+
+            public function update_account(Request $request, $customer_id)
+            {
+                // Xác thực dữ liệu
+                $data = $request->validate([
+                    'customer_name' => 'required|string|max:255',
+                    'customer_email' => 'required|email',
+                    'customer_phone' => 'required|string|max:15',
+                    'customer_name_login' => 'required|string|max:255',
+                ]);
+
+                // Tìm và cập nhật dữ liệu
+                $customer = Customer::where('customer_id', $customer_id)->first();
+                if ($customer) {
+                    $customer->update([
+                        'customer_name' => $data['customer_name'],
+                        'customer_email' => $data['customer_email'],
+                        'customer_phone' => $data['customer_phone'],
+                        'customer_name_login' => $data['customer_name_login'],
+                    ]);
+                    return redirect()->back()->with('success', 'Cập nhật thông tin thành công!');
+                }
+
+                return redirect()->back()->with('error', 'Không tìm thấy khách hàng.');
+            }
+
+            public function view_order($dathang_id) {
+                $order_info = DB::table('tbl_dathang')
+                ->join('tbl_customers', 'tbl_dathang.customer_id', '=', 'tbl_customers.customer_id')
+                ->join('tbl_hoandon', 'tbl_dathang.hoadon_id', '=', 'tbl_hoandon.hoadon_id')
+                ->select('tbl_dathang.*', 'tbl_customers.*', 'tbl_hoandon.*')
+                ->where('tbl_dathang.dathang_id', $dathang_id)
+                ->first(); // Chỉ lấy một bản ghi duy nhất cho khách hàng và đơn hàng
+        
+            // Truy vấn để lấy danh sách sản phẩm trong chi tiết đơn hàng
+            $order_details = DB::table('tbl_chitietdathang')
+                ->join('tbl_product', 'tbl_chitietdathang.product_id', '=', 'tbl_product.product_id')
+                ->select('tbl_chitietdathang.*', 'tbl_product.product_name', 'tbl_product.product_price')
+                ->where('tbl_chitietdathang.dathang_id', $dathang_id)
+                ->get(); // Lấy nhiều bản ghi cho các sản phẩm
+        
+            // Truyền dữ liệu sang view
+            return view('pages.taikhoan.xemchitietdonhang')->with('order_info', $order_info)->with('order_details', $order_details);
+            }
+
+
 }

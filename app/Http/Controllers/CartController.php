@@ -111,6 +111,9 @@ class CartController extends Controller
         $cartSubtotal = Cart::subtotal(0, ',', '.') . ' đ';  // Tổng tiền trước thuế
         $cartTax = Cart::tax(0, ',', '.') . ' đ';  // Tiền thuế
         $cartTotal = Cart::total(0, ',', '.') . ' đ';  // Tổng tiền sau thuế
+        $carttt = Cart::subtotal(0, ',', '.') . ' đ'; 
+        $totalAmount = $request->input('total_amount');
+
     
         // Trả về JSON chứa thông tin mới
         return response()->json([
@@ -118,6 +121,9 @@ class CartController extends Controller
             'cart_total' => $cartTotal,    // Tổng tiền giỏ hàng
             'cart_subtotal' => $cartSubtotal,  // Tổng tiền trước thuế
             'cart_tax' => $cartTax,        // Tiền thuế
+            'carttt' => $carttt,
+            'totalAmount' => $totalAmount,
+            
         ]);
     }
 

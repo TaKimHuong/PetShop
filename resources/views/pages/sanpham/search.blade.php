@@ -26,11 +26,7 @@
                     <img src="{{asset('public/upload/product/'.$product->product_image)}}" alt="hinhanh" />
                     <h6>{{$product->product_name}}</h6>
                     <div>
-                        <!-- <i class="fas fa-star star1"></i>
-                        <i class="fas fa-star star2"></i>
-                        <i class="fas fa-star star3 "></i>
-                        <i class="fas fa-star star4"> </i>
-                        <i class="fas fa-star star5"></i> -->
+                       
                         <div class="stars" style="margin-left: 10px;">
                         @for ($i = 1; $i <= 5; $i++)
                             <span class="starr {{ ($product->average_rating >= $i) ? 'filled' : '' }}" onmouseover="return false;">&#9733;</span>

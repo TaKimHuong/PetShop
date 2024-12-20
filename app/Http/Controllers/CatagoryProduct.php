@@ -7,6 +7,7 @@ use App\Models\Category;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\Redirect;
+use App\Models\Rating;
 session_start();
 class CatagoryProduct extends Controller
 {
@@ -108,6 +109,12 @@ class CatagoryProduct extends Controller
         ->get();
         $category_by_id = DB::table('tbl_product')->join('tbl_category_product', 'tbl_product.category_id','=','tbl_category_product.category_id')
         ->where('tbl_product.category_id', $category_id)->get();
+        foreach ($category_by_id as $product) {
+            $product->average_rating = Rating::where('product_id', $product->product_id)->avg('rating');
+        }  
+
+
+
         $category_name = DB::table('tbl_category_product')->where('tbl_category_product.category_id', $category_id)->limit(1)->get();
         return view('pages.category.show_category_home')->with('category', $cate_product)->with('category_by_id', $category_by_id)->with('category_name', $category_name);
     }

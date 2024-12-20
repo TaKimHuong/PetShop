@@ -100,7 +100,7 @@
                 </a>
             </div>
             <div class="col10 header-icon">
-
+            <a href="{{URL::to('/Thong-tin-tai-khoan/'.$customer_id)}}">  <img src="{{asset('public/frontend/image/icon/dangnhap-icon.png')}}" alt="đăng nhập"></a>
                         <?php
             // use Illuminate\Support\Facades\Session;
 
@@ -109,7 +109,7 @@
                 // Nếu có `customer_id` trong Session, thì có thể hiển thị nội dung cho trường hợp đã đăng nhập
                 ?>
                 <a id="dangnhap" href="{{URL::to('/logout-checkout')}}">
-                    <img src="{{asset('public/frontend/image/icon/dangnhap-icon.png')}}" alt="đăng nhập">
+                   
                     <span>Đăng xuất</span>
                 </a>
                 <?php
@@ -117,7 +117,7 @@
                 // Nếu không có `customer_id` trong Session
                 ?>
                 <a id="dangnhap" href="{{URL::to('/dang-nhap-thanh-toan')}}">
-                    <img src="{{asset('public/frontend/image/icon/dangnhap-icon.png')}}" alt="đăng nhập">
+                  
                     <span>Đăng nhập</span>
                 </a>
                 <?php
@@ -141,102 +141,7 @@
                     <span>GIỐNG CHÓ</span>
 
                 </a>
-                <ul class="sub-menu">
-                    <li>
-                        <ul class="menu-list">
-                            <li> <a href="z1.html">Akita Inu</a></li>
-                            <li><a href="z8.html">Alabai</a></li>
-                            <li><a href="zzalaska14.html">Alaska</a></li>
-                            <li><a href="zzalaska14.html">Alaska Giant</a></li>
-                        </ul>
-                    </li>
-                    <li>
-                        <ul class="menu-list">
-                            <li><a href="z2.html">Basset Hound</a></li>
-                            <li><a href="z13.html">Bắc Hà</a></li>
-                            <li><a href="z13.html">Bắc Kinh</a></li>
-                            <li><a href="zBecgie12.html">Beagle</a></li>
-                        </ul>
-                    </li>
-                    <li>
-                        <ul class="menu-list">
-
-                            <li><a href="zBecgie12.html">Becgie Bỉ</a></li>
-                            <li><a href="z11.html">Becgie Đức</a></li>
-                            <li><a href="zBecgie12.html">Becgie Hà Lan</a></li>
-                            <li> <a href="zBecgie12.html">Becgie Pháp</a> </li>
-                        </ul>
-                    </li>
-                    <li>
-                        <ul class="menu-list">
-                            <li><a href="z3.html">Bichon Frise</a></li>
-                            <li><a href="zbordercoli7.html">Border Collie</a></li>
-                            <li><a href="z14.html">Boston</a></li>
-                            <li><a href="zBull Terrier22.html">Bull Pháp</a></li>
-                        </ul>
-                    </li>
-                    <li>
-                        <ul class="menu-list">
-                            <li><a href="zBullDog15.html">Bulldog</a></li>
-                            <li><a href="z9.html">Bully American</a></li>
-                            <li><a href="z15.html">Caucasian</a></li>
-                            <li><a href="z17">Chihuahua</a></li>
-                        </ul>
-                    </li>
-                    <li>
-                        <ul class="menu-list">
-                            <li><a href="z4.html">Chó Ai Cập</a></li>
-                            <li><a href="z10.html">Chó Bướm</a></li>
-                            <li><a href="z16.html">Chó Đốm</a></li>
-                            <li><a href="z18.html">Chó Lai Sói</a></li>
-                        </ul>
-                    </li>
-                    <li>
-                        <ul class="menu-list">
-                            <li><a href="z5.html">Chó Nhật</a></li>
-                            <li><a href="z12.html">Chó Sục Bò</a></li>
-                            <li><a href="zhusky5.html">Chó Tam Sắc</a></li>
-                            <li><a href="z19.html">Chó Võ Sĩ</a></li>
-                        </ul>
-                    </li>
-                    <li>
-                        <ul class="menu-list">
-                            <li><a href="z6.html">Chó Xoáy Thái</a></li>
-                            <li><a href="zChowChow16.html">Chow Chow</a></li>
-                            <li><a href="ZGreat Dane24.html">Great Dane</a></li>
-                            <li><a href="z20.html">H’Mông Cộc</a></li>
-                        </ul>
-                    </li>
-                    <li>
-                        <ul class="menu-list">
-                            <li><a href="zhusky5.html">Husky</a></li>
-                            <li><a href="zLabrador11.html">Labrador</a></li>
-                            <li><a href="zLạp Xưởng13.html">Lạp Xưởng</a></li>
-                            <li><a href="z21.html">Ngao Tây Tạng</a></li>
-                        </ul>
-                    </li>
-                    <li>
-                        <ul class="menu-list">
-                            <li><a href="zphochuou4.html">Phốc Hươu</a></li>
-                            <li><a href="zphocsoc8.html">Phốc Sóc</a></li>
-                            <li><a href="zPhú Quốc23.html">Phú Quốc</a></li>
-                            <li><a href="zPitbull9.html">Pitbull</a></li>
-                        </ul>
-                    </li>
-                    <li>
-                        <ul class="menu-list">
-                            <li><a href="zpoodle3.html">Poodle</a></li>
-                            <li><a href="zRottweiler10.html">Rottweiler</a></li>
-                            <li><a href="zPug18.html">Pug</a></li>
-                            <li><a href="zsaoyed6.html">Samoyed</a></li>
-                        </ul>
-                    </li>
-                    <li>
-                        <ul class="menu-list">
-                            <li><a href="z1.html">Shiba Inu</a></li>
-                        </ul>
-                    </li>
-                </ul>
+              
             </li>
             <li>
                 <a href="{{URL::to('/cun-con')}}">

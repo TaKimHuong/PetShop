@@ -100,7 +100,7 @@
                 </a>
             </div>
             <div class="col10 header-icon">
-
+            <a href="{{URL::to('/Thong-tin-tai-khoan/'.$customer_id)}}">  <img src="{{asset('public/frontend/image/icon/dangnhap-icon.png')}}" alt="đăng nhập"></a>
                         <?php
             // use Illuminate\Support\Facades\Session;
 
@@ -109,7 +109,7 @@
                 // Nếu có `customer_id` trong Session, thì có thể hiển thị nội dung cho trường hợp đã đăng nhập
                 ?>
                 <a id="dangnhap" href="{{URL::to('/logout-checkout')}}">
-                    <img src="{{asset('public/frontend/image/icon/dangnhap-icon.png')}}" alt="đăng nhập">
+                   
                     <span>Đăng xuất</span>
                 </a>
                 <?php
@@ -117,7 +117,7 @@
                 // Nếu không có `customer_id` trong Session
                 ?>
                 <a id="dangnhap" href="{{URL::to('/dang-nhap-thanh-toan')}}">
-                    <img src="{{asset('public/frontend/image/icon/dangnhap-icon.png')}}" alt="đăng nhập">
+                  
                     <span>Đăng nhập</span>
                 </a>
                 <?php

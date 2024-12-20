@@ -103,12 +103,14 @@ use Gloudemans\Shoppingcart\Facades\Cart;
 				</tr>
 			@endforeach
 
-			<!-- Tổng giỏ hàng -->
-			<p style="font-size: 18px; font-weight: bold;">{{ Cart::subtotal() }} đ</p>
+			
 
 						
 					</body>
 				</table>
+
+				<!-- Tổng giỏ hàng -->
+			<p style="font-size: 18px; font-weight: bold; text-align: right; color:rgb(22, 22, 47); margin-right: 15px;">Tổng tiền: {{ Cart::subtotal() }} đ</p>
 			</div>
 		</div>
 

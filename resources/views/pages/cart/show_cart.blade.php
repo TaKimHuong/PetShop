@@ -123,6 +123,8 @@ use Gloudemans\Shoppingcart\Facades\Cart;
 					<div class="total_area">
 						<ul>
 							<li>Tổng tiền:  <span id="subtotal">{{ Cart::priceTotal(0,',','.') }} đ</span></li>
+
+							<li>Phí vận chuyển: <span>0đ</span></li>
 						
 							<!-- <li>Mã giảm:  <span>
 									@php
@@ -166,10 +168,12 @@ use Gloudemans\Shoppingcart\Facades\Cart;
 								@endphp
 								<li>Mã giảm: <span>{{ $coupon['coupon_condition'] == 1 ? $coupon['coupon_number'] . ' %' : number_format($coupon['coupon_number']) . ' đ' }}</span></li>
 								<li>Tổng giảm: <span>{{ number_format($total_coupon) }} đ</span></li>
-								<li>Tổng thanh toán: <span>{{ number_format($total - $total_coupon) }} đ</span></li>
+								<li>Tổng thanh toán: <span id="total_magiam">{{ number_format($total - $total_coupon) }} đ</span></li>
 							@else
 								<li>Không có mã giảm giá nào.</li>
-								<li>Tổng thanh toán: <span>{{ number_format($total) }} đ</span></li>
+								<!-- <li>Tổng thanh toán: <span>{{ number_format($total) }} đ</span></li> -->
+								<li>Tổng thanh toán: <span id="carttt">{{ Cart::priceTotal(0,',','.') }} đ</span></li>
+								
 							@endif
 
 							</span></li>
@@ -210,6 +214,7 @@ use Gloudemans\Shoppingcart\Facades\Cart;
 	</section><!--/#do_action-->
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 <script>
+	var totalAmount = $("#total_magiam").text();
     $(document).ready(function() {
     // Khi nhấn nút +
     $('.cart_quantity_up').click(function() {
@@ -239,6 +244,7 @@ use Gloudemans\Shoppingcart\Facades\Cart;
             method: 'POST',
             data: {
                 _token: $('meta[name="csrf-token"]').attr('content'),
+				total_amount: totalAmount,
                 rowId: rowId,
                 quantity: quantity
             },
@@ -248,6 +254,9 @@ use Gloudemans\Shoppingcart\Facades\Cart;
                 $('#tong_gia').text(response.cart_total); // Cập nhật tổng giỏ hàng
                 $('#subtotal').text(response.cart_subtotal); // Cập nhật tổng trước thuế
                 $('#tax').text(response.cart_tax); // Cập nhật tiền thuế
+				$('#carttt').text(response.carttt);
+				$('#totalAmount').text(response.totalAmount);
+				
             },
             error: function(xhr, status, error) {
                 console.error('AJAX Error:', error);

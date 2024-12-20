@@ -20,10 +20,6 @@
     <!-- trang detail  -->
 
     <link href="{{asset('public/frontend/css/bootstrap.min.css')}}" rel="stylesheet">
-    <!-- <link href="{{asset('public/frontend/css/font-awesome.min.css')}}" rel="stylesheet"> 
-   <link href="{{asset('public/frontend/css/prettyPhoto.css')}}" rel="stylesheet">
-    <link href="{{asset('public/frontend/css/price-range.css')}}" rel="stylesheet">
-    <link href="{{asset('public/frontend/css/animate.css')}}" rel="stylesheet"> -->
 	<link href="{{asset('public/frontend/css/main.css')}}" rel="stylesheet">
 	<link href="{{asset('public/frontend/css/responsive.css')}}" rel="stylesheet"> 
 
@@ -119,7 +115,7 @@ use Symfony\Component\HttpFoundation\Session\Session as SessionSession;
                 </a>
             </div>
             <div class="col10 header-icon">
-            <a href="{{URL::to('/Thong-tin-tai-khoan/'.$customer_id)}}">  <img src="{{asset('public/frontend/image/icon/dangnhap-icon.png')}}" alt="đăng nhập"></a>
+            <a href="#">  <img src="{{asset('public/frontend/image/icon/dangnhap-icon.png')}}" alt="đăng nhập"></a>
                         <?php
             // use Illuminate\Support\Facades\Session;
 
@@ -204,50 +200,88 @@ use Symfony\Component\HttpFoundation\Session\Session as SessionSession;
     </nav>
 
     <!--section-->
-    <section class="container main">
-        <div class="row">
-            <div class="col-md-3 col-sm-3 mn_main menu_main" >
-            <h4>DANH MỤC SẢN PHẨM</h4>
-            <ul>
-                @foreach($category as $key =>$cate)
-                <li>
-                    <a href="{{URL::to('/danh-muc-san-pham/'.$cate->category_id)}}">{{$cate->category_name}}</a>
-                </li>
-               @endforeach
-              
-            </ul>
 
+    <div>
+            <div class="container">
+                <div class="row">
+                    <div class="col-md-12 form-container">
+                    <h2>THÔNG TIN TÀI KHOẢN</h2>
+                    @if (session('success'))
+                        <div class="alert alert-success">
+                            {{ session('success') }}
+                        </div>
+                    @endif
 
-            <p style="margin-top: 50px; margin-left: 10px; font-weight: bold;">Tìm kiếm sản phẩm</p>
-            <div class="slider-container" style="margin-top: -45px;">
-            <div class="slider-wrapper">
-            <input type="range" id="min-range" class="slider" min="0" max="10000000" value="0" step="100000">
-            <input type="range" id="max-range" class="slider" min="0" max="10000000" value="10000000" step="100000">
-
-
-            </div>
-            <div class="slider-labels">
-                <span id="min-price" style="margin-top: 20px; font-size: 14px;">0 VND</span>
-                <span id="max-price" style="margin-top: 20px; font-size: 14px;">10,000,000 VND</span>
-            </div>
-
-            <!-- Nút Tìm Kiếm -->
-            <button id="search-btn" style="margin-top: 20px;">Tìm Kiếm</button>
-            
-            <!-- Hiển thị giá trị đã chọn -->
-            <div id="result" style="margin-top: 20px; font-weight: bold; font-size: 16px;"></div>
-        </div>
-            </div>
-            <div class="col-md-9 if_main">
-              <div class="info_main"  id="search-results">
-                @yield('content')
-               
+                    @if (session('error'))
+                        <div class="alert alert-error">
+                            {{ session('error') }}
+                        </div>
+                    @endif
+                      <form action="{{URL::to('/update-account/'.$customer->customer_id)}}" method="POST">
+                        @csrf
+                    
+                        <div class="form-group">
+                            <label for="name">Họ và Tên:</label>
+                            <input type="text" id="name" name="customer_name" value="{{ $customer->customer_name }}">
+                        </div>
+                        <div class="form-group">
+                            <label for="email">Email:</label>
+                            <input type="email" id="email" name="customer_email" value="{{ $customer->customer_email }}">
+                        </div>
+                        <div class="form-group">
+                            <label for="phone">Số Điện Thoại:</label>
+                            <input type="text" id="phone" name="customer_phone" value="{{ $customer->customer_phone }}">
+                        </div>
+                        <div class="form-group">
+                            <label for="address">Tên Đăng Nhập:</label>
+                            <input type="text" id="address" name="customer_name_login" value="{{ $customer->customer_name_login }}">
+                        </div>
+                        <button type="submit" class="btn">Lưu Thông Tin</button>
+                      
+                    </form>
+                    </div>
+                    <div class="col-md-12">
+                    <h2>LỊCH SỬ MUA HÀNG</h2>
+                    <table class="order-history-table">
+                        <thead>
+                            <tr>
+                                <th>ID Đơn Hàng</th>
+                               
+                                <th>Tổng Tiền</th>
+                                <th>Ngày Đặt</th>
+                                <th>Ngày Duyệt</th>
+                                <th>Trạng Thái</th>
+                                <th>Xem chi tiết đơn hàng</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach ($all_order as $order)
+                            <tr>
+                                <td>{{ $order->dathang_id }}</td>
+                                <td>{{ number_format($order->tong_tien, 0, ',', '.') }} VND</td>
+                                <td>{{ $order->ngay_dat }}</td>
+                               
+                              
+                                
+                                <td>{{ $order->ngay_duyet }}</td>
+                                <td>{{ $order->dathang_status }}</td>
+                               
+                                <td>
+                                <a href="{{ URL::to('/view-order/'.$order->dathang_id) }}" class="btn-view-detail">
+                                    Xem chi tiết
+                                </a>
+                            </td>
+                            </tr>
+                            @endforeach
+                        </tbody>
+                    </table>
+                    </div>
                 </div>
             </div>
-        </div>
-           
-       
-    </section>
+            
+        
+    </div>
+   
    
     <div class="back-to-top" id="backtop">
         <a href="">
@@ -367,143 +401,127 @@ use Symfony\Component\HttpFoundation\Session\Session as SessionSession;
 });
 
     </script>
-
+    <style>
     
-        
-<style>
-    .slider-container {
-        width: 6cm; /* Chiều dài thanh kéo tương đương với 10cm */
-        position: relative;
-        margin: 0 auto;
-    }
-
-    .slider-wrapper {
-        position: relative;
-        width: 100%;
-    }
-
-    .slider {
-        position: absolute;
-        width: 100%;
-        height: 8px;
-        background: #ddd;
-        border-radius: 5px;
-        z-index: 1;
-        -webkit-appearance: none;
-        -moz-appearance: none;
-        appearance: none;
-    }
-
-    .slider::-webkit-slider-runnable-track {
-        width: 100%;
-        height: 8px;
-        background: #ddd;
-        border-radius: 5px;
-    }
-
-    .slider::-webkit-slider-thumb {
-        -webkit-appearance: none;
-        appearance: none;
-        width: 16px;
-        height: 16px;
-        background: #007bff;
-        border-radius: 50%;
-        cursor: pointer;
-        z-index: 2;
-        position: relative;
-    }
-
-    .slider::-moz-range-track {
-        width: 100%;
-        height: 8px;
-        background: #ddd;
-        border-radius: 5px;
-    }
-
-    .slider::-moz-range-thumb {
-        width: 16px;
-        height: 16px;
-        background: #007bff;
-        border-radius: 50%;
-        cursor: pointer;
-        z-index: 2;
-        position: relative;
-    }
-
-    .slider-labels {
-        display: flex;
-        justify-content: space-between;
-        margin-top: 50px;
-    }
-
-    .slider-labels span {
-        font-weight: bold;
-    }
-
-    .slider-container .slider-wrapper input[type="range"] {
-        z-index: 2;
-    }
-    #search-btn {
-    background-color: #d3d3d3; /* Màu nền xám nhạt */
-    color: black; /* Màu chữ đen */
-    font-size: 14px; /* Kích thước chữ */
-    padding: 5px 10px; /* Khoảng cách trong nút (trên/dưới, trái/phải) */
-    border: none; /* Không có đường viền */
-    border-radius: 5px; /* Bo góc */
-    cursor: pointer; /* Hiển thị con trỏ chuột khi di chuột vào */
-    transition: background-color 0.3s ease; /* Hiệu ứng chuyển màu nền khi hover */
-    }
-
-    #search-btn:hover {
-        background-color: #d3d3d3; /* Giữ màu xám nhạt khi hover */
-    }
-
-
-    #result {
-        font-size: 16px;
-        color: #333;
-    }
-</style>
-<script>
-     // Lắng nghe sự kiện thay đổi giá trị của thanh trượt
-     document.getElementById('min-range').addEventListener('input', function() {
-        var minValue = this.value;
-        var maxValue = document.getElementById('max-range').value;
-
-        // Cập nhật nhãn min với dấu phẩy
-        document.getElementById('min-price').textContent = Number(minValue).toLocaleString() + ' VND';
-
-        // Đảm bảo min không lớn hơn max
-        if (parseInt(minValue) > parseInt(maxValue)) {
-            document.getElementById('min-range').value = maxValue;
-            document.getElementById('min-price').textContent = Number(maxValue).toLocaleString() + ' VND';
+        .form-container {
+            background: #ffffff;
+            border-radius: 8px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            padding: 20px;
+            width: 100%;
         }
-    });
-
-    document.getElementById('max-range').addEventListener('input', function() {
-        var maxValue = this.value;
-        var minValue = document.getElementById('min-range').value;
-
-        // Cập nhật nhãn max với dấu phẩy
-        document.getElementById('max-price').textContent = Number(maxValue).toLocaleString() + ' VND';
-
-        // Đảm bảo max không nhỏ hơn min
-        if (parseInt(maxValue) < parseInt(minValue)) {
-            document.getElementById('max-range').value = minValue;
-            document.getElementById('max-price').textContent = Number(minValue).toLocaleString() + ' VND';
+        .form-container h2 {
+            margin-bottom: 20px;
+            text-align: center;
+            color: #333;
         }
-    });
+        .form-group {
+            margin-bottom: 15px;
+        }
+        .form-group label {
+            display: block;
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
+        .form-group input {
+            width: 100%;
+            padding: 10px;
+           
+            border-radius: 5px;
+            background: #f8f8f8;
+        }
+        .btn {
+            display: block;
+            width: 20%;
+            padding: 10px;
+            background-color: #28a745;
+            color: white;
+            text-align: center;
+            border: none;
+            border-radius: 5px;
+            text-decoration: none;
+            font-size: 16px;
+            margin-top: 10px;
+        }
+        .btn:hover {
+            background-color: #218838;
+        }
+        .btn-cancel {
+            background-color: #dc3545;
+        }
+        .btn-cancel:hover {
+            background-color: #c82333;
+        }
+        order-history-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+}
 
-    //Lắng nghe sự kiện nhấn nút tìm kiếm
-    document.getElementById('search-btn').addEventListener('click', function() {
-        var minValue = document.getElementById('min-range').value;
-        var maxValue = document.getElementById('max-range').value;
+        /* Style cho tiêu đề của bảng */
+        .order-history-table th {
+            background-color:#FF9900;
+            color: white;
+            padding: 12px;
+            text-align: left;
+            font-size: 16px;
+        }
 
-        // Chuyển hướng đến route tìm kiếm với query string
-        window.location.href = '{{ route("search") }}?min_price=' + minValue + '&max_price=' + maxValue;
-    });
-</script>
+        /* Style cho các ô dữ liệu */
+        .order-history-table td {
+            border: 1px solid #ddd;
+            padding: 12px;
+            text-align: left;
+            font-size: 14px;
+        }
 
-  
-        
+        /* Style cho các dòng trong bảng khi hover */
+        .order-history-table tr:hover {
+            background-color: #f5f5f5;
+        }
+
+        /* Cải thiện độ dễ đọc của các ô */
+        .order-history-table th, .order-history-table td {
+            text-align: center;
+        }
+
+        /* Tạo khoảng cách giữa các bảng và tiêu đề */
+        h2 {
+            font-size: 24px;
+            color: #333;
+            margin-bottom: 15px;
+            text-align: center;
+            margin-top: 50px;
+        }
+
+        /* Điều chỉnh kích thước font và các dòng bảng */
+        .order-history-table tr {
+            transition: background-color 0.3s ease;
+        }
+        .order-history-table {
+            width: 100%;
+            margin-bottom: 40px;
+        }
+        .btn-view-detail {
+        display: inline-flex;
+        align-items: center;
+        padding: 6px 12px; /* Kích thước nhỏ gọn */
+        background-color: #FF5722; /* Màu cam */
+        color: white;
+        text-decoration: none;
+        border-radius: 3px; /* Bo góc */
+        font-size: 14px; /* Kích thước chữ nhỏ */
+        transition: background-color 0.3s ease;
+        border: none; /* Loại bỏ viền mặc định */
+       
+    }
+
+    .btn-view-detail:hover {
+        background-color: #FF7043; /* Màu cam đậm hơn khi hover */
+    }
+
+    .btn-view-detail i {
+        margin-right: 5px; /* Khoảng cách giữa icon và text, nếu có */
+    }
+    </style>
 </html>

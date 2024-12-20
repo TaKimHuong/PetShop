@@ -176,3 +176,10 @@ Route::get('/delete-account/{customer_id}', [ProductController::class, 'delete_a
 
 // tìm kiếm sản phẩm 
 Route::get('/search', [ProductController::class, 'search'])->name('search');
+
+// thông tin tài khoản của khách hàng
+Route::get('/Thong-tin-tai-khoan/{customer_id}', [HomeController::class, 'thong_tin_tai_khoan']);
+Route::post('/update-account/{customer_id}', [HomeController::class, 'update_account']);
+
+// xem chi tiết đơn hàng của khách hàng đã mua đơn hàng ấy
+Route::get('/view-order/{dathang_id}', [HomeController::class, 'view_order']);
