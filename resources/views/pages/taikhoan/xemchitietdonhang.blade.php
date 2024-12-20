@@ -393,7 +393,7 @@ use Symfony\Component\HttpFoundation\Session\Session as SessionSession;
         .order-history-table th {
             background-color:#FF9900;
             color: white;
-            padding: 12px;
+            padding: 8px;
             text-align: left;
             font-size: 16px;
         }
@@ -401,7 +401,7 @@ use Symfony\Component\HttpFoundation\Session\Session as SessionSession;
         /* Style cho các ô dữ liệu */
         .order-history-table td {
             border: 1px solid #ddd;
-            padding: 12px;
+            padding: 8px;
             text-align: left;
             font-size: 14px;
         }

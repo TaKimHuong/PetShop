@@ -186,13 +186,15 @@ use Gloudemans\Shoppingcart\Facades\Cart;
 				</tr>
 			@endforeach
 
-			<!-- Tổng giỏ hàng -->
-			<p style="font-size: 18px; font-weight: bold;">{{ Cart::subtotal() }} đ</p>
+			
 
 						
 					</body>
 				</table>
+				<!-- Tổng giỏ hàng -->
+				<p style="font-size: 18px; font-weight: bold; text-align: right; margin-right: 15px;">Tổng tiền : {{ Cart::subtotal() }} đ</p>
 			</div>
+			
 		</div>
 
 		<form action="{{URL::to('noi-dat-hang')}}" method="POST">

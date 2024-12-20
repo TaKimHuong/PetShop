@@ -76,7 +76,7 @@ use Gloudemans\Shoppingcart\Facades\Cart;
 			@endforeach
 
 			<!-- Tổng giỏ hàng -->
-			<p style="font-size: 18px; font-weight: bold;">{{ Cart::subtotal() }} đ</p>
+			<!-- <p style="font-size: 18px; font-weight: bold;">{{ Cart::subtotal() }} đ</p> -->
 
 						
 					</body>

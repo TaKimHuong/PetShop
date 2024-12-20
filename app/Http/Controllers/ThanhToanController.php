@@ -203,7 +203,7 @@ class ThanhToanController extends Controller
         
                 // Gửi email
                 $mail->send();
-                echo 'Email đã được gửi thành công';
+                // echo 'Email đã được gửi thành công';
             } catch (Exception $e) {
                 echo "Có lỗi xảy ra khi gửi email: {$mail->ErrorInfo}";
             }
@@ -239,51 +239,6 @@ class ThanhToanController extends Controller
         return Redirect::to('/dang-nhap-thanh-toan');
     }
 
-
-    // ham dang nhap 
-    // public function login_customer(Request $request) {
-    //     $username_login = $request->username_account;
-    //     $password = md5($request->password_account);
-    //     $result = DB::table('tbl_customers')->where('customer_name_login', $username_login)->where('customer_password', $password)->first();
-    //     if($result) {
-    //         Session::put('customer_id', $result->customer_id);
-    //         return Redirect::to('/checkout');
-
-    //     } else {
-    //         return Redirect::to('/dang-nhap-thanh-toan');
-            
-    //     }
-     
-    
-    // }
-    // public function login_customer(Request $request) {
-    //     $username_login = $request->username_account;
-    //     $password = md5($request->password_account);
-    //     $result = DB::table('tbl_customers')->where('customer_name_login', $username_login)->where('customer_password', $password)->first();
-        
-    //     if ($result) {
-    //         Session::put('customer_id', $result->customer_id);
-    
-    //         // Tải lại giỏ hàng từ `tbl_cart_temp`
-    //         $cartItems = DB::table('tbl_cart_temp')->where('customer_id', $result->customer_id)->get();
-    //         foreach ($cartItems as $item) {
-    //             Cart::add([
-    //                 'id' => $item->product_id,
-    //                 'name' => $item->product_name,
-    //                 'qty' => $item->quantity,
-    //                 'price' => $item->product_price,
-    //                 'weight' =>$item->product_price,
-    //                 'options' => [
-    //                     'image' => $item->product_image, // Thêm ảnh sản phẩm vào options
-    //                 ]
-    //             ]);
-    //         }
-    
-    //         return Redirect::to('/checkout');
-    //     } else {
-    //         return Redirect::to('/dang-nhap-thanh-toan');
-    //     }
-    // }
 
     public function login_customer(Request $request) {
         $username_login = $request->username_account;

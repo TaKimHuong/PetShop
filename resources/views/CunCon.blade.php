@@ -119,7 +119,25 @@ use Symfony\Component\HttpFoundation\Session\Session as SessionSession;
                 </a>
             </div>
             <div class="col10 header-icon">
-            <a href="{{URL::to('/Thong-tin-tai-khoan/'.$customer_id)}}">  <img src="{{asset('public/frontend/image/icon/dangnhap-icon.png')}}" alt="đăng nhập"></a>
+            <?php
+            // use Illuminate\Support\Facades\Session;
+
+            $customer_id = Session::get('customer_id');
+            if ($customer_id != NULL) {
+                // Nếu có `customer_id` trong Session, thì có thể hiển thị nội dung cho trường hợp đã đăng nhập
+                ?>
+                  <a href="{{URL::to('/Thong-tin-tai-khoan/'.$customer_id)}}">  <img src="{{asset('public/frontend/image/icon/dangnhap-icon.png')}}" alt="đăng nhập"></a>
+                
+                <?php
+            } else {
+                // Nếu không có `customer_id` trong Session
+                ?>
+                    <a href="{{URL::to('/dang-nhap-thanh-toan')}}">  <img src="{{asset('public/frontend/image/icon/dangnhap-icon.png')}}" alt="đăng nhập"></a>
+                
+                <?php
+            }
+            ?>
+
                         <?php
             // use Illuminate\Support\Facades\Session;
 

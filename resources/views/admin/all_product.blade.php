@@ -62,7 +62,7 @@
             <td>{{$pro->product_name}}</td>
             <td>{{$pro->product_price}}</td>
             <td><img src="{{asset('public/upload/product/'.$pro->product_image) }}" height="100" width="100"></td>
-
+ 
             <td>{{$pro->category_name}}</td>
         
             <td><span class="text-ellipsis">

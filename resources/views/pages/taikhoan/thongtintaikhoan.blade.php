@@ -51,12 +51,7 @@
         <?php
 
 use Symfony\Component\HttpFoundation\Session\Session as SessionSession;
-
-      
-    
         ?>
-
-
         <div class="tieude">
             <div class="col30">
                 <img src="{{asset('public/frontend/image/icon/logo-shop.png')}}" alt="Petshop" />

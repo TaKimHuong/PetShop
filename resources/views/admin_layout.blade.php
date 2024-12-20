@@ -167,16 +167,7 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
                         <span>Font awesome </span>
                     </a>
                 </li> -->
-                <li class="sub-menu">
-                    <a href="javascript:;">
-                        <i class="fa fa-th"></i>
-                        <span>Thương hiệu sản phẩm</span>
-                    </a>
-                    <ul class="sub">
-                    <li><a href="{{URL::to('/add-brand-product')}}">Thêm hiệu sản phẩm</a></li>
-                    <li><a href="{{URL::to('/all-brand-product')}}">Liệt kê thương hiệu sản phẩm</a></li>
-                    </ul>
-                </li>
+               
                 <li class="sub-menu">
                     <a href="javascript:;">
                         <i class="fa fa-tasks"></i>
@@ -215,21 +206,11 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
                         <span>Quản lý tài khoản</span>
                     </a>
                 </li>
-                <li class="sub-menu">
-                    <a href="javascript:;">
-                        <i class="fa fa-glass"></i>
-                        <span>Extra</span>
-                    </a>
-                    <ul class="sub">
-                        <li><a href="gallery.html">Gallery</a></li>
-						<li><a href="404.html">404 Error</a></li>
-                        <li><a href="registration.html">Registration</a></li>
-                    </ul>
-                </li>
+                
                 <li>
                     <a href="login.html">
                         <i class="fa fa-user"></i>
-                        <span>Login Page</span>
+                        <span>Tài khoản</span>
                     </a>
                 </li>
             </ul>            </div>
