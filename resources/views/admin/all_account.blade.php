@@ -50,7 +50,7 @@
                         <a href="{{URL::to('/view-account/'.$account->customer_id)}}" class="btn btn-success btn-sm" style="margin-right: 5px;">
                             Xem
                         </a>
-                        <a href="{{URL::to('/view-account/'.$account->customer_id)}}" class="btn btn-primary btn-sm" style="margin-right: 5px;">
+                        <a href="{{URL::to('/edit-account/'.$account->customer_id)}}" class="btn btn-primary btn-sm" style="margin-right: 5px;">
                             Sửa
                         </a>
                         <!-- Nút xóa -->

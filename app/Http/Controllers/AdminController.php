@@ -9,19 +9,30 @@ use Illuminate\Support\Facades\Redirect;
 session_start();
 class AdminController extends Controller
 {
+    // public function AuthLogin() {
+    //     $admin_id = Session::get('id');
+    //     if($admin_id) {
+    //         return Redirect::to('dashboard');
+    //     } else {
+    //         return Redirect::to('admin')->send();
+    //     }
+    // }
     public function AuthLogin() {
-        $admin_id = Session::get('id');
-        if($admin_id) {
-            return Redirect::to('dashboard');
-        } else {
-            return Redirect::to('admin')->send();
+       
+        $admin_id = Session::get('customer_id');
+        $role = Session::get('ma_quyen');
+        if($admin_id && $role == 1) {
+            return Redirect::to('/dashboard');
+        } 
+         else {
+            return Redirect::to('/dang-nhap-thanh-toan')->send();
         }
     }
     public function index() {
        return view('admin_login');
     }
     public function show_dashboard() {
-        $this->AuthLogin();
+         $this->AuthLogin();
 
         $total = DB::table('tbl_dathang')->sum('tong_tien');
         $customerCount = DB::table('tbl_dathang')->distinct('customer_id')->count('customer_id');
@@ -52,10 +63,10 @@ class AdminController extends Controller
     public function dashboard(Request $request)  {
         $admin_email = $request->admin_email;
         $admin_password = md5($request->admin_password);
-        $result = DB::table('tbl_admin')->where('admin_email', $admin_email)->where('admin_password' , $admin_password)->first();
+        $result = DB::table('tbl_customers')->where('customer_email', $admin_email)->where('customer_password' , $admin_password)->first();
         if ($result) {
-            Session::put('admin_name', $result->admin_name);
-            Session::put('id', $result->id);
+            Session::put('customer_name', $result->customer_name);
+            Session::put('customer_id', $result->customer_id);
             // session(['admin_name' => $result->admin_name]);
             // session(['id' => $result->id]);
             return  Redirect::to('/dashboard');
@@ -68,9 +79,9 @@ class AdminController extends Controller
     }
     public function logout()  {
         $this->AuthLogin();
-        Session::put('admin_name',null);
-        Session::put('id', null);
-        return Redirect::to('/admin');
+        Session::put('customer_name',null);
+        Session::put('customer_id', null);
+        return Redirect::to('/dang-nhap-thanh-toan');
     }
 
 

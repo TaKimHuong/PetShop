@@ -234,6 +234,15 @@ use Symfony\Component\HttpFoundation\Session\Session as SessionSession;
                         <button type="submit" class="btn">Lưu Thông Tin</button>
                       
                     </form>
+                    @if ($roleId == 1 && $customer_id!=NULL)
+                        <a href="{{ url('/dashboard') }}" class="btn btn-primary">Vào trang Admin</a>
+                       
+                    @elseif ($roleId == 3  && $customer_id!=NULL)
+                        <a href="{{ url('/staff-dashboard') }}" class="btn btn-primary">Vào trang Nhân Viên</a>
+                    @else
+                        <p></p>
+                    @endif
+                
                     </div>
                     <div class="col-md-12">
                     <h2>LỊCH SỬ MUA HÀNG</h2>
@@ -241,7 +250,6 @@ use Symfony\Component\HttpFoundation\Session\Session as SessionSession;
                         <thead>
                             <tr>
                                 <th>ID Đơn Hàng</th>
-                               
                                 <th>Tổng Tiền</th>
                                 <th>Ngày Đặt</th>
                                 <th>Ngày Duyệt</th>

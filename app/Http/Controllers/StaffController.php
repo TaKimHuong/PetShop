@@ -2,14 +2,27 @@
 
 namespace App\Http\Controllers;
 
+use Illuminate\Container\Attributes\Auth;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB; 
+use Illuminate\Support\Facades\Session;
+use Illuminate\Support\Facades\Redirect;
+session_start();
 class StaffController extends Controller
 {
     //
-
+    public function AuthLogin() {
+       
+        $admin_id = Session::get('customer_id');
+        $role = Session::get('ma_quyen');
+        if($admin_id && $role == 3) {
+            return Redirect::to('dashboard');
+        } else {
+            return Redirect::to('dang-nhap-thanh-toan')->send();
+        }
+    }
     public function staff_show_dashboard() {
-
+        $this->AuthLogin();
         $total = DB::table('tbl_dathang')->sum('tong_tien');
         $customerCount = DB::table('tbl_dathang')->distinct('customer_id')->count('customer_id');
         $totalEmployees = DB::table('tbl_customers')->where('ma_quyen', 2)->count();

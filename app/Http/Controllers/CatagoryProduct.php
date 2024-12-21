@@ -12,7 +12,7 @@ session_start();
 class CatagoryProduct extends Controller
 {
     public function AuthLogin() {
-        $admin_id = Session::get('id');
+        $admin_id = Session::get('customer_id');
         if($admin_id) {
             return Redirect::to('dashboard');
         } else {

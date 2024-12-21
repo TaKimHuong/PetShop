@@ -1,5 +1,4 @@
 <?php
-
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\AdminController;
@@ -172,6 +171,8 @@ Route::post('/ratings', [RatingController::class, 'rating']);
 Route::get('/quan-ly-tai-khoan', [ProductController::class, 'quan_ly_tai_khoan']);
 
 Route::get('/view-account/{customer_id}', [ProductController::class, 'view_account']);
+Route::get('/edit-account/{customer_id}', [ProductController::class, 'edit_account']);
+Route::post('/update-taikhoan/{customer_id}', [ProductController::class, 'update_taikhoan']);
 Route::get('/delete-account/{customer_id}', [ProductController::class, 'delete_account']);
 
 // tìm kiếm sản phẩm 

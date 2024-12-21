@@ -17,8 +17,8 @@
 }
 </style>
 <div class="info_main">
-            <h4 style="text-align: center;">Kết quả tìm kiếm</h4>
-            <h3>Sản phẩm trong khoảng giá từ {{ number_format($minPrice) }} VND đến {{ number_format($maxPrice) }} VND</h3>
+            <h4 style="text-align: center;">Sản phẩm trong khoảng giá từ {{ number_format($minPrice) }} VND đến {{ number_format($maxPrice) }} VND</h4>
+           <h6 style="text-align: right; margin-right: 20px;">Số sản phẩm: {{$count_products}}</h6>
             <div class="info">
                 @foreach($products as $key=> $product)
                

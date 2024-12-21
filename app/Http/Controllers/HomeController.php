@@ -154,13 +154,19 @@ class HomeController extends Controller
 
         public function thong_tin_tai_khoan($customer_id) {
             $customer = Customer::where('customer_id', $customer_id)->first();
-
+            $roleId = Customer::where('customer_id', $customer_id)->value('ma_quyen');
+            Session::put('ma_quyen', $roleId);
+            if ($roleId == 1 && $customer_id != null) {
+                Session::put('customer_name', $customer->customer_name);
+            } else if ($roleId == 3 && $customer_id != null) {
+                Session::put('customer_name', $customer->customer_name);
+            }
             $all_order = DB::table('tbl_dathang')
             ->join('tbl_customers', 'tbl_dathang.customer_id', '=', 'tbl_customers.customer_id')
             ->where('tbl_dathang.customer_id', $customer_id)
             ->select('tbl_dathang.*', 'tbl_customers.customer_name')
             ->orderBy('tbl_dathang.dathang_id', 'desc')->get();
-            return view('pages.taikhoan.thongtintaikhoan')->with('customer' , $customer)->with('all_order' , $all_order);
+            return view('pages.taikhoan.thongtintaikhoan')->with('customer' , $customer)->with('all_order' , $all_order)->with('roleId' , $roleId);
         }
 
             public function update_account(Request $request, $customer_id)

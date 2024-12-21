@@ -100,7 +100,24 @@
                 </a>
             </div>
             <div class="col10 header-icon">
-            <a href="{{URL::to('/Thong-tin-tai-khoan/'.$customer_id)}}">  <img src="{{asset('public/frontend/image/icon/dangnhap-icon.png')}}" alt="đăng nhập"></a>
+            <?php
+            // use Illuminate\Support\Facades\Session;
+
+            $customer_id = Session::get('customer_id');
+            if ($customer_id != NULL) {
+                // Nếu có `customer_id` trong Session, thì có thể hiển thị nội dung cho trường hợp đã đăng nhập
+                ?>
+                  <a href="{{URL::to('/Thong-tin-tai-khoan/'.$customer_id)}}">  <img src="{{asset('public/frontend/image/icon/dangnhap-icon.png')}}" alt="đăng nhập"></a>
+                
+                <?php
+            } else {
+                // Nếu không có `customer_id` trong Session
+                ?>
+                    <a href="{{URL::to('/dang-nhap-thanh-toan')}}">  <img src="{{asset('public/frontend/image/icon/dangnhap-icon.png')}}" alt="đăng nhập"></a>
+                
+                <?php
+            }
+            ?>
                         <?php
             // use Illuminate\Support\Facades\Session;
 
@@ -402,94 +419,11 @@
         </div>
 
     </div>
-    <!-- form ho tro -->
-    <div class="form-support">
-        <div>
-            <h1>
-                HỖ TRỢ
-            </h1>
-        </div>
-        <div>
-            <img src="{{asset('public/frontend/image/icon/user-name.png')}}" /><input type="text" placeholder="Nhập họ và tên..." />
-        </div>
-        <div>
-            <img src="{{asset('public/frontend/image/icon/number-phone.png')}}" /><input type="text" placeholder="Nhập số điện thoại..." />
-        </div>
-
-        <div>
-            <img src="{{asset('public/frontend/image/icon/mail-name.png')}}" /><input type="text" placeholder="Nhập email của bạn..." />
-        </div>
-        <div class="question">
-            <textarea placeholder="Nhập nội dung" rows="5">
-Nhập nội dung
-        </textarea>
-            <div>
-                <input type="button" value="Gửi đi" />
-            </div>
-        </div>
-        <div id="knot">
-            <img src="{{asset('public/frontend/image/icon/botton-out.png')}}">
-        </div>
-    </div>
-
+    
     <div class="form-wrapper">
         <!-- Form đăng nhập -->
-         <form action="" method="post">
-        <div class="form-login">
-            <h1>ĐĂNG NHẬP</h1> 
-            <div class="login-heading">
-                <img src="{{asset('public/frontend/image/icon/user-name.png')}}" />
-                <input type="text" placeholder="Nhập tên đăng nhập..." />
-            </div>
-            <div class="login-heading password-wrapper">
-                <img src="{{asset('public/frontend/image/icon/password.png')}}" />
-                <input type="password" placeholder="Nhập mật khẩu..." />
-            </div>
-            <div>
-                <input type="button" value="Đăng nhập" id="dangnhap" />
-            </div>
-            <div class="register-link">
-                <p>Bạn chưa có tài khoản? <a href="#" class="register-btn">Đăng ký ngay</a></p>
-            </div>
-            <div id="knot1"><img src="{{asset('public/frontend/image/icon/botton-out.png')}}"></div>
-        </div>
-        </form>
+      
        <!-- Form đăng ký -->
-<div class="form-wrapper">
-    <div class="form-register">
-        <h1>ĐĂNG KÝ</h1> 
-            <div class="login-heading">
-            <img src="public/frontend/image/icon/user-name.png')}}" />
-            <input type="text" placeholder="Nhập tên đăng ký..." />
-        </div>
-        <!-- Email -->
-        <div class="login-heading email">
-            <img src="public/frontend/image/icon/email.png')}}" />
-            <input type="email" placeholder="Nhập địa chỉ Gmail..." />
-        </div>
-        <!-- Phone number -->
-        <div class="login-heading tel">
-            <img src="{{asset('public/frontend/image/icon/phone.png')}}" />
-            <input type="tel" placeholder="Nhập số điện thoại..." />
-        </div>
-        <!-- Password -->
-        <div class="login-heading password-wrapper">
-            <img src="{{asset('public/frontend/image/icon/password.png')}}" />
-            <input type="password" placeholder="Nhập mật khẩu..." />
-        </div>
-        <div class="login-heading password-wrapper">
-            <img src="{{asset('public/frontend/image/icon/password.png')}}" />
-            <input type="password" placeholder="Nhập lại mật khẩu..." />
-        </div>
-        <div>
-            <input type="button" value="Đăng ký" id="dangki" />
-        </div>
-        <div class="register-link">
-            <p>Đã có tài khoản? <a href="#" class="login-btn">Đăng nhập</a></p>
-        </div>
-        <div id="knot2"><img src="{{asset('public/frontend/image/icon/botton-out.png')}}"></div>
-    </div>
-</div>
 
 
 

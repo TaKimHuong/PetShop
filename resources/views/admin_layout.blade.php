@@ -114,9 +114,11 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
 
             <?php
             use Illuminate\Support\Facades\Session;
-                $name = Session::get('admin_name');
-                if ($name) {
+                $name = Session::get('customer_name');
+                $quyen = Session::get('ma_quyen');
+                if ($quyen == 1 && $name) {
                     echo $name;
+                    
                     // Session::put('message', null);
                 }
                 
@@ -207,12 +209,12 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
                     </a>
                 </li>
                 
-                <li>
+                <!-- <li>
                     <a href="login.html">
                         <i class="fa fa-user"></i>
                         <span>Tài khoản</span>
                     </a>
-                </li>
+                </li> -->
             </ul>            </div>
         <!-- sidebar menu end-->
     </div>

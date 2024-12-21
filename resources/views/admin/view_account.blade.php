@@ -26,7 +26,7 @@
                                         <input type="text" value="{{$view_account->customer_name}}" class="form-control" id="exampleInputEmail1" name="category_product_name" readonly>
                                     </div>
                                     <div class="form-group">
-                                        <label for="exampleInputEmail1">Gamil</label>
+                                        <label for="exampleInputEmail1">Gmail</label>
                                         <input type="text" value="{{$view_account->customer_email}}" class="form-control" id="exampleInputEmail1" name="category_product_name" readonly>
                                     </div>
                                     <div class="form-group">

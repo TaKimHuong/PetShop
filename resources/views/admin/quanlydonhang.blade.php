@@ -171,9 +171,9 @@
       <div class="row">
         
         <div class="col-sm-5 text-center">
-          <small class="text-muted inline m-t-sm m-b-sm">showing 20-30 of 50 items</small>
+          <small class="text-muted inline m-t-sm m-b-sm">10 sản phẩm cho mỗi trang</small>
         </div>
-        <div class="col-sm-7 text-right text-center-xs">                
+        <!-- <div class="col-sm-7 text-right text-center-xs">                
           <ul class="pagination pagination-sm m-t-none m-b-none">
             <li><a href=""><i class="fa fa-chevron-left"></i></a></li>
             <li><a href="">1</a></li>
@@ -182,7 +182,32 @@
             <li><a href="">4</a></li>
             <li><a href=""><i class="fa fa-chevron-right"></i></a></li>
           </ul>
-        </div>
+        </div> -->
+        <div class="col-sm-7 text-right text-center-xs">                
+    <ul class="pagination pagination-sm m-t-none m-b-none">
+        <!-- Nút Previous -->
+        <li class="{{ $all_order->onFirstPage() ? 'disabled' : '' }}">
+            <a href="{{ $all_order->previousPageUrl() }}">
+                <i class="fa fa-chevron-left"></i>
+            </a>
+        </li>
+        
+        <!-- Số trang -->
+        @for ($i = 1; $i <= $all_order->lastPage(); $i++)
+            <li class="{{ $all_order->currentPage() == $i ? 'active' : '' }}">
+                <a href="{{ $all_order->url($i) }}">{{ $i }}</a>
+            </li>
+        @endfor
+
+        <!-- Nút Next -->
+        <li class="{{ $all_order->hasMorePages() ? '' : 'disabled' }}">
+            <a href="{{ $all_order->nextPageUrl() }}">
+                <i class="fa fa-chevron-right"></i>
+            </a>
+        </li>
+    </ul>
+</div>
+
       </div>
     </footer>
   </div>

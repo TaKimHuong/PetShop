@@ -240,6 +240,45 @@ class ThanhToanController extends Controller
     }
 
 
+    // public function login_customer(Request $request) {
+    //     $username_login = $request->username_account;
+    //     $password = md5($request->password_account);
+    
+    //     // Tìm kiếm người dùng theo thông tin đăng nhập
+    //     $result = DB::table('tbl_customers')
+    //         ->where('customer_name_login', $username_login)
+    //         ->where('customer_password', $password)
+    //         ->first();
+    
+    //     if ($result) {
+    //         // Kiểm tra quyền
+            
+    //             // Khách hàng: tiếp tục với quy trình như cũ
+    //             Session::put('customer_id', $result->customer_id);
+    
+    //             // Tải lại giỏ hàng từ `tbl_cart_temp`
+    //             $cartItems = DB::table('tbl_cart_temp')->where('customer_id', $result->customer_id)->get();
+    //             foreach ($cartItems as $item) {
+    //                 Cart::add([
+    //                     'id' => $item->product_id,
+    //                     'name' => $item->product_name,
+    //                     'qty' => $item->quantity,
+    //                     'price' => $item->product_price,
+    //                     'weight' => $item->product_price,
+    //                     'options' => [
+    //                         'image' => $item->product_image, // Thêm ảnh sản phẩm vào options
+    //                     ]
+    //                 ]);
+    //             }
+    
+    //             return Redirect::to('/checkout');
+            
+    //     } else {
+    //         // Đăng nhập thất bại
+    //         return Redirect::to('/dang-nhap-thanh-toan')->with('error', 'Sai tài khoản hoặc mật khẩu!');
+    //     }
+    // }
+    
     public function login_customer(Request $request) {
         $username_login = $request->username_account;
         $password = md5($request->password_account);
@@ -249,17 +288,22 @@ class ThanhToanController extends Controller
             ->where('customer_name_login', $username_login)
             ->where('customer_password', $password)
             ->first();
-    
+            Session::put('customer_id', $result->customer_id); // Lưu thông tin admin nếu cần
+            Session::put('customer_name' , $result->customer_name);
+            Session::put('ma_quyen' , $result->ma_quyen);
         if ($result) {
             // Kiểm tra quyền
             if ($result->ma_quyen == 1) {
                 // Admin: chuyển hướng đến trang dashboard
-                Session::put('admin_id', $result->customer_id); // Lưu thông tin admin nếu cần
+             //   Session::put('customer_id', $result->customer_id); // Lưu thông tin admin nếu cần
+             //   Session::put('customer_name' , $result->customer_name);
+          //      Session::put('ma_quyen' , $result->ma_quyen);
                 return Redirect::to('/dashboard');
             } elseif ($result->ma_quyen == 2) {
                 // Khách hàng: tiếp tục với quy trình như cũ
-                Session::put('customer_id', $result->customer_id);
-    
+             //   Session::put('customer_id', $result->customer_id);
+             //   Session::put('customer_name' , $result->customer_name);
+            //    Session::put('ma_quyen' , $result->ma_quyen);
                 // Tải lại giỏ hàng từ `tbl_cart_temp`
                 $cartItems = DB::table('tbl_cart_temp')->where('customer_id', $result->customer_id)->get();
                 foreach ($cartItems as $item) {
@@ -277,6 +321,9 @@ class ThanhToanController extends Controller
     
                 return Redirect::to('/checkout');
             } elseif($result->ma_quyen == 3) {
+                // Session::put('customer_id', $result->customer_id);
+                // Session::put('customer_name' , $result->customer_name);
+                // Session::put('ma_quyen' , $result->ma_quyen);
                 return Redirect::to('/staff-dashboard');
             } else {
                 // Trường hợp khác nếu cần xử lý
@@ -287,10 +334,9 @@ class ThanhToanController extends Controller
             return Redirect::to('/dang-nhap-thanh-toan')->with('error', 'Sai tài khoản hoặc mật khẩu!');
         }
     }
-    
 
     public function AuthLogin() {
-        $admin_id = Session::get('id');
+        $admin_id = Session::get('customer_id');
         if($admin_id) {
             return Redirect::to('dashboard');
         } else {
@@ -303,7 +349,10 @@ class ThanhToanController extends Controller
         $all_order = DB::table('tbl_dathang')
         ->join('tbl_customers', 'tbl_dathang.customer_id', '=', 'tbl_customers.customer_id')
         ->select('tbl_dathang.*', 'tbl_customers.customer_name')
-        ->orderBy('tbl_dathang.dathang_id', 'desc')->get();
+        ->orderBy('tbl_dathang.dathang_id', 'desc')
+        ->paginate(10);
+        // ->get();
+        
        $manager_order = view('admin.quanlydonhang')->with('all_order', $all_order);
         return view('admin_layout')->with('admin.quanlydonhang', $manager_order);
       
@@ -377,7 +426,9 @@ class ThanhToanController extends Controller
         ->join('tbl_customers', 'tbl_dathang.customer_id', '=', 'tbl_customers.customer_id')
         ->select('tbl_dathang.*', 'tbl_customers.customer_name')
         ->where('dathang_status', 'Đang chờ xử lý')
-        ->orderBy('tbl_dathang.dathang_id', 'desc')->get();
+        ->orderBy('tbl_dathang.dathang_id', 'desc')
+        ->paginate(10);
+       
         // $all_order = DB::table('tbl_dathang')
         //             ->where('dathang_status', 'Đang chờ xử lý')
         //             ->orderBy('ngay_dat', 'desc')
@@ -391,7 +442,7 @@ class ThanhToanController extends Controller
         ->join('tbl_customers', 'tbl_dathang.customer_id', '=', 'tbl_customers.customer_id')
         ->select('tbl_dathang.*', 'tbl_customers.customer_name')
         ->where('dathang_status', 'Đã duyệt đơn hàng')
-        ->orderBy('tbl_dathang.dathang_id', 'desc')->get();
+        ->orderBy('tbl_dathang.dathang_id', 'desc')->paginate(10);
         // $all_order = DB::table('tbl_dathang')
         //             ->where('dathang_status', 'Đã duyệt đơn hàng')
         //             ->orderBy('ngay_dat', 'desc')
@@ -408,7 +459,7 @@ class ThanhToanController extends Controller
         $all_order = DB::table('tbl_dathang')
         ->join('tbl_customers', 'tbl_dathang.customer_id', '=', 'tbl_customers.customer_id')
         ->select('tbl_dathang.*', 'tbl_customers.customer_name')
-        ->orderBy('tbl_dathang.dathang_id', 'desc')->get();
+        ->orderBy('tbl_dathang.dathang_id', 'desc')->paginate(10);
        $manager_order = view('nhanvien.staff_quanlydonhang')->with('all_order', $all_order);
         return view('nhanvien_layout')->with('nhanvien.staff_quanlydonhang', $manager_order);
       
@@ -425,7 +476,7 @@ class ThanhToanController extends Controller
         ->join('tbl_customers', 'tbl_dathang.customer_id', '=', 'tbl_customers.customer_id')
         ->select('tbl_dathang.*', 'tbl_customers.customer_name')
         ->where('dathang_status', 'Đang chờ xử lý')
-        ->orderBy('tbl_dathang.dathang_id', 'desc')->get();
+        ->orderBy('tbl_dathang.dathang_id', 'desc')->paginate(10);
         // $all_order = DB::table('tbl_dathang')
         //             ->where('dathang_status', 'Đang chờ xử lý')
         //             ->orderBy('ngay_dat', 'desc')
@@ -439,7 +490,7 @@ class ThanhToanController extends Controller
         ->join('tbl_customers', 'tbl_dathang.customer_id', '=', 'tbl_customers.customer_id')
         ->select('tbl_dathang.*', 'tbl_customers.customer_name')
         ->where('dathang_status', 'Đã duyệt đơn hàng')
-        ->orderBy('tbl_dathang.dathang_id', 'desc')->get();
+        ->orderBy('tbl_dathang.dathang_id', 'desc')->paginate(10);
         // $all_order = DB::table('tbl_dathang')
         //             ->where('dathang_status', 'Đã duyệt đơn hàng')
         //             ->orderBy('ngay_dat', 'desc')

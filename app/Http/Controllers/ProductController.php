@@ -8,15 +8,20 @@ use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\Redirect;
 use App\Models\Rating;
 use App\Models\Product;
+use App\Models\Customer;
+use App\Models\PhanQuyen;
 session_start();
 class ProductController extends Controller
 {
     public function AuthLogin() {
-        $admin_id = Session::get('id');
-        if($admin_id) {
+        $admin_id = Session::get('customer_id');
+        $role = Session::get('ma_quyen');
+        if($admin_id && $role == 1) {
             return Redirect::to('dashboard');
+        } elseif($admin_id && $role == 2) {
+            return Redirect::to('staff-dashboard');
         } else {
-            return Redirect::to('admin')->send();
+            return Redirect::to('dang-nhap-thanh-toan')->send();
         }
     }
     public function add_product() {
@@ -332,6 +337,7 @@ class ProductController extends Controller
     // Lấy giá trị min_price và max_price từ query string
     $minPrice = $request->input('min_price', 0); // Mặc định là 1 triệu
     $maxPrice = $request->input('max_price', 10000000); // Mặc định là 10 triệu
+    $count_products = 0;
 
     $category = DB::table('tbl_category_product')
     ->where('category_status', '0')
@@ -340,20 +346,51 @@ class ProductController extends Controller
 
     if ($minPrice == 0 && $maxPrice == 10000000) {
         $products = Product::all(); // Lấy toàn bộ sản phẩm
+        $count_products = Product::count();
         foreach ($products as $product) {
             $product->average_rating = Rating::where('product_id', $product->product_id)->avg('rating');
         } 
     } else{
         // Lọc sản phẩm trong khoảng giá
         $products = Product::whereBetween('product_price', [$minPrice, $maxPrice])->get();
+        $count_products = Product::whereBetween('product_price', [$minPrice, $maxPrice])->count();
         foreach ($products as $product) {
             $product->average_rating = Rating::where('product_id', $product->product_id)->avg('rating');
         }  
     }
 
     // Trả về view với danh sách sản phẩm
-    return view('pages.sanpham.search', compact('products', 'minPrice', 'maxPrice' ,'category'));
+    return view('pages.sanpham.search', compact('products', 'minPrice', 'maxPrice' ,'category','count_products'));
 }
+
+
+        // hàm chỉnh sửa thông tin tài khoản 
+        public function edit_account($customer_id) {
+            $customer = Customer::find($customer_id);
+           $phan_quyen = PhanQuyen::all();
+            return view('admin.edit_account')->with('customer' , $customer)->with('phan_quyen' , $phan_quyen);
+        }
+        public function update_taikhoan(Request $request, $customer_id) {
+            // Validate dữ liệu
+            $request->validate([
+                'customer_quyen' => 'required|integer|min:1',
+            ]);
+        
+            // Tìm và cập nhật bằng Eloquent
+            $customer = Customer::find($customer_id);
+        
+            if ($customer) {
+                $customer->ma_quyen = $request->customer_quyen;
+                $customer->save();
+        
+                Session::put('message', 'Cập nhật tài khoản thành công');
+            } else {
+                Session::put('message', 'Không tìm thấy tài khoản');
+            }
+        
+            return Redirect::to('quan-ly-tai-khoan');
+            
+        }
  
 }
 

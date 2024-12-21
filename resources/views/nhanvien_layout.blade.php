@@ -114,8 +114,9 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
 
             <?php
             use Illuminate\Support\Facades\Session;
-                $name = Session::get('admin_name');
-                if ($name) {
+                $name = Session::get('customer_name');
+                $quyen = Session::get('ma_quyen');
+                if ($name && $quyen == 3) {
                     echo $name;
                     // Session::put('message', null);
                 }

@@ -35,7 +35,7 @@
                                 </div>
                                 <div class="form-group">
                                     <label for="exampleInputPassword1">Mô tả sản phẩm</label>
-                                    <textarea rows=9 style="resize: none " class="form-control" name= 'product_desc' id="exampleInputPassword1">{{$pro->product_desc}} </textarea>
+                                    <textarea rows=9 style="resize: none " class="form-control" name= 'product_desc' id="ckeditor4">{{$pro->product_desc}} </textarea>
                                 </div>
                                 <div class="form-group">
                                     <label for="exampleInputPassword1">Nội dung sản phẩm</label>
@@ -43,11 +43,12 @@
                                 </div>
                                 <script>
                                     CKEDITOR.replace('ckeditor3');
+                                    CKEDITOR.replace('ckeditor4');
                                 </script>
                                 <div class="form-group">
                                 <label for="exampleInputPassword1">Danh mục sản phẩm</label>
                             <select name="product_cate" class="form-control input-sm m-bot15">
-                               
+                                
                             @foreach($cate_product as $key=>$cate)
                             @if($cate->category_id == $pro->category_id)
                                 <option selected value="{{$cate->category_id}}">{{$cate->category_name}}</option>

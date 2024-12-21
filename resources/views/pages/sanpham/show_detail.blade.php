@@ -169,18 +169,7 @@
 							</div>
 							
 							<div class="tab-pane fade" id="companyprofile" >
-								<div class="col-sm-3">
-									<div class="product-image-wrapper">
-										<div class="single-products">
-											<div class="productinfo text-center">
-												<img src="images/home/gallery1.jpg" alt="" />
-												<h2>$56</h2>
-												<p>Easy Polo Black Edition</p>
-												<button type="button" class="btn btn-default add-to-cart"><i class="fa fa-shopping-cart"></i>Add to cart</button>
-											</div>
-										</div>
-									</div>
-								</div>
+								
 								<p>{!! $value->product_desc !!}</p>
 							</div>
 							<div class="tab-pane fade" id="reviews" >

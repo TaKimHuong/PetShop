@@ -159,7 +159,7 @@ use Gloudemans\Shoppingcart\Facades\Cart;
 						<a href=""><img src="{{asset('public/upload/product/'.$v_sanpham->options->image)}}" alt=""></a>
 					</td>
 					<td class="cart_description">
-						<h4><a href="" style="text-align: left;">{{$v_sanpham->name}}</a></h4>
+						<h4><a href="" style="text-align: left; width: 200px;">{{$v_sanpham->name}}</a></h4>
 						<p style="margin-top: 10px;">ID sản phẩm: {{$v_sanpham->id}}</p>
 					</td>
 					<td class="cart_price">
