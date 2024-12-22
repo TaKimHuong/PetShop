@@ -13,29 +13,23 @@
 					<div class="col-sm-10">
 						<div class="shopper-info">
 							<p>Điền thông tin gửi hàng</p>
-							<form action="{{URL::to('/save-checkout-customer')}}" method="POST">
-                                {{csrf_field()}}
+							<form action="{{URL::to('noi-dat-hang')}}" method="POST">
+							{{csrf_field()}}
 								<input type="text" name="hoadon_email" placeholder="Email">
 								<input type="text" name="hoadon_name" placeholder="Họ và tên">
 								<input style="margin-left: 10px;" type="text" name="hoadon_address" placeholder="Địa chỉ">
 								<input style="margin-left: 10px;" type="text" name="hoadon_phone" placeholder="Số điện thoại">
                                 <textarea style="margin-left: 10px;" name="hoadon_note"  placeholder="Ghi chú cho sản phẩm của bạn..." rows="5"></textarea>
 
-                                <input type="submit" value="Gửi" name="update_qty" class="btn btn-primary btn-sm" style="margin-left: 10px;" >
-							</form>
-						
+                                <!-- <input type="submit" value="Gửi" name="update_qty" class="btn btn-primary btn-sm" style="margin-left: 10px;" > -->
 						</div>
 					</div>
-					<div class="col-sm-7 clearfix">
-					
-									
+					<div class="col-sm-7 clearfix">			
 				</div>
 			</div>
 			<div class="review-payment">
 				<h2>XEM GIỎ HÀNG</h2>
 			</div>
-
-			
 		</div>
 	</section> 
 
@@ -55,8 +49,6 @@
 use Gloudemans\Shoppingcart\Facades\Cart;
 
 				$sanpham = Cart::content();
-				
-
 				?>
 				<table class="table table-condensed">
 			 		<thead>
@@ -102,10 +94,6 @@ use Gloudemans\Shoppingcart\Facades\Cart;
 					</td>
 				</tr>
 			@endforeach
-
-			
-
-						
 					</body>
 				</table>
 
@@ -113,8 +101,18 @@ use Gloudemans\Shoppingcart\Facades\Cart;
 			<p style="font-size: 18px; font-weight: bold; text-align: right; color:rgb(22, 22, 47); margin-right: 15px;">Tổng tiền: {{ Cart::subtotal() }} đ</p>
 			</div>
 		</div>
+		
+		    <div class="payment-options">
 
+			<span>Chọn hình thức thanh toán</span> <br>
+					<span>
 
+					<label><input value="1" type="radio"  name="payment_option">Sử dụng thẻ ngân hàng</label>
+					<label><input value="2" type="radio" checked name="payment_option">Sử dụng tiền mặt</label>
+					<input type="submit" value="Đặt hàng" name="send_order_place" class="btn btn-primary btn-sm">
+					</span>
+			</div>
+			</form>
 		<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 <script>
     $(document).ready(function() {
@@ -162,7 +160,5 @@ use Gloudemans\Shoppingcart\Facades\Cart;
         });
     }
 });
-
- 
 </script>
 @endsection

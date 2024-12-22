@@ -96,6 +96,7 @@ class CatagoryProduct extends Controller
     public function delete_category_product($category_product_id) {
         $this->AuthLogin();
         DB::table('tbl_category_product')->where('category_id', $category_product_id)->delete();
+        DB::table('tbl_product')->where('category_id', $category_product_id)->delete();
         Session::put('message', 'Xóa danh mục sản phẩm thành công');
         return Redirect::to('all-category-product');
 

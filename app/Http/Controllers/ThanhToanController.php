@@ -93,9 +93,6 @@ class ThanhToanController extends Controller
     }
 
     public function noi_dat_hang(Request $request) {
-
-
-
         // vd 
         $total = str_replace(',', '', Cart::subtotal()); // Lấy tổng tiền giỏ hàng
         $total_coupon = 0; // Khởi tạo tổng giảm giá
@@ -115,6 +112,15 @@ class ThanhToanController extends Controller
         $total_after_discount = $total - $total_coupon;
 
         if ($total_after_discount >0) {
+            $data  = array();
+            $data['hoadon_name'] = $request->hoadon_name;
+            $data['hoadon_phone'] = $request->hoadon_phone;
+            $data['hoadon_address'] = $request->hoadon_address;
+            $data['hoadon_email'] = $request->hoadon_email;
+            $data['hoadon_note'] = $request->hoadon_note;
+
+        $hoadon_id = DB::table('tbl_hoandon')->insertGetId($data);
+        Session::put('hoadon_id', $hoadon_id);
             $data  = array();
      
             $data['payment_method'] = $request->payment_option;

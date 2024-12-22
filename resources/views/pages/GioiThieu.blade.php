@@ -62,28 +62,18 @@
             <?php
             use Illuminate\Support\Facades\Session;
             $customer_id = Session::get('customer_id');
-            $hoadon_id = Session::get('hoadon_id');
+            // $hoadon_id = Session::get('hoadon_id');
 
-            if($customer_id!=NULL && $hoadon_id==NULL)  {
+            if($customer_id!=NULL)  {
             ?>
-            <a id="hotro" href="{{URL::to('/checkout')}}">
+             <a id="hotro" href="{{URL::to('/checkout')}}">
                     <img src="{{asset('public/frontend/image/icon/hotro-icon.png')}}" alt="hỗ trợ">
                     <span>Thanh toán</span>
                 </a>
-            <?php
-            }elseif($customer_id!=NULL && $hoadon_id!=NULL){
-
-            ?>
-            <a id="hotro" href="{{URL::to('/payment')}}">
-                    <img src="{{asset('public/frontend/image/icon/hotro-icon.png')}}" alt="hỗ trợ">
-                    <span>Thanh toán</span>
-                </a>
-
-                <?php
-
+             <?php
             }else {
                 ?>
-            <a id="hotro" href="{{URL::to('/dang-nhap-thanh-toan')}}">
+         <a id="hotro" href="{{URL::to('/dang-nhap-thanh-toan')}}">
                     <img src="{{asset('public/frontend/image/icon/hotro-icon.png')}}" alt="hỗ trợ">
                     <span>Thanh toán</span>
                 </a>
@@ -91,7 +81,7 @@
             }
             ?>
 
-
+        
             </div>
             <div class="col10 header-icon">
                 <a href="{{URL::to('/Hien-thi-gio-hang')}}">

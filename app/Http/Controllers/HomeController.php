@@ -228,5 +228,32 @@ class HomeController extends Controller
             return view('pages.taikhoan.xemchitietdonhang')->with('order_info', $order_info)->with('order_details', $order_details);
             }
 
+            public function update_password(Request $request, $customer_id)
+    {
+        // Xác thực dữ liệu đầu vào
+        $request->validate([
+            'password_current' => 'required',
+            'password_new' => 'required|min:4|confirmed', // Mật khẩu mới cần ít nhất 8 ký tự và xác nhận
+        ]);
+
+        // Tìm customer theo customer_id
+        $customer = Customer::find($customer_id);
+
+        if (!$customer) {
+            return back()->withErrors(['error' => 'Không tìm thấy khách hàng']);
+        }
+
+        // Kiểm tra mật khẩu hiện tại có đúng không (so sánh MD5)
+        if (md5($request->password_current) !== $customer->customer_password) {
+            return back()->withErrors(['password_current' => 'Mật khẩu hiện tại không chính xác']);
+        }
+
+        // Cập nhật mật khẩu mới
+        $customer->customer_password = md5($request->password_new); // Mã hóa mật khẩu mới bằng MD5
+        $customer->save();
+
+        return back()->with('success', 'Mật khẩu đã được thay đổi thành công');
+    }
+
 
 }

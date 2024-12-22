@@ -138,7 +138,7 @@ class ProductController extends Controller
        
         DB::table('tbl_product')->where('product_id', $product_id)->update($data);
         // DB::table('tbl')->where('brand_id', $product_id)->update($data);
-        Session::put('message', 'Cập nhật thương hiệu sản phẩm thành công');
+        Session::put('message', 'Cập nhật sản phẩm thành công');
         return Redirect::to('all-product');
 
     }

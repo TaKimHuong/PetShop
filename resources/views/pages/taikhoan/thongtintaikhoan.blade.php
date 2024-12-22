@@ -40,7 +40,8 @@
             src="https://connect.facebook.net/en_US/sdk.js#xfbml=1&version=v16.0&appId=1082303003572806&autoLogAppEvents=1">
     </script> -->
     <!-- Open Graph Meta Tags -->
-
+    <!-- <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"> -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 
     <meta name="csrf-token" content="{{ csrf_token() }}">
 </head>
@@ -72,25 +73,15 @@ use Symfony\Component\HttpFoundation\Session\Session as SessionSession;
             <?php
             use Illuminate\Support\Facades\Session;
             $customer_id = Session::get('customer_id');
-            $hoadon_id = Session::get('hoadon_id');
+            // $hoadon_id = Session::get('hoadon_id');
 
-            if($customer_id!=NULL && $hoadon_id==NULL)  {
+            if($customer_id!=NULL)  {
             ?>
              <a id="hotro" href="{{URL::to('/checkout')}}">
                     <img src="{{asset('public/frontend/image/icon/hotro-icon.png')}}" alt="hỗ trợ">
                     <span>Thanh toán</span>
                 </a>
              <?php
-            }elseif($customer_id!=NULL && $hoadon_id!=NULL){
-
-             ?>
-               <a id="hotro" href="{{URL::to('/payment')}}">
-                    <img src="{{asset('public/frontend/image/icon/hotro-icon.png')}}" alt="hỗ trợ">
-                    <span>Thanh toán</span>
-                </a>
-
-                <?php
- 
             }else {
                 ?>
          <a id="hotro" href="{{URL::to('/dang-nhap-thanh-toan')}}">
@@ -234,6 +225,27 @@ use Symfony\Component\HttpFoundation\Session\Session as SessionSession;
                         <button type="submit" class="btn">Lưu Thông Tin</button>
                       
                     </form>
+                    @if (session('success'))
+                    <div>{{ session('success') }}</div>
+                @endif
+                    <button type="button" class="btn btn-primary" data-bs-toggle="collapse" data-bs-target="#demo">Đổi mật khẩu</button>
+                    <div id="demo" class="collapse">
+                    <form action="{{URL::to('/update-password/'.$customer->customer_id)}}" method="POST">
+                        @csrf
+                    
+                        <div class="form-group">
+                            <label for="name">Mật khẩu hiện tại:</label>
+                            <input type="password" id="name" name="password_current" required >
+                        </div>
+                        <div class="form-group">
+                            <label for="email">Mật khẩu mới:</label>
+                            <input type="password" id="email" name="password_new" required>
+                        </div>
+                        
+                        <button type="submit" class="btn">Cập nhật mật khẩu</button>
+                      
+                    </form>
+                 </div>
                     @if ($roleId == 1 && $customer_id!=NULL)
                         <a href="{{ url('/dashboard') }}" class="btn btn-primary">Vào trang Admin</a>
                        

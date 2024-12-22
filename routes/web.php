@@ -184,3 +184,4 @@ Route::post('/update-account/{customer_id}', [HomeController::class, 'update_acc
 
 // xem chi tiết đơn hàng của khách hàng đã mua đơn hàng ấy
 Route::get('/view-order/{dathang_id}', [HomeController::class, 'view_order']);
+Route::post('/update-password/{customer_id}', [HomeController::class, 'update_password']);
