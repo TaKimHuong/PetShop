@@ -18,9 +18,7 @@ class ProductController extends Controller
         $role = Session::get('ma_quyen');
         if($admin_id && $role == 1) {
             return Redirect::to('dashboard');
-        } elseif($admin_id && $role == 2) {
-            return Redirect::to('staff-dashboard');
-        } else {
+        }  else {
             return Redirect::to('dang-nhap-thanh-toan')->send();
         }
     }
@@ -271,8 +269,17 @@ class ProductController extends Controller
     }
 
     //NHÂN VIÊN
+    public function Staff_AuthLogin() {
+        $admin_id = Session::get('customer_id');
+        $role = Session::get('ma_quyen');
+        if($admin_id && $role == 3) {
+            return Redirect::to('staff-dashboard');
+        }  else {
+            return Redirect::to('dang-nhap-thanh-toan')->send();
+        }
+    }
     public function staff_all_product() {
-       // $this->AuthLogin();
+        $this->Staff_AuthLogin();
         $all_product = DB::table('tbl_product')
             ->join('tbl_category_product', 'tbl_category_product.category_id', '=', 'tbl_product.category_id')
             ->orderBy('tbl_product.product_id', 'desc')
@@ -282,7 +289,7 @@ class ProductController extends Controller
         return view('nhanvien_layout')->with('nhanvien.staff_all_product', $manager_product);
     }
     public function staff_edit_product($product_id) {
-      //  $this->AuthLogin();
+        $this->Staff_AuthLogin();
         $cate_product = DB::table('tbl_category_product')->orderBy('category_id', 'desc')->get();
         // $brand_product = DB::table('tbl_brand')->orderBy('brand_id', 'desc')->get();
         $edit_product= DB::table('tbl_product')->where('product_id',$product_id)->get();
@@ -293,6 +300,7 @@ class ProductController extends Controller
     }    
 
     public function quan_ly_tai_khoan() {
+        $this->AuthLogin();
         $all_account = DB::table('tbl_customers')
             ->join('tbl_phanquyen', 'tbl_phanquyen.ma_quyen', '=', 'tbl_customers.ma_quyen')
             ->select('tbl_customers.*', 'tbl_phanquyen.*') // Lấy tất cả các cột từ cả hai bảng
@@ -311,6 +319,7 @@ class ProductController extends Controller
     }
 
     public function delete_account($customer_id) {
+        $this->AuthLogin();
         $all_account = DB::table('tbl_customers')
         ->join('tbl_phanquyen', 'tbl_phanquyen.ma_quyen', '=', 'tbl_customers.ma_quyen')
         ->where('customer_id', $customer_id)->first();
@@ -366,6 +375,7 @@ class ProductController extends Controller
 
         // hàm chỉnh sửa thông tin tài khoản 
         public function edit_account($customer_id) {
+            $this->AuthLogin();
             $customer = Customer::find($customer_id);
            $phan_quyen = PhanQuyen::all();
             return view('admin.edit_account')->with('customer' , $customer)->with('phan_quyen' , $phan_quyen);

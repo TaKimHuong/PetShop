@@ -13,10 +13,11 @@ class CatagoryProduct extends Controller
 {
     public function AuthLogin() {
         $admin_id = Session::get('customer_id');
-        if($admin_id) {
+        $role = Session::get('ma_quyen');
+        if($admin_id && $role == 1) {
             return Redirect::to('dashboard');
         } else {
-            return Redirect::to('admin')->send();
+            return Redirect::to('dang-nhap-thanh-toan')->send();
         }
     }
     public function add_category_product() {
@@ -109,6 +110,8 @@ class CatagoryProduct extends Controller
         ->get();
         $category_by_id = DB::table('tbl_product')->join('tbl_category_product', 'tbl_product.category_id','=','tbl_category_product.category_id')
         ->where('tbl_product.category_id', $category_id)->get();
+        $count_category_by_id = DB::table('tbl_product')->join('tbl_category_product', 'tbl_product.category_id','=','tbl_category_product.category_id')
+        ->where('tbl_product.category_id', $category_id)->count();
         foreach ($category_by_id as $product) {
             $product->average_rating = Rating::where('product_id', $product->product_id)->avg('rating');
         }  
@@ -116,15 +119,26 @@ class CatagoryProduct extends Controller
 
 
         $category_name = DB::table('tbl_category_product')->where('tbl_category_product.category_id', $category_id)->limit(1)->get();
-        return view('pages.category.show_category_home')->with('category', $cate_product)->with('category_by_id', $category_by_id)->with('category_name', $category_name);
+        return view('pages.category.show_category_home')->with('category', $cate_product)->with('category_by_id', $category_by_id)->with('category_name', $category_name)
+        ->with('count_category_by_id' , $count_category_by_id);
     }
 
 
 
     // NHÂN VIÊN QUẢN LÝ
 
+    public function Staff_AuthLogin() {
+        $admin_id = Session::get('customer_id');
+        $role = Session::get('ma_quyen');
+        if($admin_id && $role == 3) {
+            return Redirect::to('staff-dashboard');
+        } else {
+            return Redirect::to('dang-nhap-thanh-toan')->send();
+        }
+    }
+
     public function staff_all_category_product() {
-       // $this->AuthLogin();
+        $this->Staff_AuthLogin();
     //    $all_category_product= DB::table('tbl_category_product')->get();
     // static trong mô hình hướng đối tượng ::
         // $all_category_product = Category::all();
@@ -137,7 +151,7 @@ class CatagoryProduct extends Controller
     }
 
     public function staff_edit_category_product($category_product_id) {
-      //  $this->AuthLogin();
+        $this->Staff_AuthLogin();
     
         // Lấy bản ghi duy nhất từ bảng `tbl_category_product`
         $edit_category_product = DB::table('tbl_category_product')->where('category_id', $category_product_id)->first();

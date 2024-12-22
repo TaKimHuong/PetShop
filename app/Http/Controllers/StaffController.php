@@ -16,7 +16,7 @@ class StaffController extends Controller
         $admin_id = Session::get('customer_id');
         $role = Session::get('ma_quyen');
         if($admin_id && $role == 3) {
-            return Redirect::to('dashboard');
+            return Redirect::to('staff-dashboard');
         } else {
             return Redirect::to('dang-nhap-thanh-toan')->send();
         }

@@ -153,173 +153,43 @@
                 </a>
             </li>
             <li>
-                <a href="giongcho.html">
+                <a href="#">
                     <img src="{{asset('public/frontend/image/icon/giongcho-icon.png')}}" alt="giống chó">
                     <span>GIỐNG CHÓ</span>
 
                 </a>
-              
+                <ul class="sub-menu">
+                    @php
+                        // Chia danh sách sản phẩm thành các nhóm 4 phần tử
+                        $chunks = $all->chunk(4);
+                    @endphp
+
+                    @foreach($chunks as $group)
+                        <li>
+                            <ul class="menu-list">
+                                @foreach($group as $product)
+                                    <li>
+                                        <a href="{{URL::to('/chi-tiet-san-pham/'.$product->product_id)}}">{{ $product->product_name }}</a>
+                                    </li>
+                                @endforeach
+                            </ul>
+                        </li>
+                    @endforeach
+    </ul>
             </li>
             <li>
                 <a href="{{URL::to('/cun-con')}}">
                     <img src="{{asset('public/frontend/image/icon/cuncon-icon.png')}}" alt="cún con">
-                    <span>CÚN CON</span>
+                    <span>CỬA HÀNG</span>
                 </a>
-                <ul class="sub-menu">
-                    <li>
-                        <ul class="menu-list">
-                            <li>
-                                <a href="z1.html">Ikita Inu</a>
-                            </li>
-                            <li>
-                                <a href="zzalaska14.html">Alaska</a>
-                            </li>
-                            <li>
-                                <a href="z13.html">Bắc Hà</a>
-                            </li>
-                            <li>
-                                <a href="z13.html">Bắc Kinh</a>
-                            </li>
-                        </ul>
-                    </li>
-                    <li>
-                        <ul class="menu-list">
-                            <li>
-                                <a href="z11.html">Becgie Đức</a>
-                            </li>
-                            <li>
-                                <a href="zbordercoli7.html">Border collie</a>
-                            </li>
-                            <li>
-                                <a href="zBullDog15.html">Bulldog</a>
-                            </li>
-                            <li>
-                                <a href="z9.html">Bully American</a>
-                            </li>
-                        </ul>
-                    </li>
-                    <li>
-                        <ul class="menu-list">
-                            <li>
-                                <a href="z17.html">Chihuahua</a>
-                            </li>
-                            <li>
-                                <a href="z16.html">Chó Đốm</a>
-                            </li>
-                            <li>
-                                <a href="z5.html">Chó Nhật</a>
-                            </li>
-                            <li>
-                                <a href="zChowChow16.html">Chow Chow</a>
-                            </li>
-                        </ul>
-                    </li>
-                    <li>
-                        <ul class="menu-list">
-                            <li>
-                                <a href="zcooker1.html">Cocker Spaniel</a>
-                            </li>
-                            <li>
-                                <a href="zCorgi21.html">Corgi</a>
-                            </li>
-                            <li>
-                                <a href="zdoberman2.html">Dobermann</a>
-                            </li>
-                            <li>
-                                <a href="zGloden Retriever19.html">Golden Retriever</a>
-                            </li>
-                        </ul>
-                    </li>
-                    <li>
-                        <ul class="menu-list">
-                            <li>
-                                <a href="ZGreat Dane24.html">Great Dane</a>
-                            </li>
-                            <li>
-                                <a href="z20.html">H'Mông Cộc</a>
-                            </li>
-                            <li>
-                                <a href="zhusky5.html">Husky</a>
-                            </li>
-                            <li>
-                                <a href="zLabrador11.html">Labrador</a>
-                            </li>
-                        </ul>
-                    </li>
-                    <li>
-                        <ul class="menu-list">
-                            <li>
-                                <a href="zLạp Xưởng13.html">Lạp Xưởng</a>
-                            </li>
-                            <li>
-                                <a href="zMinPin25.html">Malinois</a>
-                            </li>
-                            <li>
-                                <a href="z21.html">Ngao Tây Tạng</a>
-                            </li>
-                            <li>
-                                <a href="zphochuou4.html">Phốc Hươu</a>
-                            </li>
-                        </ul>
-                    </li>
-                    <li>
-                        <ul class="menu-list">
-                            <li>
-                                <a href="zphocsoc8.html">Phốc Sóc</a>
-                            </li>
-                            <li>
-                                <a href="zPhú Quốc23.html">Phú Quốc</a>
-                            </li>
-                            <li>
-                                <a href="zPitbull9.html">Pitbull</a>
-                            </li>
-                            <li>
-                                <a href="zpoodle3.html">Poodle</a>
-                            </li>
-                        </ul>
-                    </li>
-                    <li>
-                        <ul class="menu-list">
-                            <li>
-                                <a href="zPug18.html">Pug</a>
-                            </li>
-                            <li>
-                                <a href="zRottweiler10.html">Rottweiler</a>
-                            </li>
-                            <li>
-                                <a href="zsaoyed6.html">Samoyed</a>
-                            </li>
-                            <li>
-                                <a href="z7.html">Shiba Inu</a>
-                            </li>
-                        </ul>
-                    </li>
-                </ul>
+               
             </li>
             <li>
-                <a href="phukien.html">
+                <a href="#">
                     <img src="{{asset('public/frontend/image/icon/phukien-icon.png')}}" alt="phụ kiện">
                     <span>PHỤ KIỆN</span>
                 </a>
-                <ul class="sub-menu">
-                    <li>
-                        <ul class="menu-list">
-                            <li><a href="zy1.html">Đồ Dùng Thú Cưng</a></li>
-                            <li><a href="zy3.html">Thức Ăn Thú Cưng</a></li>
-                            <li><a href="zy12.html">Chuồng Lồng Thú Cưng</a></li>
-                            <li><a href="zy11.html">Đồ Chơi Thú Cưng</a></li>
-
-                        </ul>
-                    </li>
-                    <li>
-                        <ul class="menu-list">
-                            <li><a href="zy7.html">Phụ Kiện Làm Đẹp</a></li>
-                            <li><a href="zy10.html">Quần Áo Thú Cưng</a></li>
-                            <li><a href="zy6.html">Thực Phẩm Dinh Dưỡng</a></li>
-                            <li><a href="zy9.html">Thuốc & Sản Phẩm Chức Năng</a></li>
-                        </ul>
-                    </li>
-                </ul>
+              
             </li>
             <li>
                 <a href="{{URL::to('/cach-nuoi')}}">

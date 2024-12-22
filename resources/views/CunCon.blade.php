@@ -173,7 +173,7 @@ use Symfony\Component\HttpFoundation\Session\Session as SessionSession;
                 </a>
             </li>
             <li>
-                <a href="giongcho.html">
+                <a href="#">
                     <img src="{{asset('public/frontend/image/icon/giongcho-icon.png')}}" alt="giống chó">
                     <span>GIỐNG CHÓ</span>
 
@@ -183,12 +183,12 @@ use Symfony\Component\HttpFoundation\Session\Session as SessionSession;
             <li>
                 <a href="{{URL::to('/cun-con')}}">
                     <img src="{{asset('public/frontend/image/icon/cuncon-icon.png')}}" alt="cún con">
-                    <span>CÚN CON</span>
+                    <span>CỬA HÀNG</span>
                 </a>
                
             </li>
             <li>
-                <a href="phukien.html">
+                <a href="#">
                     <img src="{{asset('public/frontend/image/icon/phukien-icon.png')}}" alt="phụ kiện">
                     <span>PHỤ KIỆN</span>
                 </a>

@@ -38,7 +38,11 @@
             ?>
       <table class="table table-striped b-t b-light">
         <thead>
-
+        @if(session('success'))
+								<div class="alert alert-success">
+									{{ session('success') }}
+								</div>
+							@endif
         <tr>
               <div style="display: flex; gap: 15px; margin-bottom: 20px;">
           <a href="{{ URL::to('/chua-duyet') }}" 
@@ -79,6 +83,7 @@
             <th>Duyệt đơn hàng</th>
             <th>Ngày đặt hàng</th>
             <th>Ngày duyệt đơn</th>
+            <th>Người duyệt</th>
             <th>Hiển thị</th>
             <th style="width:30px;"></th>
           </tr>
@@ -93,7 +98,7 @@
             <!-- <td><label class="i-checks m-b-none"><input type="checkbox" name="post[]"><i></i></label></td> -->
              <td>{{$loop->iteration}}</td>
             <td>{{$order->customer_name}}</td>
-            <td>{{$order->tong_tien}}</td>
+            <td>{{ number_format($order->tong_tien, 0, ',', '.') }} VND</td>
             <td>{{$order->dathang_status}}</td>
             <td>
             <!-- @if ($order->dathang_status === 'Đang chờ xử lý')
@@ -151,6 +156,7 @@
             </td>
             <td>{{$order->ngay_dat}}</td>
             <td>{{$order->ngay_duyet}}</td>
+            <td> {{$order->chi_tiet_ten_quyen}}</td>
          
            
             <td>

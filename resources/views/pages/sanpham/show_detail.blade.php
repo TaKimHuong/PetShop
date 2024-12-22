@@ -284,7 +284,7 @@
 												<div class="productinfo text-center">
 													<img src="{{ asset('public/upload/product/'.$rlt->product_image) }}" alt="" />
 													<h2 style="font-size: 15px;">GIÁ: {{ number_format($rlt->product_price).' VNĐ' }}</h2>
-													<p>{{ $rlt->product_name }}</p>
+													<p style="height: 60px;">{{ $rlt->product_name }}</p>
 													<button type="button" class="btn btn-default add-to-cart">
 
 													<a style="color: #666633;" href="{{URL::to('/chi-tiet-san-pham/'.$rlt->product_id)}}">Thêm vào giỏ hàng <i class="fa fa-shopping-cart"></i></a>

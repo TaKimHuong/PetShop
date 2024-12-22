@@ -17,10 +17,10 @@
 }
 </style>
 <div class="info_main">
-            <h4 style="text-align: center;">Sản phẩm trong khoảng giá từ {{ number_format($minPrice) }} VND đến {{ number_format($maxPrice) }} VND</h4>
-           <h6 style="text-align: right; margin-right: 20px;">Số sản phẩm: {{$count_products}}</h6>
+            <h4 style="text-align: center;">Sản phẩm</h4>
+           <h6 style="text-align: right; margin-right: 20px;">Số sản phẩm: {{$count_search_product}}</h6>
             <div class="info">
-                @foreach($products as $key=> $product)
+                @foreach($search_product as $key=> $product)
                
                 <div class="info_product">
                     <img src="{{asset('public/upload/product/'.$product->product_image)}}" alt="hinhanh" />

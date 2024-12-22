@@ -14,6 +14,15 @@ session_start();
 class ThanhToanController extends Controller
 {
     //
+    public function AuthLogin() {
+        $admin_id = Session::get('customer_id');
+        $role = Session::get('ma_quyen');
+        if($admin_id && $role == 1) {
+            return Redirect::to('dashboard');
+        }  else {
+            return Redirect::to('dang-nhap-thanh-toan')->send();
+        }
+    }
 
     public function dang_nhap_thanh_toan() {
        
@@ -38,7 +47,7 @@ class ThanhToanController extends Controller
         Session::put('customer_id', $customer_id);
         Session::put('customer_name' , $request->customer_name);
 
-        return Redirect::to('/checkout');
+        return Redirect::to('/dang-nhap-thanh-toan');
  
     }
 
@@ -104,132 +113,137 @@ class ThanhToanController extends Controller
     
         // Tính toán tổng thanh toán sau giảm giá
         $total_after_discount = $total - $total_coupon;
+
+        if ($total_after_discount >0) {
+            $data  = array();
+     
+            $data['payment_method'] = $request->payment_option;
+            $data['payment_status'] = 'Đang chờ xử lý';
+          
+            $payment_id = DB::table('tbl_tratien')->insertGetId($data);
+            
+        // chèn vào dathang
+    
+        $data_order  = array();
+        $data_order['customer_id'] = Session::get('customer_id');
+        $data_order['hoadon_id'] = Session::get('hoadon_id');
+        $data_order['payment_id'] =  $payment_id;
+        // $data_order['tong_tien'] =  Cart::total(0,',','.');
+        $data_order['tong_tien'] =  $total_after_discount;
+        
+        $data_order['dathang_status'] = 'Đang chờ xử lý';
+        $data_order['ngay_dat'] = Carbon::now();
+        $dathang_id = DB::table('tbl_dathang')->insertGetId($data_order);
+    
+        // chèn vào chi tiết đặt hàng
+            $sanpham = Cart::content();
+         foreach($sanpham as $v_sanpham) {
+            $data_order_detail['dathang_id'] = $dathang_id;
+            $data_order_detail['product_id'] = $v_sanpham->id;
+            $data_order_detail['product_name'] =  $v_sanpham->name;
+            $data_order_detail['product_price'] =  $v_sanpham->price;
+            $data_order_detail['so_luong_san_pham'] = $v_sanpham->qty;
+           DB::table('tbl_chitietdathang')->insert($data_order_detail);
+         }
+         $customer_id = Session::get('customer_id');
+
+
+         Session::put('dathang_id', $dathang_id);
+     
+     
+         //vd
+         $order_info = DB::table('tbl_dathang')
+         ->join('tbl_customers', 'tbl_dathang.customer_id', '=', 'tbl_customers.customer_id')
+         ->join('tbl_hoandon', 'tbl_dathang.hoadon_id', '=', 'tbl_hoandon.hoadon_id')
+         ->select('tbl_dathang.*', 'tbl_customers.*', 'tbl_hoandon.*')
+         ->where('tbl_dathang.dathang_id', $dathang_id)
+         ->first(); // Chỉ lấy một bản ghi duy nhất cho khách hàng và đơn hàng
+     
+     // Truy vấn để lấy danh sách sản phẩm trong chi tiết đơn hàng
+             $order_details = DB::table('tbl_chitietdathang')
+                 ->join('tbl_product', 'tbl_chitietdathang.product_id', '=', 'tbl_product.product_id')
+                 ->select('tbl_chitietdathang.*', 'tbl_product.product_name', 'tbl_product.product_price')
+                 ->where('tbl_chitietdathang.dathang_id', $dathang_id)
+                 ->get(); // Lấy nhiều bản ghi cho các sản phẩm
+     
+                 $mail = new PHPMailer(true);
+         
+                 try {
+                     // Cấu hình máy chủ email (SMTP)
+                     $mail->isSMTP();
+                     $mail->Host = 'smtp.gmail.com';  // SMTP server của Gmail
+                     $mail->SMTPAuth = true;
+                     $mail->Username = 'nguoiyeutung2707@gmail.com'; // Địa chỉ email của bạn
+                     $mail->Password = 'qwir jsej htge ubkv'; // Mật khẩu của email
+                     $mail->SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS;
+                     $mail->Port = 587;
+             
+                     // Người gửi và người nhận
+                     $mail->setFrom('nguoiyeutung2707@gmail.com', 'PETSHOP');
+                     $mail->addAddress($order_info->hoadon_email, $order_info->hoadon_name); // Email người nhận
+             
+                     // Nội dung email
+                     $mail->isHTML(true); // Đặt định dạng HTML cho email
+                     $mail->Subject = 'PETSHOP!';
+             
+                     // Tạo nội dung email
+                     $email_content = "<h1>Thông tin Đơn hàng</h1>";
+                     $email_content .= "<p><strong>Họ tên:</strong> {$order_info->hoadon_name}</p>";
+                     $email_content .= "<p><strong>Địa chỉ:</strong> {$order_info->hoadon_address}</p>";
+                     $email_content .= "<p><strong>Số điện thoại:</strong> {$order_info->hoadon_phone}</p>";
+                     $email_content .= "<h3>Danh sách Sản phẩm:</h3><ul>";
+                     
+                     // Hiển thị chi tiết các sản phẩm
+                     foreach ($order_details as $product) {
+                         $email_content .= "<li>{$product->product_name} - {$product->so_luong_san_pham} x {$product->product_price} VND</li>";
+                     }
+                     
+                     $email_content .= "</ul>";
+                     $email_content .= "<p><strong>Tổng tiền:</strong> " . number_format($order_info->tong_tien, 0, ',', '.') . " VND</p>";
+     
+                     $email_content .= "<p><strong>Ngày đặt:</strong> {$order_info->ngay_dat}</p>";
+                     $email_content .= "<p><strong>Tình trạng đơn hàng:</strong> {$order_info->dathang_status}</p>";
+     
+                     $mail->Body = $email_content;
+             
+                     // Gửi email
+                     $mail->send();
+                     // echo 'Email đã được gửi thành công';
+                 } catch (Exception $e) {
+                     echo "Có lỗi xảy ra khi gửi email: {$mail->ErrorInfo}";
+                 }
+     
+             
+         // vd 
+         DB::table('tbl_cart_temp')->where('customer_id', $customer_id)->delete();
+     
+          if($data['payment_method']==1) {
+             echo 'Thanh toan bang the ';
+          } elseif($data['payment_method']==2) {
+     
+             $cate_product = DB::table('tbl_category_product')
+             ->where('category_status', '0')
+             ->orderBy('category_id', 'desc')
+             ->get();
+             // echo 'Tien mat';
+             Cart::destroy();
+             return view('pages.thanhtoan.tienmat')->with('category', $cate_product)
+             ->with('order_info', $order_info)
+             ->with('order_details', $order_details);
+             
+          }
+        
+      
+     
+        } else{
+            return Redirect('/Hien-thi-gio-hang');
+        }
         // vd
         // lay hinh thuc thanh toan don hang
-        $data  = array();
-     
-        $data['payment_method'] = $request->payment_option;
-        $data['payment_status'] = 'Đang chờ xử lý';
-      
-        $payment_id = DB::table('tbl_tratien')->insertGetId($data);
-        
-    // chèn vào dathang
-
-    $data_order  = array();
-    $data_order['customer_id'] = Session::get('customer_id');
-    $data_order['hoadon_id'] = Session::get('hoadon_id');
-    $data_order['payment_id'] =  $payment_id;
-    // $data_order['tong_tien'] =  Cart::total(0,',','.');
-    $data_order['tong_tien'] =  $total_after_discount;
-    
-    $data_order['dathang_status'] = 'Đang chờ xử lý';
-    $data_order['ngay_dat'] = Carbon::now();
-    $dathang_id = DB::table('tbl_dathang')->insertGetId($data_order);
-
-    // chèn vào chi tiết đặt hàng
-        $sanpham = Cart::content();
-     foreach($sanpham as $v_sanpham) {
-        $data_order_detail['dathang_id'] = $dathang_id;
-        $data_order_detail['product_id'] = $v_sanpham->id;
-        $data_order_detail['product_name'] =  $v_sanpham->name;
-        $data_order_detail['product_price'] =  $v_sanpham->price;
-        $data_order_detail['so_luong_san_pham'] = $v_sanpham->qty;
-       DB::table('tbl_chitietdathang')->insert($data_order_detail);
-     }
+       
 
         // Xóa sản phẩm khỏi giỏ hàng sau khi thanh toán thành công
-    $customer_id = Session::get('customer_id');
-
-
-    Session::put('dathang_id', $dathang_id);
-
-
-    //vd
-    $order_info = DB::table('tbl_dathang')
-    ->join('tbl_customers', 'tbl_dathang.customer_id', '=', 'tbl_customers.customer_id')
-    ->join('tbl_hoandon', 'tbl_dathang.hoadon_id', '=', 'tbl_hoandon.hoadon_id')
-    ->select('tbl_dathang.*', 'tbl_customers.*', 'tbl_hoandon.*')
-    ->where('tbl_dathang.dathang_id', $dathang_id)
-    ->first(); // Chỉ lấy một bản ghi duy nhất cho khách hàng và đơn hàng
-
-// Truy vấn để lấy danh sách sản phẩm trong chi tiết đơn hàng
-        $order_details = DB::table('tbl_chitietdathang')
-            ->join('tbl_product', 'tbl_chitietdathang.product_id', '=', 'tbl_product.product_id')
-            ->select('tbl_chitietdathang.*', 'tbl_product.product_name', 'tbl_product.product_price')
-            ->where('tbl_chitietdathang.dathang_id', $dathang_id)
-            ->get(); // Lấy nhiều bản ghi cho các sản phẩm
-
-            $mail = new PHPMailer(true);
-    
-            try {
-                // Cấu hình máy chủ email (SMTP)
-                $mail->isSMTP();
-                $mail->Host = 'smtp.gmail.com';  // SMTP server của Gmail
-                $mail->SMTPAuth = true;
-                $mail->Username = 'nguoiyeutung2707@gmail.com'; // Địa chỉ email của bạn
-                $mail->Password = 'qwir jsej htge ubkv'; // Mật khẩu của email
-                $mail->SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS;
-                $mail->Port = 587;
-        
-                // Người gửi và người nhận
-                $mail->setFrom('nguoiyeutung2707@gmail.com', 'PETSHOP');
-                $mail->addAddress($order_info->hoadon_email, $order_info->hoadon_name); // Email người nhận
-        
-                // Nội dung email
-                $mail->isHTML(true); // Đặt định dạng HTML cho email
-                $mail->Subject = 'Hello from the PETSHOP!';
-        
-                // Tạo nội dung email
-                $email_content = "<h1>Thông tin Đơn hàng</h1>";
-                $email_content .= "<p><strong>Họ tên:</strong> {$order_info->hoadon_name}</p>";
-                $email_content .= "<p><strong>Địa chỉ:</strong> {$order_info->hoadon_address}</p>";
-                $email_content .= "<p><strong>Số điện thoại:</strong> {$order_info->hoadon_phone}</p>";
-                $email_content .= "<h3>Danh sách Sản phẩm:</h3><ul>";
-                
-                // Hiển thị chi tiết các sản phẩm
-                foreach ($order_details as $product) {
-                    $email_content .= "<li>{$product->product_name} - {$product->so_luong_san_pham} x {$product->product_price} VND</li>";
-                }
-                
-                $email_content .= "</ul>";
-                $email_content .= "<p><strong>Tổng tiền:</strong> " . number_format($order_info->tong_tien, 0, ',', '.') . " VND</p>";
-
-                $email_content .= "<p><strong>Ngày đặt:</strong> {$order_info->ngay_dat}</p>";
-                $email_content .= "<p><strong>Tình trạng đơn hàng:</strong> {$order_info->dathang_status}</p>";
-
-
-                
-                $mail->Body = $email_content;
-        
-                // Gửi email
-                $mail->send();
-                // echo 'Email đã được gửi thành công';
-            } catch (Exception $e) {
-                echo "Có lỗi xảy ra khi gửi email: {$mail->ErrorInfo}";
-            }
-
-        
-    // vd 
-    DB::table('tbl_cart_temp')->where('customer_id', $customer_id)->delete();
-
-     if($data['payment_method']==1) {
-        echo 'Thanh toan bang the ';
-     } elseif($data['payment_method']==2) {
-
-        $cate_product = DB::table('tbl_category_product')
-        ->where('category_status', '0')
-        ->orderBy('category_id', 'desc')
-        ->get();
-        // echo 'Tien mat';
-        Cart::destroy();
-        return view('pages.thanhtoan.tienmat')->with('category', $cate_product)
-        ->with('order_info', $order_info)
-        ->with('order_details', $order_details);
-        
-     }
-   
- 
-
+  
         // return Redirect('/payment');
 
         
@@ -288,11 +302,11 @@ class ThanhToanController extends Controller
             ->where('customer_name_login', $username_login)
             ->where('customer_password', $password)
             ->first();
-            Session::put('customer_id', $result->customer_id); // Lưu thông tin admin nếu cần
-            Session::put('customer_name' , $result->customer_name);
-            Session::put('ma_quyen' , $result->ma_quyen);
         if ($result) {
             // Kiểm tra quyền
+                Session::put('customer_id', $result->customer_id); // Lưu thông tin admin nếu cần
+                Session::put('customer_name' , $result->customer_name);
+                Session::put('ma_quyen' , $result->ma_quyen);
             if ($result->ma_quyen == 1) {
                 // Admin: chuyển hướng đến trang dashboard
              //   Session::put('customer_id', $result->customer_id); // Lưu thông tin admin nếu cần
@@ -319,7 +333,7 @@ class ThanhToanController extends Controller
                     ]);
                 }
     
-                return Redirect::to('/checkout');
+                return Redirect::to('/trang-chu');
             } elseif($result->ma_quyen == 3) {
                 // Session::put('customer_id', $result->customer_id);
                 // Session::put('customer_name' , $result->customer_name);
@@ -335,20 +349,14 @@ class ThanhToanController extends Controller
         }
     }
 
-    public function AuthLogin() {
-        $admin_id = Session::get('customer_id');
-        if($admin_id) {
-            return Redirect::to('dashboard');
-        } else {
-            return Redirect::to('admin')->send();
-        }
-    }
+
     public function quan_ly_don_hang() {
 
         $this->AuthLogin();
         $all_order = DB::table('tbl_dathang')
         ->join('tbl_customers', 'tbl_dathang.customer_id', '=', 'tbl_customers.customer_id')
-        ->select('tbl_dathang.*', 'tbl_customers.customer_name')
+         ->leftJoin('tbl_phanquyen', 'tbl_dathang.ma_quyen', '=', 'tbl_phanquyen.ma_quyen')
+        ->select('tbl_dathang.*', 'tbl_customers.customer_name' ,'tbl_phanquyen.chi_tiet_ten_quyen')
         ->orderBy('tbl_dathang.dathang_id', 'desc')
         ->paginate(10);
         // ->get();
@@ -413,18 +421,87 @@ class ThanhToanController extends Controller
     // duyệt hóa đơn đặt hang 
 
     public function duyetHoaDon($dathang_id) {
+        $this->AuthLogin();
         DB::table('tbl_dathang')
         ->where('dathang_id', $dathang_id)
         ->update(['dathang_status' => 'Đã duyệt đơn hàng', 'ngay_duyet' => now()]);
+        $maQuyen = Session::get('ma_quyen');
+
+        $duyet = DB::table('tbl_dathang')
+        ->where('dathang_id', $dathang_id)
+        ->update([
+            'ma_quyen' => $maQuyen // Gán giá trị mã quyền lấy từ Session
+               // Gán thời gian hiện tại
+        ]);
+        $order_info = DB::table('tbl_dathang')
+        ->join('tbl_customers', 'tbl_dathang.customer_id', '=', 'tbl_customers.customer_id')
+        ->join('tbl_hoandon', 'tbl_dathang.hoadon_id', '=', 'tbl_hoandon.hoadon_id')
+        ->select('tbl_dathang.*', 'tbl_customers.*', 'tbl_hoandon.*')
+        ->where('tbl_dathang.dathang_id', $dathang_id)
+        ->first(); // Chỉ lấy một bản ghi duy nhất cho khách hàng và đơn hàng
+    
+    // Truy vấn để lấy danh sách sản phẩm trong chi tiết đơn hàng
+        $order_details = DB::table('tbl_chitietdathang')
+                ->join('tbl_product', 'tbl_chitietdathang.product_id', '=', 'tbl_product.product_id')
+                ->select('tbl_chitietdathang.*', 'tbl_product.product_name', 'tbl_product.product_price')
+                ->where('tbl_chitietdathang.dathang_id', $dathang_id)
+                ->get(); // Lấy nhiều bản ghi cho các sản phẩm
+        $mail = new PHPMailer(true);
+    
+            try {
+                // Cấu hình máy chủ email (SMTP)
+                $mail->isSMTP();
+                $mail->Host = 'smtp.gmail.com';  // SMTP server của Gmail
+                $mail->SMTPAuth = true;
+                $mail->Username = 'nguoiyeutung2707@gmail.com'; // Địa chỉ email của bạn
+                $mail->Password = 'qwir jsej htge ubkv'; // Mật khẩu của email
+                $mail->SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS;
+                $mail->Port = 587;
+        
+                // Người gửi và người nhận
+                $mail->setFrom('nguoiyeutung2707@gmail.com', 'PETSHOP');
+                $mail->addAddress($order_info->hoadon_email, $order_info->hoadon_name); // Email người nhận
+        
+                // Nội dung email
+                $mail->isHTML(true); // Đặt định dạng HTML cho email
+                $mail->Subject = 'PETSHOP!';
+        
+                // Tạo nội dung email
+                $email_content = "<h1>Thông tin Đơn hàng</h1>";
+                $email_content .= "<p><strong>Họ tên:</strong> {$order_info->hoadon_name}</p>";
+                $email_content .= "<p><strong>Địa chỉ:</strong> {$order_info->hoadon_address}</p>";
+                $email_content .= "<p><strong>Số điện thoại:</strong> {$order_info->hoadon_phone}</p>";
+                $email_content .= "<h3>Danh sách Sản phẩm:</h3><ul>";
+                
+                // Hiển thị chi tiết các sản phẩm
+                foreach ($order_details as $product) {
+                    $email_content .= "<li>{$product->product_name} - {$product->so_luong_san_pham} x {$product->product_price} VND</li>";
+                }
+                
+                $email_content .= "</ul>";
+                $email_content .= "<p><strong>Tổng tiền:</strong> " . number_format($order_info->tong_tien, 0, ',', '.') . " VND</p>";
+                $email_content .= "<p><strong>Ngày đặt:</strong> {$order_info->ngay_dat}</p>";
+                $email_content .= "<p><strong>Ngày duyệt:</strong> {$order_info->ngay_duyet}</p>";
+                $email_content .= "<p><strong>Tình trạng đơn hàng:</strong> {$order_info->dathang_status}</p>";
+
+                $mail->Body = $email_content;
+        
+                // Gửi email
+                $mail->send();
+                // echo 'Email đã được gửi thành công';
+            } catch (Exception $e) {
+                echo "Có lỗi xảy ra khi gửi email: {$mail->ErrorInfo}";
+            }
     return redirect()->back()->with('success', 'Đã duyệt hóa đơn thành công!');
     }
     
 
     public function chua_duyet() {
-
+        $this->AuthLogin();
         $all_order = DB::table('tbl_dathang')
         ->join('tbl_customers', 'tbl_dathang.customer_id', '=', 'tbl_customers.customer_id')
-        ->select('tbl_dathang.*', 'tbl_customers.customer_name')
+        ->leftJoin('tbl_phanquyen', 'tbl_dathang.ma_quyen', '=', 'tbl_phanquyen.ma_quyen')
+        ->select('tbl_dathang.*', 'tbl_customers.customer_name' ,'tbl_phanquyen.chi_tiet_ten_quyen')
         ->where('dathang_status', 'Đang chờ xử lý')
         ->orderBy('tbl_dathang.dathang_id', 'desc')
         ->paginate(10);
@@ -438,43 +515,125 @@ class ThanhToanController extends Controller
     
     // Lọc đơn hàng đã duyệt
     public function da_duyet() {
+        $this->AuthLogin();
         $all_order = DB::table('tbl_dathang')
         ->join('tbl_customers', 'tbl_dathang.customer_id', '=', 'tbl_customers.customer_id')
-        ->select('tbl_dathang.*', 'tbl_customers.customer_name')
+        ->leftJoin('tbl_phanquyen', 'tbl_dathang.ma_quyen', '=', 'tbl_phanquyen.ma_quyen')
+        ->select('tbl_dathang.*', 'tbl_customers.customer_name' ,'tbl_phanquyen.chi_tiet_ten_quyen')
         ->where('dathang_status', 'Đã duyệt đơn hàng')
         ->orderBy('tbl_dathang.dathang_id', 'desc')->paginate(10);
         // $all_order = DB::table('tbl_dathang')
         //             ->where('dathang_status', 'Đã duyệt đơn hàng')
         //             ->orderBy('ngay_dat', 'desc')
         //             ->get();
+        
         return view('admin.quanlydonhang', compact('all_order'))->with('title', 'Đơn hàng đã duyệt');
     }
 
 
 
     //NHÂN VIÊN
+    public function Staff_AuthLogin() {
+        $admin_id = Session::get('customer_id');
+        $role = Session::get('ma_quyen');
+        if($admin_id && $role == 3) {
+            return Redirect::to('staff-dashboard');
+        }  else {
+            return Redirect::to('dang-nhap-thanh-toan')->send();
+        }
+    }
     public function staff_quan_ly_don_hang() {
 
-     //   $this->AuthLogin();
+       $this->Staff_AuthLogin();
         $all_order = DB::table('tbl_dathang')
         ->join('tbl_customers', 'tbl_dathang.customer_id', '=', 'tbl_customers.customer_id')
-        ->select('tbl_dathang.*', 'tbl_customers.customer_name')
+        ->leftJoin('tbl_phanquyen', 'tbl_dathang.ma_quyen', '=', 'tbl_phanquyen.ma_quyen')
+        ->select('tbl_dathang.*', 'tbl_customers.customer_name' ,'tbl_phanquyen.chi_tiet_ten_quyen')
         ->orderBy('tbl_dathang.dathang_id', 'desc')->paginate(10);
        $manager_order = view('nhanvien.staff_quanlydonhang')->with('all_order', $all_order);
         return view('nhanvien_layout')->with('nhanvien.staff_quanlydonhang', $manager_order);
       
     }
     public function staff_duyetHoaDon($dathang_id) {
+        $this->Staff_AuthLogin();
         DB::table('tbl_dathang')
         ->where('dathang_id', $dathang_id)
         ->update(['dathang_status' => 'Đã duyệt đơn hàng', 'ngay_duyet' => now()]);
+        $maQuyen = Session::get('ma_quyen');
+
+        $duyet = DB::table('tbl_dathang')
+        ->where('dathang_id', $dathang_id)
+        ->update([
+            'ma_quyen' => $maQuyen // Gán giá trị mã quyền lấy từ Session
+               // Gán thời gian hiện tại
+        ]);
+        $order_info = DB::table('tbl_dathang')
+        ->join('tbl_customers', 'tbl_dathang.customer_id', '=', 'tbl_customers.customer_id')
+        ->join('tbl_hoandon', 'tbl_dathang.hoadon_id', '=', 'tbl_hoandon.hoadon_id')
+        ->select('tbl_dathang.*', 'tbl_customers.*', 'tbl_hoandon.*')
+        ->where('tbl_dathang.dathang_id', $dathang_id)
+        ->first(); // Chỉ lấy một bản ghi duy nhất cho khách hàng và đơn hàng
+    
+    // Truy vấn để lấy danh sách sản phẩm trong chi tiết đơn hàng
+            $order_details = DB::table('tbl_chitietdathang')
+                ->join('tbl_product', 'tbl_chitietdathang.product_id', '=', 'tbl_product.product_id')
+                ->select('tbl_chitietdathang.*', 'tbl_product.product_name', 'tbl_product.product_price')
+                ->where('tbl_chitietdathang.dathang_id', $dathang_id)
+                ->get(); // Lấy nhiều bản ghi cho các sản phẩm
+        $mail = new PHPMailer(true);
+    
+            try {
+                // Cấu hình máy chủ email (SMTP)
+                $mail->isSMTP();
+                $mail->Host = 'smtp.gmail.com';  // SMTP server của Gmail
+                $mail->SMTPAuth = true;
+                $mail->Username = 'nguoiyeutung2707@gmail.com'; // Địa chỉ email của bạn
+                $mail->Password = 'qwir jsej htge ubkv'; // Mật khẩu của email
+                $mail->SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS;
+                $mail->Port = 587;
+        
+                // Người gửi và người nhận
+                $mail->setFrom('nguoiyeutung2707@gmail.com', 'PETSHOP');
+                $mail->addAddress($order_info->hoadon_email, $order_info->hoadon_name); // Email người nhận
+        
+                // Nội dung email
+                $mail->isHTML(true); // Đặt định dạng HTML cho email
+                $mail->Subject = 'PETSHOP!';
+        
+                // Tạo nội dung email
+                $email_content = "<h1>Thông tin Đơn hàng</h1>";
+                $email_content .= "<p><strong>Họ tên:</strong> {$order_info->hoadon_name}</p>";
+                $email_content .= "<p><strong>Địa chỉ:</strong> {$order_info->hoadon_address}</p>";
+                $email_content .= "<p><strong>Số điện thoại:</strong> {$order_info->hoadon_phone}</p>";
+                $email_content .= "<h3>Danh sách Sản phẩm:</h3><ul>";
+                
+                // Hiển thị chi tiết các sản phẩm
+                foreach ($order_details as $product) {
+                    $email_content .= "<li>{$product->product_name} - {$product->so_luong_san_pham} x {$product->product_price} VND</li>";
+                }
+                
+                $email_content .= "</ul>";
+                $email_content .= "<p><strong>Tổng tiền:</strong> " . number_format($order_info->tong_tien, 0, ',', '.') . " VND</p>";
+                $email_content .= "<p><strong>Ngày đặt:</strong> {$order_info->ngay_dat}</p>";
+                $email_content .= "<p><strong>Ngày duyệt:</strong> {$order_info->ngay_duyet}</p>";
+                $email_content .= "<p><strong>Tình trạng đơn hàng:</strong> {$order_info->dathang_status}</p>";
+
+                $mail->Body = $email_content;
+        
+                // Gửi email
+                $mail->send();
+                // echo 'Email đã được gửi thành công';
+            } catch (Exception $e) {
+                echo "Có lỗi xảy ra khi gửi email: {$mail->ErrorInfo}";
+            }
     return redirect()->back()->with('success', 'Đã duyệt hóa đơn thành công!');
     }
     public function staff_chua_duyet() {
-
+        $this->Staff_AuthLogin();
         $all_order = DB::table('tbl_dathang')
         ->join('tbl_customers', 'tbl_dathang.customer_id', '=', 'tbl_customers.customer_id')
-        ->select('tbl_dathang.*', 'tbl_customers.customer_name')
+        ->leftJoin('tbl_phanquyen', 'tbl_dathang.ma_quyen', '=', 'tbl_phanquyen.ma_quyen')
+        ->select('tbl_dathang.*', 'tbl_customers.customer_name' ,'tbl_phanquyen.chi_tiet_ten_quyen')
         ->where('dathang_status', 'Đang chờ xử lý')
         ->orderBy('tbl_dathang.dathang_id', 'desc')->paginate(10);
         // $all_order = DB::table('tbl_dathang')
@@ -486,9 +645,11 @@ class ThanhToanController extends Controller
     
     // Lọc đơn hàng đã duyệt
     public function staff_da_duyet() {
+        $this->Staff_AuthLogin();
         $all_order = DB::table('tbl_dathang')
         ->join('tbl_customers', 'tbl_dathang.customer_id', '=', 'tbl_customers.customer_id')
-        ->select('tbl_dathang.*', 'tbl_customers.customer_name')
+        ->leftJoin('tbl_phanquyen', 'tbl_dathang.ma_quyen', '=', 'tbl_phanquyen.ma_quyen')
+        ->select('tbl_dathang.*', 'tbl_customers.customer_name' ,'tbl_phanquyen.chi_tiet_ten_quyen')
         ->where('dathang_status', 'Đã duyệt đơn hàng')
         ->orderBy('tbl_dathang.dathang_id', 'desc')->paginate(10);
         // $all_order = DB::table('tbl_dathang')

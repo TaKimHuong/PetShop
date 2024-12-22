@@ -20,12 +20,13 @@
 <div class="info_main">
     
             <h4>___________________________SẢN PHẨM ĐANG BÁN______________________</h4>
+            <h6 style="text-align: right; margin-right: 10px;">Số sản phẩm: {{$count_product}}</h6>
             <div class="info">
                 @foreach($all_product as $key=> $product)
                
                 <div class="info_product">
                     <img src="{{asset('public/upload/product/'.$product->product_image)}}" alt="hinhanh" />
-                    <h6>{{$product->product_name}}</h6>
+                    <h6 style="height: 70px;">{{$product->product_name}}</h6>
 
                     <!-- <p>Average Rating: {{ number_format($product->average_rating, 1) }} / 5</p> -->
 
@@ -44,7 +45,7 @@
                     </div> -->
                     <p>{{number_format($product->product_price)}}đ</p>
                     <div class="choose">
-                        <a href="#" class="dathang">Đặt hàng</a>
+                        <a href="{{URL::to('/chi-tiet-san-pham/'.$product->product_id)}}" class="dathang">Đặt hàng</a>
                         <a href="{{URL::to('/chi-tiet-san-pham/'.$product->product_id)}}" class="chitiet">Chi tiết</a>
                     </div>
                 

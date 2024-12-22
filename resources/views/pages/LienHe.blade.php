@@ -146,7 +146,7 @@
             <li>
                 <a href="{{URL::to('/cun-con')}}">
                     <img src="{{asset('public/frontend/image/icon/cuncon-icon.png')}}" alt="cún con">
-                    <span>CÚN CON</span>
+                    <span>CỬA HÀNG</span>
                 </a>
                
             </li>

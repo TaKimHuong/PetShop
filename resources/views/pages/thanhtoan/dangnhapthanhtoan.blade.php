@@ -321,6 +321,11 @@ width: 100%;
             <!-- Form Đăng Nhập -->
             <div class="form-content" id="loginForm">
                 <h2>ĐĂNG NHẬP</h2>
+                @if(session('error'))
+                    <div class="alert alert-danger">
+                        {{ session('error') }}
+                    </div>
+                @endif
                 <form action="{{URL::to('/login-customer')}}" method="POST">
                     {{csrf_field()}}
                     <div class="form-row">

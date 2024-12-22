@@ -8,6 +8,8 @@ use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\Redirect;
 use App\Models\Rating;
 use App\Models\Customer;
+use App\Models\Product;
+
 session_start();
 class HomeController extends Controller
 {
@@ -61,13 +63,16 @@ class HomeController extends Controller
     foreach ($product_sales as $product) {
         $product->average_rating = Rating::where('product_id', $product->product_id)->avg('rating');
     }
+
+    $all = Product::where('category_id' , 6)->get();
  
     return view('pages.home')
         ->with('category', $cate_product)
         ->with('all_product', $all_product)
         ->with('latest_products', $latest_products)
         ->with('feature_product', $feature_product)
-        ->with('product_sales', $product_sales);
+        ->with('product_sales', $product_sales)
+        ->with('all' , $all);
       
     }
     public function CunCon(Request $request) {
@@ -92,8 +97,12 @@ class HomeController extends Controller
         
             $all_product = DB::table('tbl_product')
                 ->where('product_status', '0')
-                ->orderBy('product_id', 'desc')
+                ->orderBy('category_id', 'asc')
                 ->get();
+                $count_product = DB::table('tbl_product')
+                ->where('product_status', '0')
+                ->orderBy('category_id', 'asc')
+                ->count();
 
              
     // Lặp qua từng sản phẩm và tính điểm đánh giá trung bình
@@ -103,7 +112,8 @@ class HomeController extends Controller
 
             return view('pages.DanhMuc')
                 ->with('category', $cate_product)
-                ->with('all_product', $all_product);
+                ->with('all_product', $all_product)
+                ->with('count_product', $count_product);
             //    ->with('meta_desc',$meta_desc )->with('meta_keywords',$meta_keywords)->with('meta_title',$meta_title)->with('url_canonical',$url_canonical);
         }
 
@@ -144,12 +154,17 @@ class HomeController extends Controller
             $search_product = DB::table('tbl_product')
                 ->where('product_name', 'like', '%'.$tukhoa.'%') // Truy vấn sản phẩm
                 ->get(); // Lấy kết quả
-        
+            $count_search_product = DB::table('tbl_product')
+            ->where('product_name', 'like', '%'.$tukhoa.'%') // Truy vấn sản phẩm
+            ->count(); // Lấy kết quả
+                foreach ($search_product as $product) {
+                    $product->average_rating = Rating::where('product_id', $product->product_id)->avg('rating');
+                }  
             if ($request->ajax()) {
-                return view('pages.sanpham.search', compact('search_product'))->render();
+                return view('pages.sanpham.search_by_name', compact('search_product'))->render();
             }
         
-            return view('pages.sanpham.search')->with('category', $cate_product)->with('search_product', $search_product);
+            return view('pages.sanpham.search_by_name')->with('category', $cate_product)->with('search_product', $search_product)->with('count_search_product', $count_search_product);
         }
 
         public function thong_tin_tai_khoan($customer_id) {
