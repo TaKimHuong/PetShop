@@ -7,9 +7,9 @@
     <meta name="description" content="Mua bán chó cảnh">
     <meta http-equiv="refresh" content="3600">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    
+
     <link href="{{asset('public/frontend/css/phukien.css')}}" rel="stylesheet" />
- 
+
     <link rel="stylesheet" href="https://pro.fontawesome.com/releases/v5.10.0/css/all.css" integrity="sha384-AYmEC3Yw5cVb3ZcuHtOA93w35dYTsvhLPVnYs9eStHfGJvOvKxVfELGroGkvsg+p" crossorigin="anonymous" />
     <link href="{{asset('public/frontend/public/frontend/image/icon/icon-logo.PNG')}}" rel="shortcut icon" />
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
@@ -24,14 +24,14 @@
    <link href="{{asset('public/frontend/css/prettyPhoto.css')}}" rel="stylesheet">
     <link href="{{asset('public/frontend/css/price-range.css')}}" rel="stylesheet">
     <link href="{{asset('public/frontend/css/animate.css')}}" rel="stylesheet"> -->
-	<link href="{{asset('public/frontend/css/main.css')}}" rel="stylesheet">
-	<link href="{{asset('public/frontend/css/responsive.css')}}" rel="stylesheet"> 
+    <link href="{{asset('public/frontend/css/main.css')}}" rel="stylesheet">
+    <link href="{{asset('public/frontend/css/responsive.css')}}" rel="stylesheet">
 
     <!-- javascript  -->
     <script src="{{asset('public/frontend/js/jquery.js')}}"></script>
-	<script src="{{asset('public/frontend/js/price-range.js')}}"></script>
+    <script src="{{asset('public/frontend/js/price-range.js')}}"></script>
     <script src="{{asset('public/frontend/js/jquery.scrollUp.min.js')}}"></script>
-	<script src="{{asset('public/frontend/js/bootstrap.min.js')}}"></script>
+    <script src="{{asset('public/frontend/js/bootstrap.min.js')}}"></script>
     <script src="{{asset('public/frontend/js/jquery.prettyPhoto.js')}}"></script>
     <script src="{{asset('public/frontend/js/main.js')}}"></script>
     <!-- /trang detail -->
@@ -50,14 +50,14 @@
 </head>
 
 <body>
-<header>
-     
+    <header>
+
         <?php
 
-use Symfony\Component\HttpFoundation\Session\Session as SessionSession;
+        use Symfony\Component\HttpFoundation\Session\Session as SessionSession;
 
-      
-    
+
+
         ?>
 
 
@@ -69,38 +69,40 @@ use Symfony\Component\HttpFoundation\Session\Session as SessionSession;
                 <div class="search">
                     <form action="{{URL::to('/tim-kiem')}}" method="POST">
                         {{csrf_field()}}
-                    <!-- <input style="width: 500px; border-radius: 5px;" type="search" name="tukhoa_tim_kiem" placeholder="Bạn tìm gì..." />
+                        <!-- <input style="width: 500px; border-radius: 5px;" type="search" name="tukhoa_tim_kiem" placeholder="Bạn tìm gì..." />
 
                      <input type="submit" name="search_items" class="btn btn- btn-sn" value="Tim kiếm"> -->
-                     <input style="width: 400px; border-radius: 5px;" type="search" id="search-input" name="tukhoa_tim_kiem" placeholder="Bạn tìm gì..." autocomplete="off"/>
+                        <input style="width: 400px; border-radius: 5px;" type="search" id="search-input" name="tukhoa_tim_kiem" placeholder="Bạn tìm gì..." autocomplete="off" />
                     </form>
                 </div>
             </div>
             <div class="col10 header-icon">
 
-            <?php
-            use Illuminate\Support\Facades\Session;
-            $customer_id = Session::get('customer_id');
-            // $hoadon_id = Session::get('hoadon_id');
-
-            if($customer_id!=NULL)  {
-            ?>
-             <a id="hotro" href="{{URL::to('/checkout')}}">
-                    <img src="{{asset('public/frontend/image/icon/hotro-icon.png')}}" alt="hỗ trợ">
-                    <span>Thanh toán</span>
-                </a>
-             <?php
-            }else {
-                ?>
-         <a id="hotro" href="{{URL::to('/dang-nhap-thanh-toan')}}">
-                    <img src="{{asset('public/frontend/image/icon/hotro-icon.png')}}" alt="hỗ trợ">
-                    <span>Thanh toán</span>
-                </a>
                 <?php
-            }
-            ?>
 
-        
+                use Illuminate\Support\Facades\Session;
+
+                $customer_id = Session::get('customer_id');
+                // $hoadon_id = Session::get('hoadon_id');
+
+                if ($customer_id != NULL) {
+                ?>
+                    <a id="hotro" href="{{URL::to('/checkout')}}">
+                        <img src="{{asset('public/frontend/image/icon/hotro-icon.png')}}" alt="hỗ trợ">
+                        <span>Thanh toán</span>
+                    </a>
+                <?php
+                } else {
+                ?>
+                    <a id="hotro" href="{{URL::to('/dang-nhap-thanh-toan')}}">
+                        <img src="{{asset('public/frontend/image/icon/hotro-icon.png')}}" alt="hỗ trợ">
+                        <span>Thanh toán</span>
+                    </a>
+                <?php
+                }
+                ?>
+
+
             </div>
             <div class="col10 header-icon">
                 <a href="{{URL::to('/Hien-thi-gio-hang')}}">
@@ -109,47 +111,47 @@ use Symfony\Component\HttpFoundation\Session\Session as SessionSession;
                 </a>
             </div>
             <div class="col10 header-icon">
-            <?php
-            // use Illuminate\Support\Facades\Session;
+                <?php
+                // use Illuminate\Support\Facades\Session;
 
-            $customer_id = Session::get('customer_id');
-            if ($customer_id != NULL) {
-                // Nếu có `customer_id` trong Session, thì có thể hiển thị nội dung cho trường hợp đã đăng nhập
+                $customer_id = Session::get('customer_id');
+                if ($customer_id != NULL) {
+                    // Nếu có `customer_id` trong Session, thì có thể hiển thị nội dung cho trường hợp đã đăng nhập
                 ?>
-                  <a href="{{URL::to('/Thong-tin-tai-khoan/'.$customer_id)}}">  <img src="{{asset('public/frontend/image/icon/dangnhap-icon.png')}}" alt="đăng nhập"></a>
-                
-                <?php
-            } else {
-                // Nếu không có `customer_id` trong Session
-                ?>
-                    <a href="{{URL::to('/dang-nhap-thanh-toan')}}">  <img src="{{asset('public/frontend/image/icon/dangnhap-icon.png')}}" alt="đăng nhập"></a>
-                
-                <?php
-            }
-            ?>
+                    <a href="{{URL::to('/Thong-tin-tai-khoan/'.$customer_id)}}"> <img src="{{asset('public/frontend/image/icon/dangnhap-icon.png')}}" alt="đăng nhập"></a>
 
-                        <?php
-            // use Illuminate\Support\Facades\Session;
+                <?php
+                } else {
+                    // Nếu không có `customer_id` trong Session
+                ?>
+                    <a href="{{URL::to('/dang-nhap-thanh-toan')}}"> <img src="{{asset('public/frontend/image/icon/dangnhap-icon.png')}}" alt="đăng nhập"></a>
 
-            $customer_id = Session::get('customer_id');
-            if ($customer_id != NULL) {
-                // Nếu có `customer_id` trong Session, thì có thể hiển thị nội dung cho trường hợp đã đăng nhập
-                ?>
-                <a id="dangnhap" href="{{URL::to('/logout-checkout')}}">
-                   
-                    <span>Đăng xuất</span>
-                </a>
                 <?php
-            } else {
-                // Nếu không có `customer_id` trong Session
+                }
                 ?>
-                <a id="dangnhap" href="{{URL::to('/dang-nhap-thanh-toan')}}">
-                  
-                    <span>Đăng nhập</span>
-                </a>
+
                 <?php
-            }
-            ?>
+                // use Illuminate\Support\Facades\Session;
+
+                $customer_id = Session::get('customer_id');
+                if ($customer_id != NULL) {
+                    // Nếu có `customer_id` trong Session, thì có thể hiển thị nội dung cho trường hợp đã đăng nhập
+                ?>
+                    <a id="dangnhap" href="{{URL::to('/logout-checkout')}}">
+
+                        <span>Đăng xuất</span>
+                    </a>
+                <?php
+                } else {
+                    // Nếu không có `customer_id` trong Session
+                ?>
+                    <a id="dangnhap" href="{{URL::to('/dang-nhap-thanh-toan')}}">
+
+                        <span>Đăng nhập</span>
+                    </a>
+                <?php
+                }
+                ?>
             </div>
         </div>
     </header>
@@ -168,21 +170,21 @@ use Symfony\Component\HttpFoundation\Session\Session as SessionSession;
                     <span>GIỐNG CHÓ</span>
 
                 </a>
-             
+
             </li>
             <li>
                 <a href="{{URL::to('/cun-con')}}">
                     <img src="{{asset('public/frontend/image/icon/cuncon-icon.png')}}" alt="cún con">
                     <span>CỬA HÀNG</span>
                 </a>
-               
+
             </li>
             <li>
                 <a href="#">
                     <img src="{{asset('public/frontend/image/icon/phukien-icon.png')}}" alt="phụ kiện">
                     <span>PHỤ KIỆN</span>
                 </a>
-          
+
             </li>
             <li>
                 <a href="{{URL::to('/cach-nuoi')}}">
@@ -214,49 +216,50 @@ use Symfony\Component\HttpFoundation\Session\Session as SessionSession;
     <!--section-->
     <section class="container main">
         <div class="row">
-            <div class="col-md-3 col-sm-3 mn_main menu_main" >
-            <h4>DANH MỤC SẢN PHẨM</h4>
-            <ul>
-                @foreach($category as $key =>$cate)
-                <li>
-                    <a href="{{URL::to('/danh-muc-san-pham/'.$cate->category_id)}}">{{$cate->category_name}}</a>
-                </li>
-               @endforeach
-              
-            </ul>
+            <div class="col-md-3 col-sm-3 mn_main menu_main">
+                <div style="background-color: #FF9900 ; height: 50px; "><h4 style="background-color: #FF9900 ;padding: 15px;" > DANH MỤC SẢN PHẨM</h4></div>
+                
+                <ul>
+                    @foreach($category as $key =>$cate)
+                    <li>
+                        <a href="{{URL::to('/danh-muc-san-pham/'.$cate->category_id)}}">{{$cate->category_name}}</a>
+                    </li>
+                    @endforeach
+
+                </ul>
 
 
-            <p style="margin-top: 50px; margin-left: 10px; font-weight: bold;">Tìm kiếm sản phẩm</p>
-            <div class="slider-container" style="margin-top: -45px;">
-            <div class="slider-wrapper">
-            <input type="range" id="min-range" class="slider" min="0" max="10000000" value="0" step="100000">
-            <input type="range" id="max-range" class="slider" min="0" max="10000000" value="10000000" step="100000">
+                <p style="margin-top: 50px; margin-left: 10px; font-weight: bold;">Tìm kiếm sản phẩm</p>
+                <div class="slider-container" style="margin-top: -45px;">
+                    <div class="slider-wrapper">
+                        <input type="range" id="min-range" class="slider" min="0" max="10000000" value="0" step="100000">
+                        <input type="range" id="max-range" class="slider" min="0" max="10000000" value="10000000" step="100000">
 
 
-            </div>
-            <div class="slider-labels">
-                <span id="min-price" style="margin-top: 20px; font-size: 14px;">0 VND</span>
-                <span id="max-price" style="margin-top: 20px; font-size: 14px;">10,000,000 VND</span>
-            </div>
+                    </div>
+                    <div class="slider-labels">
+                        <span id="min-price" style="margin-top: 20px; font-size: 14px;">0 VND</span>
+                        <span id="max-price" style="margin-top: 20px; font-size: 14px;">10,000,000 VND</span>
+                    </div>
 
-            <!-- Nút Tìm Kiếm -->
-            <button id="search-btn" style="margin-top: 20px;">Tìm Kiếm</button>
-            
-            <!-- Hiển thị giá trị đã chọn -->
-            <div id="result" style="margin-top: 20px; font-weight: bold; font-size: 16px;"></div>
-        </div>
+                    <!-- Nút Tìm Kiếm -->
+                    <button id="search-btn" style="margin-top: 20px;">Tìm Kiếm</button>
+
+                    <!-- Hiển thị giá trị đã chọn -->
+                    <div id="result" style="margin-top: 20px; font-weight: bold; font-size: 16px;"></div>
+                </div>
             </div>
             <div class="col-md-9 if_main">
-              <div class="info_main"  id="search-results">
-                @yield('content')
-               
+                <div class="info_main" id="search-results">
+                    @yield('content')
+
                 </div>
             </div>
         </div>
-           
-       
+
+
     </section>
-   
+
     <div class="back-to-top" id="backtop">
         <a href="">
             <img src="{{asset('public/frontend/image/icon/icon-backtotop.png')}}" alt="back to top" />
@@ -353,34 +356,34 @@ use Symfony\Component\HttpFoundation\Session\Session as SessionSession;
 
 </body>
 <script>
-        $(document).ready(function() {
-    $('#search-input').on('keyup', function() {
-        let tukhoa = $(this).val();
-        if (tukhoa.length > 0) { // Chỉ gửi yêu cầu nếu có từ khóa
-            $.ajax({
-                url: "{{ URL::to('/tim-kiem') }}",
-                method: "POST",
-                data: {
-                    tukhoa_tim_kiem: tukhoa,
-                    _token: '{{csrf_token()}}'
-                },
-                success: function(data) {
-                    $('#search-results').html(data); // Hiển thị kết quả
-                }
-            });
-        } else {
-            $('#search-results').html(''); // Xóa kết quả nếu ô tìm kiếm trống
-        }
+    $(document).ready(function() {
+        $('#search-input').on('keyup', function() {
+            let tukhoa = $(this).val();
+            if (tukhoa.length > 0) { // Chỉ gửi yêu cầu nếu có từ khóa
+                $.ajax({
+                    url: "{{ URL::to('/tim-kiem') }}",
+                    method: "POST",
+                    data: {
+                        tukhoa_tim_kiem: tukhoa,
+                        _token: '{{csrf_token()}}'
+                    },
+                    success: function(data) {
+                        $('#search-results').html(data); // Hiển thị kết quả
+                    }
+                });
+            } else {
+                $('#search-results').html(''); // Xóa kết quả nếu ô tìm kiếm trống
+            }
+        });
     });
-});
+</script>
 
-    </script>
 
-    
-        
+
 <style>
     .slider-container {
-        width: 6cm; /* Chiều dài thanh kéo tương đương với 10cm */
+        width: 6cm;
+        /* Chiều dài thanh kéo tương đương với 10cm */
         position: relative;
         margin: 0 auto;
     }
@@ -451,19 +454,29 @@ use Symfony\Component\HttpFoundation\Session\Session as SessionSession;
     .slider-container .slider-wrapper input[type="range"] {
         z-index: 2;
     }
+
     #search-btn {
-    background-color: #d3d3d3; /* Màu nền xám nhạt */
-    color: black; /* Màu chữ đen */
-    font-size: 14px; /* Kích thước chữ */
-    padding: 5px 10px; /* Khoảng cách trong nút (trên/dưới, trái/phải) */
-    border: none; /* Không có đường viền */
-    border-radius: 5px; /* Bo góc */
-    cursor: pointer; /* Hiển thị con trỏ chuột khi di chuột vào */
-    transition: background-color 0.3s ease; /* Hiệu ứng chuyển màu nền khi hover */
+        background-color: #d3d3d3;
+        /* Màu nền xám nhạt */
+        color: black;
+        /* Màu chữ đen */
+        font-size: 14px;
+        /* Kích thước chữ */
+        padding: 5px 10px;
+        /* Khoảng cách trong nút (trên/dưới, trái/phải) */
+        border: none;
+        /* Không có đường viền */
+        border-radius: 5px;
+        /* Bo góc */
+        cursor: pointer;
+        /* Hiển thị con trỏ chuột khi di chuột vào */
+        transition: background-color 0.3s ease;
+        /* Hiệu ứng chuyển màu nền khi hover */
     }
 
     #search-btn:hover {
-        background-color: #d3d3d3; /* Giữ màu xám nhạt khi hover */
+        background-color: #d3d3d3;
+        /* Giữ màu xám nhạt khi hover */
     }
 
 
@@ -473,8 +486,8 @@ use Symfony\Component\HttpFoundation\Session\Session as SessionSession;
     }
 </style>
 <script>
-     // Lắng nghe sự kiện thay đổi giá trị của thanh trượt
-     document.getElementById('min-range').addEventListener('input', function() {
+    // Lắng nghe sự kiện thay đổi giá trị của thanh trượt
+    document.getElementById('min-range').addEventListener('input', function() {
         var minValue = this.value;
         var maxValue = document.getElementById('max-range').value;
 
@@ -512,6 +525,6 @@ use Symfony\Component\HttpFoundation\Session\Session as SessionSession;
     });
 </script>
 
-  
-        
+
+
 </html>
